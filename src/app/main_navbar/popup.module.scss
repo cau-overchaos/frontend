@@ -1,0 +1,24 @@
+.container {
+    position: absolute;
+}
+.popup {
+    position: absolute;
+    right: -36px;
+    margin-top: 30px;
+    .top, .bottom {
+        background: #ebffe5;
+        padding: 20px 30px;
+        &.top {
+            border-radius: 15px 15px 0px 0px;
+        }
+        &.bottom {
+            border-radius: 0px 0px 15px 15px;
+        }
+    }
+    .divider {
+        border: none;
+        border-top: 0.3px solid #5bb73f;
+        margin: 0px;
+        padding: 0px;
+    }
+}
