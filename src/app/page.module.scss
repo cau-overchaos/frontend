@@ -1,14 +1,23 @@
 .root {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+
     .boards {
         display: flex;
         flex-direction: row;
         justify-content: center;
         flex-flow: wrap;
-        margin-top: 86px;
         gap: 20px;
 
         & > * {
             min-width: 400px;
         }
+    }
+
+    .container {
+        flex: 1;
+        padding-top: 86px;
+        padding-bottom: 86px;
     }
 }

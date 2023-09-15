@@ -2,12 +2,14 @@ import styles from './page.module.scss'
 import MainNavbar from "./main_navbar/main_navbar";
 import SummariedBoardWidget ,{ SummariedArticle } from "./summaried_board_widget/summaried_board_widget";
 import responsiveness from './responsiveness.module.scss'
+import Footer from './footer/footer';
+import classNames from 'classnames';
 
 export default function Home() {
   return (
     <div className={styles.root}>
         <MainNavbar></MainNavbar>
-        <main className={responsiveness.container}>
+        <main className={classNames(responsiveness.container, styles.container)}>
           <div className={styles.boards}>
             <SummariedBoardWidget boardName="코딩테스트 / 대회 공고">
             </SummariedBoardWidget>
@@ -15,6 +17,7 @@ export default function Home() {
             </SummariedBoardWidget>
           </div>
         </main>
+        <Footer></Footer>
     </div>
   )
 }
