@@ -1,0 +1,14 @@
+.root {
+    .boards {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        flex-flow: wrap;
+        margin-top: 86px;
+        gap: 20px;
+
+        & > * {
+            min-width: 400px;
+        }
+    }
+}
