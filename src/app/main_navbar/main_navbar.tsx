@@ -15,7 +15,11 @@ type MenuItem = {
     href: string;
 }
 
-export default function MainNavbar() {
+type PropsType = {
+    narrowContainer?: boolean;
+}
+
+export default function MainNavbar(props: PropsType) {
     const [mobileMenuActive, setMobileMenuActive] = useState(false);
     const [userPopupActive, setUserPopupActive] = useState(false);
     const [notificationsActive, setNotificationsActive] = useState(false);
@@ -34,8 +38,9 @@ export default function MainNavbar() {
         }
     ]
 
+    const containerClass = props.narrowContainer === true ? responsiveness.narrowContainer : responsiveness.container;
     return <nav className={styles.navbar}>
-        <div className={classNames(responsiveness.container, styles.container)}>
+        <div className={classNames(containerClass, styles.container)}>
             <div className={styles.logo}>
                 <Link href="/">
                     알고모여
