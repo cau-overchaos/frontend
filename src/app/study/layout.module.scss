@@ -1,0 +1,9 @@
+.layoutRoot {
+    height: 100%;
+    
+    .layoutContainer {
+        display: flex;
+        flex-direction: row;
+        height: 100%;
+    }
+}
