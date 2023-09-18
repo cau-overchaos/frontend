@@ -1,0 +1,28 @@
+.leftMenu {
+    margin-top: 4px;
+    ul {
+        list-style-type: none;
+        background-color: #e4ffdc81;
+        padding: 25px 18px;
+        margin: 0px;
+        height: 100%;
+        min-width: 170px;
+        li { 
+            .icon {
+                display: inline;
+                margin-right: 20px;
+                & > svg {
+                    width: 25px;
+                    height: auto;
+                }
+            }
+            .text {
+                display: inline;
+                font-size: 16px;
+            }
+            & + li {
+                margin-top: 18px;
+            }
+        }
+    }
+}
