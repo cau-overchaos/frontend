@@ -7,6 +7,10 @@
         margin: 0px;
         height: 100%;
         min-width: 170px;
+        @media screen and (max-width: 1024px) {
+            min-width: 30px;
+        }
+
         li { 
             .icon {
                 display: inline;
