@@ -1,0 +1,74 @@
+.assignments {
+    display: flex;
+    padding: 70px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 100px;
+    @media screen and (max-width: 1024px) {
+        padding: 30px;
+        gap: 30px;
+    }
+}
+
+.assignment {
+    .problem, .assignees {
+        background: #ebffe5;
+        border-radius: 15px;
+        
+        &.problem {
+            padding: 20px;
+            font-size: 25px;
+            display: flex;
+            align-items: center;
+            
+            .tier { 
+                font-size: 0px; /* Fixes a unintended bottom-padding bug */
+                & > .tier {
+                    width: 40px;
+                    height: auto;
+                }
+            }
+
+            .id {
+                margin-left: 20px;
+            }
+
+            .name {
+                margin-left: 30px;
+            }
+            
+        }
+        
+        &.assignees {
+            display: block;
+            padding: 10px;
+            list-style-type: none;
+            
+            .assignee {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                background-color: white;
+                border-radius: 15px;
+                padding: 10px;
+
+                & + .assignee {
+                    margin-top: 10px;
+                }
+
+                .profile {
+                    width: 60px;
+                    height: 60px;
+                    border-radius: 30px;
+                    background: gray;
+                    background-size: cover;
+                }
+
+                .nickname {
+                    flex: 1;
+                    text-align: center;
+                }
+            }
+        }
+    }
+}
