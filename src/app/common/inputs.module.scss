@@ -1,0 +1,51 @@
+button.input {
+    border: #e0e0e0 0.5px solid;
+    background: #ebffe5;
+    font-size: 1.2em;
+    padding: 0.3em 0.4em;
+    border-radius: 0.8em;
+    height: fit-content;
+    cursor: pointer;
+
+    &:hover {
+        background: #d5ffc7;
+    }
+
+    &:active {
+        background: #c4ffb4;
+    }
+    
+}
+
+input.input {
+    &[type="input"] {
+        border: none;
+        background-color: #fcfcfc;
+        padding: 0.4em;
+        font-size: 1.2em;
+        padding: 0.6em;
+        border-radius: 1.2em;
+
+        &:hover {
+            background-color: #f8f8f8;
+        }
+
+        &:active, &:focus {
+            background-color: #eeeeee;
+        }
+    }
+}
+
+textarea.input {
+    border: none;
+    background-color: #fcfcfc;
+    padding: 0.4em;
+    font-size: 1.2em;
+    padding: 0.6em;
+    border-radius: 1.2em;
+    box-sizing: border-box;
+
+    &.noBackground {
+        background-color: initial;
+    }
+}
