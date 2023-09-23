@@ -1,0 +1,27 @@
+.container {
+    max-width: 600px;
+    padding: 10px;
+    margin: auto;
+    h1 {
+        text-align: center;
+    }
+
+    .form {
+        display: grid;
+        column-gap: 10px;
+        row-gap: 10px;
+        align-items: center;
+        label {
+            font-size: 20px;
+            vertical-align: middle;
+            grid-column: 1;
+            text-align: right;
+        }
+        .input {
+            grid-column: 2;
+        }
+        button {
+            width: fit-content;
+        }
+    }
+}
