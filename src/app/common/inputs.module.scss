@@ -18,13 +18,14 @@ button.input {
 }
 
 input.input {
-    &[type="input"] {
+    &[type="input"], &[type="password"] {
         border: none;
         background-color: #fcfcfc;
         padding: 0.4em;
         font-size: 1.2em;
         padding: 0.6em;
         border-radius: 1.2em;
+        border: 1px solid #e0e0e0;
 
         &:hover {
             background-color: #f8f8f8;
@@ -32,6 +33,10 @@ input.input {
 
         &:active, &:focus {
             background-color: #eeeeee;
+        }
+
+        &:user-invalid, .invalid {
+            border: 1px solid #ff7d7d;
         }
     }
 }
