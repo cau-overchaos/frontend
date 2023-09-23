@@ -57,7 +57,7 @@ export default function signUp() {
                     <Input required password minLength={8} name='password_retype' value={passwordRetype} onChange={(evt) => setPasswordRetype(evt.target.value)}></Input>
                 </div>
                 <label>
-                    백준 id
+                    백준 ID
                 </label>
                 <div className={styles.input}>
                     <Input required name='boj_id' value={bojId} onChange={(evt) => setBojId(evt.target.value)}></Input>
