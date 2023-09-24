@@ -9,6 +9,7 @@ import { faBars, faBell, faSearch, faUserCircle } from "@fortawesome/free-solid-
 import { useState } from "react";
 import UserPopup from "./user_popup";
 import NotificationPopup from "./nofitications_popup.module";
+import SearchPopup from "./search_popup";
 
 type MenuItem = {
     name: string;
@@ -23,6 +24,7 @@ export default function MainNavbar(props: PropsType) {
     const [mobileMenuActive, setMobileMenuActive] = useState(false);
     const [userPopupActive, setUserPopupActive] = useState(false);
     const [notificationsActive, setNotificationsActive] = useState(false);
+    const [searchActive, setSearchActive] = useState(false);
     const menus: MenuItem[] = [
         {
             name: '내 스터디',
@@ -54,7 +56,7 @@ export default function MainNavbar(props: PropsType) {
             <div className={styles.icons}>
                 <div className={styles.item}>
                     <Link href="#">
-                        <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
+                        <FontAwesomeIcon icon={faSearch} onClick={() => setSearchActive(!searchActive)}></FontAwesomeIcon>
                     </Link>
                 </div>
                 <div className={styles.item}>
@@ -81,5 +83,12 @@ export default function MainNavbar(props: PropsType) {
                 {i.name}
             </Link></div>)}
         </div>}
+        <SearchPopup active={searchActive} onAutocompleteRequest={async (query) => {
+            // TO-DO: impl autocomplete logic
+            return [];
+        }} onSearchRequest={(query) => {
+            // TO-DO: impl search logic
+            setSearchActive(false);
+        }} onCloseButtonClick={() => setSearchActive(false)}></SearchPopup>
     </nav>;
 }
