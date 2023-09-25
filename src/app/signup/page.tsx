@@ -7,6 +7,7 @@ import MainLayout from '../main_layout';
 
 export default function signUp() {
     const [id, setId] = useState<string>('');
+    const [name, setName] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [passwordRetype, setPasswordRetype] = useState<string>('');
     const [bojId, setBojId] = useState<string>('');
@@ -43,6 +44,12 @@ export default function signUp() {
                 </label>
                 <div className={styles.input}>
                     <Input required pattern='[a-z0-9_]+' minLength={4} name='id' value={id} onChange={(evt) => setId(evt.target.value.toLowerCase())} />
+                </div>
+                <label>
+                    성함
+                </label>
+                <div className={styles.input}>
+                    <Input required name='name' value={name} onChange={(evt) => setName(evt.target.value)} />
                 </div>
                 <label>
                     비밀번호
