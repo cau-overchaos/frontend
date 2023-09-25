@@ -4,6 +4,7 @@ import { FormEventHandler, useState } from 'react'
 import { Button, Input } from '../common/inputs'
 import styles from './page.module.scss'
 import MainLayout from '../main_layout';
+import ApiClient from '../api_client';
 
 export default function signUp() {
     const [id, setId] = useState<string>('');
@@ -22,7 +23,21 @@ export default function signUp() {
         }
 
         if (validated) {
-
+            const apiClient = new ApiClient();
+            apiClient.login({
+                userId: id,
+                password
+            }).then(() => {
+                const params = new URLSearchParams(location.search);
+                const redirect = params.get('redirect');
+                if (redirect !== null && redirect.trim() !== '') {
+                    location.href = redirect;
+                } else {
+                    location.href = '/';
+                }
+            }).catch((err) => {
+                alert(`오류가 발생했습니다: ${err.message}`);
+            })
         }
     }
 
