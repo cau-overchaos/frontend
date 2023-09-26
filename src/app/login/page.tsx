@@ -5,6 +5,7 @@ import { Button, Input } from '../common/inputs'
 import styles from './page.module.scss'
 import MainLayout from '../main_layout';
 import apiClient from '../api_client';
+import Link from 'next/link';
 
 export default function signUp() {
     const [id, setId] = useState<string>('');
@@ -58,6 +59,8 @@ export default function signUp() {
                 </div>
                 <div className={styles.input}>
                     <Button submit>로그인</Button>
+                    &nbsp;
+                    <Link href="/signup" className={styles.signUp}>회원가입하기</Link>
                 </div>
             </form>
         </div>
