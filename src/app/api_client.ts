@@ -5,6 +5,14 @@ type SignUpForm = {
     judgeAccount: string;
 }
 
+export type UserProfile = {
+    userId: string;
+    password: string;
+    name: string;
+    judgeAccount: string;
+    profileImage: string | null;
+}
+
 type LoginForm = {
     userId: string;
     password: string;
@@ -42,6 +50,19 @@ class ApiClient {
 
     private fireEvent (type: EventType) {
         this.listeners[type].forEach(i => { setTimeout(i, 0); });
+    }
+
+    async me(): Promise<UserProfile | null> {
+        const response = await fetch(this.apiEndpoint + '/users/me');
+        const responseData: ApiResponse = await response.json();
+
+        if (response.ok) {
+            return responseData.data;
+        } else if (response.status === 401) {
+            return null;
+        } else {
+            throw new Error(`HTTP ${response.status}: ${responseData.message}`);
+        }
     }
 
     async logout() {
