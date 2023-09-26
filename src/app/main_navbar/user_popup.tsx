@@ -3,6 +3,8 @@ import styles from './user_popup.module.scss'
 import popupStyles from './popup.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCog, faSignIn, faSignOut } from '@fortawesome/free-solid-svg-icons'
+import Link from 'next/link'
+import apiClient from '../api_client'
 
 type propsType = {
     nickname?: string;
@@ -11,6 +13,10 @@ type propsType = {
 }
 
 export default function UserPopup(props: propsType) {
+    const doLogout = () => {
+        apiClient.logout();
+    }
+
     return <div className={popupStyles.container}>
         <div className={popupStyles.popup}>
             <div className={classNames(popupStyles.top, styles.profile)}>
@@ -22,13 +28,13 @@ export default function UserPopup(props: propsType) {
                 <ul className={styles.menu}>
                     <li>
                         {props.loggedIn ?
-                            <a href="#">
+                            <a href="#" onClick={doLogout}>
                                 <FontAwesomeIcon className={styles.icon} icon={faSignOut}></FontAwesomeIcon>
                                 <span>로그아웃</span>
-                            </a> : <a href="#">
+                            </a> : <Link href="/login">
                                 <FontAwesomeIcon className={styles.icon} icon={faSignIn}></FontAwesomeIcon>
                                 <span>로그인</span>
-                            </a>
+                            </Link>
                         }
                     </li>
                     {props.loggedIn &&
