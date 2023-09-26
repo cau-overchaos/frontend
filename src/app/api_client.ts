@@ -27,6 +27,12 @@ export default class ApiClient {
         this.apiEndpoint = endpoint;
     }
 
+    async logout() {
+        await fetch(this.apiEndpoint + '/logout', {
+            method: 'POST'
+        });
+    }
+
     async login(form: LoginForm) {
         const response = await fetch(this.apiEndpoint + '/login', {
             method: 'POST',
