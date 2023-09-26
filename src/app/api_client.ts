@@ -16,7 +16,7 @@ type ApiResponse = {
     message: string;
 }
 
-export default class ApiClient {
+class ApiClient {
     private apiEndpoint;
     
     /**
@@ -63,3 +63,6 @@ export default class ApiClient {
         };
     }
 }
+
+const apiClient = new ApiClient();
+export default apiClient;

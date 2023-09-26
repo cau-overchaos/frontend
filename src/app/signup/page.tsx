@@ -4,7 +4,7 @@ import { FormEventHandler, useState } from 'react'
 import { Button, Input } from '../common/inputs'
 import styles from './page.module.scss'
 import MainLayout from '../main_layout';
-import ApiClient from '../api_client';
+import apiClient from '../api_client';
 
 export default function signUp() {
     const [id, setId] = useState<string>('');
@@ -32,7 +32,6 @@ export default function signUp() {
         }
 
         if (validated) {
-            const apiClient = new ApiClient();
             apiClient.signUp({
                 userId: id,
                 name,
