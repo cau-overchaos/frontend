@@ -23,7 +23,7 @@ export default class ApiClient {
      * Creates api client
      * @param endpoint Root endpoint of api
      */
-    constructor(endpoint: string = '/api') {
+    constructor(endpoint: string = process.env.NEXT_PUBLIC_API_ENDPOINT ?? '/api') {
         this.apiEndpoint = endpoint;
     }
 
