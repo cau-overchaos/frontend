@@ -28,6 +28,8 @@ type EventType = 'loggedInOrloggedOut';
 
 class ApiClient {
     private apiEndpoint;
+    private cached: boolean = false;
+    private cachedMyProfile: UserProfile | null = null;
     private listeners: {[key in EventType]: Function[]} = {
         'loggedInOrloggedOut': []
     }
@@ -52,13 +54,23 @@ class ApiClient {
         this.listeners[type].forEach(i => { setTimeout(i, 0); });
     }
 
-    async me(): Promise<UserProfile | null> {
-        const response = await fetch(this.apiEndpoint + '/users/me');
+    async me(skipCache: boolean = false): Promise<UserProfile | null> {
+        if (!skipCache && this.cached) {
+            return this.cachedMyProfile;
+        }
+
+        const response = await fetch(this.apiEndpoint + '/users/me', {
+            credentials: 'include'
+        });
         const responseData: ApiResponse = await response.json();
 
         if (response.ok) {
+            this.cached = true;
+            this.cachedMyProfile = responseData.data;
             return responseData.data;
         } else if (response.status === 401) {
+            this.cached = true;
+            this.cachedMyProfile = null;
             return null;
         } else {
             throw new Error(`HTTP ${response.status}: ${responseData.message}`);
@@ -67,14 +79,17 @@ class ApiClient {
 
     async logout() {
         await fetch(this.apiEndpoint + '/logout', {
-            method: 'POST'
+            method: 'POST',
+            credentials: 'include'
         });
+
         this.fireEvent('loggedInOrloggedOut');
     }
 
     async login(form: LoginForm) {
         const response = await fetch(this.apiEndpoint + '/login', {
             method: 'POST',
+            credentials: 'include',
             body: JSON.stringify(form),
             headers: {
                 'Content-Type': 'application/json'
@@ -92,6 +107,7 @@ class ApiClient {
     async signUp(form: SignUpForm) {
         const response = await fetch(this.apiEndpoint + '/signup', {
             method: 'POST',
+            credentials: 'include',
             body: JSON.stringify(form),
             headers: {
                 'Content-Type': 'application/json'
