@@ -46,6 +46,7 @@ export default function MainNavbar(props: PropsType) {
             setUser(await apiClient.me());
         };
 
+        onAuthStateChanged();
         apiClient.on('loggedInOrloggedOut', onAuthStateChanged);
         return () => {
             apiClient.off('loggedInOrloggedOut', onAuthStateChanged);
