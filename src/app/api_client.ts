@@ -83,6 +83,7 @@ class ApiClient {
             credentials: 'include'
         });
 
+        this.cached = false;
         this.fireEvent('loggedInOrloggedOut');
     }
 
