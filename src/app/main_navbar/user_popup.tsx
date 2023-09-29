@@ -13,8 +13,9 @@ type propsType = {
 }
 
 export default function UserPopup(props: propsType) {
-    const doLogout = () => {
-        apiClient.logout();
+    const doLogout = async () => {
+        await apiClient.logout();
+        location.href = '/';
     }
 
     return <div className={popupStyles.container}>
