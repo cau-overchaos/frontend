@@ -4,9 +4,11 @@ import { FormEventHandler, useState } from 'react'
 import { Button, Input } from '../common/inputs'
 import styles from './page.module.scss'
 import MainLayout from '../main_layout';
+import apiClient from '../api_client';
 
 export default function signUp() {
     const [id, setId] = useState<string>('');
+    const [name, setName] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [passwordRetype, setPasswordRetype] = useState<string>('');
     const [bojId, setBojId] = useState<string>('');
@@ -30,7 +32,17 @@ export default function signUp() {
         }
 
         if (validated) {
-
+            apiClient.signUp({
+                userId: id,
+                name,
+                password,
+                judgeAccount: bojId
+            }).then(() => {
+                alert('회원가입이 완료됐습니다!');
+                location.href = '/';
+            }).catch((err: Error) => {
+                alert(`오류가 발생했습니다: ${err.message}`);
+            })
         }
     }
 
@@ -43,6 +55,12 @@ export default function signUp() {
                 </label>
                 <div className={styles.input}>
                     <Input required pattern='[a-z0-9_]+' minLength={4} name='id' value={id} onChange={(evt) => setId(evt.target.value.toLowerCase())} />
+                </div>
+                <label>
+                    성함
+                </label>
+                <div className={styles.input}>
+                    <Input required name='name' value={name} onChange={(evt) => setName(evt.target.value)} />
                 </div>
                 <label>
                     비밀번호

@@ -6,9 +6,11 @@ import styles from './main_navbar.module.scss'
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faBell, faSearch, faUserCircle } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import UserPopup from "./user_popup";
 import NotificationPopup from "./nofitications_popup.module";
+import apiClient, { UserProfile } from "../api_client";
+import md5 from 'md5';
 import SearchPopup from "./search_popup";
 
 type MenuItem = {
@@ -24,6 +26,7 @@ export default function MainNavbar(props: PropsType) {
     const [mobileMenuActive, setMobileMenuActive] = useState(false);
     const [userPopupActive, setUserPopupActive] = useState(false);
     const [notificationsActive, setNotificationsActive] = useState(false);
+    const [user, setUser] = useState<UserProfile | null>(null)
     const [searchActive, setSearchActive] = useState(false);
     const menus: MenuItem[] = [
         {
@@ -39,6 +42,18 @@ export default function MainNavbar(props: PropsType) {
             href: '#'
         }
     ]
+
+    useEffect(() => {
+        const onAuthStateChanged = async () => {
+            setUser(await apiClient.me());
+        };
+
+        onAuthStateChanged();
+        apiClient.on('loggedInOrloggedOut', onAuthStateChanged);
+        return () => {
+            apiClient.off('loggedInOrloggedOut', onAuthStateChanged);
+        }
+    });
 
     const containerClass = props.narrowContainer === true ? responsiveness.narrowContainer : responsiveness.container;
     return <nav className={styles.navbar}>
@@ -69,7 +84,14 @@ export default function MainNavbar(props: PropsType) {
                     <Link href="#" onClick={() => {setNotificationsActive(false); setUserPopupActive(!userPopupActive)}}>
                         <FontAwesomeIcon icon={faUserCircle} ></FontAwesomeIcon>
                     </Link>
-                    {userPopupActive && <UserPopup></UserPopup>}
+                    {userPopupActive && <UserPopup
+                        backgroundUrl={
+                            user === null
+                            ? 'https://www.gravatar.com/avatar/a?d=mp'
+                            : user?.profileImage ?? `https://www.gravatar.com/avatar/${md5(user?.userId ?? user?.name ?? '')}?d=identicon`}
+                        nickname={user?.name}
+                        loggedIn={user !== null}
+                    ></UserPopup>}
                 </div>
                 <div className={styles.item}>
                     <Link href="#" onClick={() => setMobileMenuActive(!mobileMenuActive)} className={responsiveness.mobileOnly}>
