@@ -78,10 +78,14 @@ class ApiClient {
     }
 
     async logout() {
-        await fetch(this.apiEndpoint + '/logout', {
+        const response = await fetch(this.apiEndpoint + '/logout', {
             method: 'POST',
             credentials: 'include'
         });
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${(await response.json()).message}`)
+        }
 
         this.cached = false;
         this.fireEvent('loggedInOrloggedOut');
