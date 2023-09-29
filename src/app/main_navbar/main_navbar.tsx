@@ -64,7 +64,7 @@ export default function MainNavbar(props: PropsType) {
                 </Link>
             </div>
             <div className={classNames(responsiveness.desktopOnly, styles.menu)}>
-                {menus.map(i => <div className={styles.item}><Link href={i.href}>
+                {menus.map(i => <div className={styles.item} key={i.href}><Link href={i.href}>
                     {i.name}
                 </Link></div>)}
             </div>
@@ -101,7 +101,7 @@ export default function MainNavbar(props: PropsType) {
             </div>
         </div>
         {mobileMenuActive && <div className={classNames(styles.mobileMenu, responsiveness.mobileOnly, responsiveness.container)}>
-            {menus.map(i => <div className={styles.item}><Link href={i.href} className={styles.item}>
+            {menus.map(i => <div className={styles.item} key={i.href}><Link href={i.href} className={styles.item}>
                 {i.name}
             </Link></div>)}
         </div>}

@@ -62,7 +62,7 @@ export default function SearchPopup(props: Props) {
         
             { autocompletes.length > 0 && 
                 <ul className={styles.autocomplete}>
-                    {autocompletes.map((i, idx) => <li className={idx === selectedAutocompleteIndex ? styles.active : ''}>
+                    {autocompletes.map((i, idx) => <li className={idx === selectedAutocompleteIndex ? styles.active : ''} key={i}>
                         {i}
                     </li>)}
                 </ul>

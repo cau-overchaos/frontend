@@ -6,7 +6,7 @@ import styles from './page.module.scss'
 import MainLayout from '../main_layout';
 import apiClient from '../api_client';
 
-export default function signUp() {
+export default function SignUp() {
     const [id, setId] = useState<string>('');
     const [name, setName] = useState<string>('');
     const [password, setPassword] = useState<string>('');

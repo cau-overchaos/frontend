@@ -35,7 +35,7 @@ export function SummariedArticle(props: ArticlePropTypes) {
             <div className={styles.dueDate}>신청 마감일: {formatDate(props.startDate)}</div>
             <div className={styles.startDate}>개최일: {formatDate(props.dueDate)}</div>
             <ul className={styles.tags}>
-                {props.tags.map(i => <li className={styles.tag}>
+                {props.tags.map(i => <li className={styles.tag} key={i}>
                     {i}
                 </li>)}
             </ul>

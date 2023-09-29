@@ -7,7 +7,7 @@ import MainLayout from '../main_layout';
 import apiClient from '../api_client';
 import Link from 'next/link';
 
-export default function signUp() {
+export default function Login() {
     const [id, setId] = useState<string>('');
     const [password, setPassword] = useState<string>('');
 

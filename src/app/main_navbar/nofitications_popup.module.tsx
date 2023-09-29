@@ -9,6 +9,7 @@ type propsType = {
     notifications?: {
         text: string;
         href: string;
+        id: string
     }[]
 }
 
@@ -19,7 +20,7 @@ export default function NotificationPopup(props: propsType) {
         <div className={popupStyles.popup}>
             <div className={popupStyles.top}>
                 <ul className={styles.menu}>
-                    {notifications.map(i => <li>
+                    {notifications.map(i => <li  key={i.id}>
                         <Link href={i.href}>
                             <FontAwesomeIcon className={styles.icon} icon={faBell}></FontAwesomeIcon>
                             <span>{i.text}</span>
