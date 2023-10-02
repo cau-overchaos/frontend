@@ -72,6 +72,7 @@ function ReplyingTo(props: {
       ></input>
       <a
         href="#"
+        className={styles.cancelReply}
         onClick={(evt) => {
           evt.preventDefault();
           props.onCloseButtonClick();
