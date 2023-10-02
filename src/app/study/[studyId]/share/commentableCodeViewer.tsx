@@ -14,10 +14,18 @@ import { ReactNode } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment } from "@fortawesome/free-solid-svg-icons";
 
+export enum DiffType {
+  Add,
+  Delete,
+  Normal
+}
+
 export type Props = {
   highlight: IdeHighlighterType;
   code: string;
   className?: string;
+  diffs?: DiffType[];
+  linePadding?: string;
   onCommentClick: (line: number) => ReactNode;
 };
 
@@ -41,7 +49,19 @@ export default function CommentableCodeViewer(props: Props) {
 
   const lines = (html: string): ReactNode[] => {
     return html.split("\n").map((line, idx) => (
-      <div className={styles.line}>
+      <div
+        className={classNames(
+          styles.line,
+          (props.diffs ?? [])[idx] === DiffType.Add
+            ? styles.add
+            : (props.diffs ?? [])[idx] === DiffType.Delete
+            ? styles.delete
+            : null
+        )}
+        style={{
+          padding: props.linePadding
+        }}
+      >
         <span dangerouslySetInnerHTML={{ __html: line }}></span>
         <span className={styles.commentIcon}>
           &nbsp;

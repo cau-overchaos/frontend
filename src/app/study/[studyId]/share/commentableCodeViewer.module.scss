@@ -1,6 +1,12 @@
 .code {
   .line {
     white-space: pre;
+    &.add {
+      background-color: #ccffad80;
+    }
+    &.delete {
+      background-color: #ffadad80;
+    }
     .commentIcon {
       display: none;
       color: rgba(0, 0, 0, 0.5);

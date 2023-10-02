@@ -9,6 +9,7 @@ export default function SharedCodeViewer(props: CodeViewerProps) {
     <CommentableCodeViewer
       {...props}
       className={classNames(props.className, styles.code)}
+      linePadding="0px 25px"
     ></CommentableCodeViewer>
   );
 }
