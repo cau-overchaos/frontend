@@ -1,0 +1,32 @@
+.code {
+  .line {
+    white-space: pre;
+    .commentIcon {
+      display: none;
+      color: rgba(0, 0, 0, 0.5);
+      cursor: pointer;
+    }
+    &:hover {
+      .commentIcon {
+        display: initial;
+        position: relative;
+
+        .comments {
+          display: none;
+        }
+        &:hover {
+          .comments {
+            display: initial;
+            position: absolute;
+            padding-left: 1.5em;
+            top: 0;
+            left: 0;
+            > * {
+              cursor: default;
+            }
+          }
+        }
+      }
+    }
+  }
+}
