@@ -17,6 +17,7 @@ import NotificationPopup from "./nofitications_popup.module";
 import apiClient, { UserProfile } from "../api_client";
 import md5 from "md5";
 import SearchPopup from "./search_popup";
+import DefaultProfileImageUrl from "../default_profile_image_url";
 
 type MenuItem = {
   name: string;
@@ -112,7 +113,7 @@ export default function MainNavbar(props: PropsType) {
               <UserPopup
                 backgroundUrl={
                   user === null
-                    ? "https://www.gravatar.com/avatar/a?d=mp"
+                    ? DefaultProfileImageUrl()
                     : user?.profileImage ??
                       `https://www.gravatar.com/avatar/${md5(
                         user?.userId ?? user?.name ?? ""
