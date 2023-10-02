@@ -19,4 +19,17 @@
     margin: 0px;
     padding: 20px 0px;
   }
+
+  @media screen and (max-width: 1023px) {
+    flex-direction: column;
+    gap: 10px;
+    .left {
+      border-right-width: 8px;
+      border-radius: 15px;
+    }
+    .right {
+      border-left-width: 8px;
+      border-radius: 15px;
+    }
+  }
 }
