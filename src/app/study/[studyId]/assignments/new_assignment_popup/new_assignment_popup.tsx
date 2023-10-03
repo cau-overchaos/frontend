@@ -69,14 +69,16 @@ export default function NewAssignmentPopup(props: Props) {
           과제 시작일:&nbsp;
           <DateTimePicker
             value={new Date()}
-            format="y-MM-dd h:mm:ss a"
+            disableClock
+            format="y-MM-dd H:mm"
           ></DateTimePicker>
         </div>
         <div className={styles.dateField}>
           과제 종료일:&nbsp;
           <DateTimePicker
             value={new Date()}
-            format="y-MM-dd h:mm:ss a"
+            disableClock
+            format="y-MM-dd H:mm"
           ></DateTimePicker>
         </div>
         <div>
