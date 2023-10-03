@@ -13,6 +13,8 @@
     padding: 1em 2em 2em 2em;
     border-radius: 10px;
     box-shadow: 2px 2px 8px #00000080;
+    max-width: 100%;
+    overflow-x: scroll;
 
     h2 {
       margin: 20px 0px;
@@ -47,6 +49,9 @@
       th,
       td {
         padding: 8px 20px;
+        @media screen and (max-width: 1024px) {
+          padding: 2px 8px;
+        }
         text-align: center;
       }
 
