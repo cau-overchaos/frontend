@@ -10,7 +10,7 @@ import styles from "./commentableCodeViewer.module.scss";
 import { IdeHighlighterType } from "../ide/ide";
 import { encode } from "html-entities";
 import classNames from "classnames";
-import { ReactNode } from "react";
+import { MouseEventHandler, ReactNode, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment } from "@fortawesome/free-solid-svg-icons";
 
@@ -30,6 +30,40 @@ export type Props = {
 };
 
 export default function CommentableCodeViewer(props: Props) {
+  const [commentToggledLine, toggleCommenctLine] = useState<number | null>(
+    null
+  );
+
+  useEffect(() => {
+    const closeCommenctLineOnOutsideClick: (
+      this: HTMLElement,
+      evt: MouseEvent
+    ) => void = (evt) => {
+      let now: HTMLElement | null = evt.target as HTMLElement;
+      let clickedComment = false;
+      while (now !== null) {
+        if (typeof now.className === "undefined") {
+          now = (now.parentNode as HTMLElement) ?? null;
+          continue;
+        }
+        if (now.className.includes(styles.comments)) {
+          clickedComment = true;
+          break;
+        }
+        now = now.parentNode as HTMLElement;
+      }
+
+      if (!clickedComment) toggleCommenctLine(null);
+    };
+
+    document.body.addEventListener("click", closeCommenctLineOnOutsideClick);
+    return () =>
+      document.body.removeEventListener(
+        "click",
+        closeCommenctLineOnOutsideClick
+      );
+  });
+
   const highlightCode = (code: string) => {
     switch (props.highlight) {
       case IdeHighlighterType.C:
@@ -48,10 +82,21 @@ export default function CommentableCodeViewer(props: Props) {
   };
 
   const lines = (html: string): ReactNode[] => {
+    const activateComment = (
+      line: number
+    ): MouseEventHandler<HTMLAnchorElement> => {
+      return (evt) => {
+        evt.preventDefault();
+        if (commentToggledLine !== line) toggleCommenctLine(line);
+        else toggleCommenctLine(null);
+      };
+    };
+
     return html.split("\n").map((line, idx) => (
       <div
         className={classNames(
           styles.line,
+          commentToggledLine === idx ? styles.commentActive : null,
           (props.diffs ?? [])[idx] === DiffType.Add
             ? styles.add
             : (props.diffs ?? [])[idx] === DiffType.Delete
@@ -65,7 +110,9 @@ export default function CommentableCodeViewer(props: Props) {
         <span dangerouslySetInnerHTML={{ __html: line }}></span>
         <span className={styles.commentIcon}>
           &nbsp;
-          <FontAwesomeIcon icon={faComment}></FontAwesomeIcon>
+          <a href="#" onClick={activateComment(idx)}>
+            <FontAwesomeIcon icon={faComment}></FontAwesomeIcon>
+          </a>
           <div className={styles.comments}>{props.onCommentClick(idx)}</div>
         </span>
       </div>
