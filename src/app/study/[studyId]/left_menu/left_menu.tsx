@@ -3,7 +3,7 @@ import styles from "./left_menu.module.scss";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import responsiveness from "../../responsiveness.module.scss";
+import responsiveness from "../../../responsiveness.module.scss";
 import classNames from "classnames";
 
 type LeftMenuProps = {

@@ -1,0 +1,85 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  .commentsPopup {
+    border-radius: 15px;
+    background-color: #ebffe5;
+    padding: 20px 0px;
+    min-width: 500px;
+
+    .newComment {
+      padding: 0px 30px;
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+      input {
+        flex: 1;
+      }
+    }
+
+    .divider {
+      margin: 20px 0px;
+      border: #5bb73f solid;
+      border-width: 0.3px 0px 0px 0px;
+    }
+
+    .comments {
+      padding: 0px 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      .comment {
+        color: black;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 10px;
+
+        .replyTo {
+          margin-left: auto;
+          margin-top: 0.6em;
+        }
+
+        .cancelReply {
+          align-self: center;
+        }
+
+        input {
+          flex: 1;
+        }
+
+        .content {
+          max-width: 30em;
+          word-break: break-all;
+          overflow-wrap: anywhere;
+          white-space: break-spaces;
+          align-self: center;
+        }
+      }
+      .subcomments {
+        padding-left: 50px;
+        padding-right: 0px;
+      }
+    }
+
+    input[type="text"] {
+      display: inline;
+      background-color: #eeeeee;
+      border-radius: 20px;
+      height: 50px;
+      box-sizing: border-box;
+      padding: 15px 20px;
+      border: none;
+    }
+
+    .profile {
+      display: inline;
+      height: 50px;
+      min-width: 50px;
+      width: 50px;
+      border-radius: 25px;
+      background-color: gray;
+      background-size: cover;
+    }
+  }
+}

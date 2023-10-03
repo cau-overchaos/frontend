@@ -1,0 +1,38 @@
+.code {
+  .line {
+    white-space: pre;
+    &.add {
+      background-color: #ccffad80;
+    }
+    &.delete {
+      background-color: #ffadad80;
+    }
+    .commentIcon {
+      display: none;
+      color: rgba(0, 0, 0, 0.5);
+      cursor: pointer;
+    }
+    .comments {
+      display: none;
+    }
+    &:hover,
+    &.commentActive {
+      .commentIcon {
+        display: initial;
+        position: relative;
+      }
+    }
+    &.commentActive {
+      .comments {
+        display: initial;
+        position: absolute;
+        padding-left: 0;
+        top: 0;
+        left: 1.5em;
+        > * {
+          cursor: default;
+        }
+      }
+    }
+  }
+}
