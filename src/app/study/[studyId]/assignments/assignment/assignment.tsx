@@ -1,6 +1,10 @@
-import { ReactNode } from "react";
+"use client";
+
+import { ReactNode, useState } from "react";
 import SolvedAcTier from "../solved_ac_tier";
 import styles from "./assignment.module.scss";
+import { Button } from "@/app/common/inputs";
+import NewAssignmentPopup from "../new_assignment_popup/new_assignment_popup";
 
 type AssignmentProps = {
   solvedAcTier: number;
@@ -41,7 +45,7 @@ export function Assignee(props: AssigneeProps) {
         className={styles.profile}
         style={{
           background: props.profileImageUrl && `url(${props.profileImageUrl})`,
-          backgroundSize: "cover",
+          backgroundSize: "cover"
         }}
       />
       <div className={styles.nickname}>{props.nickname}</div>
@@ -50,5 +54,24 @@ export function Assignee(props: AssigneeProps) {
 }
 
 export function AssignmentContainer(props: { children?: ReactNode }) {
-  return <div className={styles.assignments}>{props.children}</div>;
+  const [newAssignmentPopupActive, toggleNewAssignmentPopup] =
+    useState<boolean>(false);
+  return (
+    <div className={styles.assignmentsContainer}>
+      <Button
+        onClick={(evt) => {
+          evt.preventDefault();
+          toggleNewAssignmentPopup(true);
+        }}
+      >
+        과제 생성
+      </Button>
+      <div className={styles.assignments}>{props.children}</div>
+      {newAssignmentPopupActive && (
+        <NewAssignmentPopup
+          onCloseClick={() => toggleNewAssignmentPopup(false)}
+        ></NewAssignmentPopup>
+      )}
+    </div>
+  );
 }
