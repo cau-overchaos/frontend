@@ -1,51 +1,51 @@
 .profile {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 16px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
 
-    .image {
-        width: 90px;
-        height: 90px;
-        border-radius: 45px;
-        background-color: gray;
-        background-size: cover;
-    }
+  .image {
+    width: 90px;
+    height: 90px;
+    border-radius: 45px;
+    background-color: gray;
+    background-size: cover;
+  }
 
-    .nickname {
-        font-family: 'Jeju gothic', sans-serif;
-        font-size: 20px;
-        font-weight: 500;   
-        width: max-content;
-    }
+  .nickname {
+    font-family: "Jeju gothic", sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    width: max-content;
+  }
 }
 
 ul.menu {
-    margin: 0px;
+  margin: 0px;
+  padding: 0px;
+  li {
+    list-style: none;
     padding: 0px;
-    li {
-        list-style: none;
-        padding: 0px;
-        margin: 0px;
-        
-        & + li {
-            margin-top: 16px;
-        }
-        a {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
+    margin: 0px;
 
-            .icon {
-                margin-right: 20px;
-            }
-
-            span {
-                display: block;
-                font-size: 16px;
-                line-height: 16px;
-                height: 16px;
-            }
-        }
+    & + li {
+      margin-top: 16px;
     }
+    a {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      .icon {
+        margin-right: 20px;
+      }
+
+      span {
+        display: block;
+        font-size: 16px;
+        line-height: 16px;
+        height: 16px;
+      }
+    }
+  }
 }

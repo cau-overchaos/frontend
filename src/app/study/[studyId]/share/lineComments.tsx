@@ -34,7 +34,7 @@ function LineComment(props: CommentProps) {
         style={{
           backgroundImage: `url("${
             props.profileImageUrl ?? DefaultProfileImageUrl()
-          }")`
+          }")`,
         }}
       ></div>
       <div className={styles.content}>{props.comment.content}</div>
@@ -135,12 +135,12 @@ export default function LineComments(props: Props) {
                             onEnter={(message) =>
                               props.onNewSubcommentRequest(message, i.id)
                             }
-                          ></ReplyingTo>
+                          ></ReplyingTo>,
                         ]
                       : []
                   )}
               </div>
-            ) : null
+            ) : null,
           ])}
         </div>
       </div>

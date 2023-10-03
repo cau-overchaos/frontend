@@ -1,33 +1,32 @@
-
-
 footer.footer {
-    box-sizing: border-box;
-    width: 100%;
-    background: black;
-    color: white;
-    text-align: center;
-    padding: 18px;
+  box-sizing: border-box;
+  width: 100%;
+  background: black;
+  color: white;
+  text-align: center;
+  padding: 18px;
 
-    .github svg {
-        color: white;
-        height: 34px;
+  .github svg {
+    color: white;
+    height: 34px;
+  }
+  .links {
+    font-size: 19px;
+    display: block;
+    li {
+      display: inline;
+      & + li {
+        margin-left: 60px;
+      }
     }
-    .links {
-        font-size: 19px;
-        display: block;
-        li {
-            display: inline;
-            & + li {
-                margin-left: 60px;
-            }
-        }
-    }
-    .copyright {
-        font-size: 15px;
-    }
-    ul, li {
-        margin: 0px;
-        padding: 0px;
-        list-style: none;
-    }
+  }
+  .copyright {
+    font-size: 15px;
+  }
+  ul,
+  li {
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+  }
 }

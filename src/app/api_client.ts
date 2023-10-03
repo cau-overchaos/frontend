@@ -31,7 +31,7 @@ class ApiClient {
   private cached: boolean = false;
   private cachedMyProfile: UserProfile | null = null;
   private listeners: { [key in EventType]: Function[] } = {
-    loggedInOrloggedOut: []
+    loggedInOrloggedOut: [],
   };
 
   /**
@@ -64,7 +64,7 @@ class ApiClient {
     }
 
     const response = await fetch(this.apiEndpoint + "/users/me", {
-      credentials: "include"
+      credentials: "include",
     });
     const responseData: ApiResponse = await response.json();
 
@@ -84,7 +84,7 @@ class ApiClient {
   async logout() {
     const response = await fetch(this.apiEndpoint + "/logout", {
       method: "POST",
-      credentials: "include"
+      credentials: "include",
     });
 
     if (!response.ok) {
@@ -103,8 +103,8 @@ class ApiClient {
       credentials: "include",
       body: JSON.stringify(form),
       headers: {
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     });
 
     if (!response.ok) {
@@ -121,8 +121,8 @@ class ApiClient {
       credentials: "include",
       body: JSON.stringify(form),
       headers: {
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     });
 
     if (!response.ok) {

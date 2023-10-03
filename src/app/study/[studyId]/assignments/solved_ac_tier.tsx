@@ -59,7 +59,7 @@ export default function SolvedAcTier(props: Props) {
             strokeWidth: 1.32292,
             strokeLinecap: "round",
             strokeLinejoin: "round",
-            paintOrder: "markers stroke fill"
+            paintOrder: "markers stroke fill",
           }}
           d="M 67.500005,0.66145998 H 142.5 l -4.6e-4,100.00000002 -37.5,14.99954 -37.499535,-15 z"
         />
@@ -72,7 +72,7 @@ export default function SolvedAcTier(props: Props) {
             strokeWidth: 1.32292,
             strokeLinecap: "round",
             strokeLinejoin: "round",
-            paintOrder: "markers stroke fill"
+            paintOrder: "markers stroke fill",
           }}
           d="m 67.500005,76.553771 37.499815,15 37.50018,-15 -4.5e-4,10.000114 -37.49973,15.000025 -37.499815,-15.000005 z"
         />
@@ -86,7 +86,7 @@ export default function SolvedAcTier(props: Props) {
             strokeWidth: 0,
             strokeLinecap: "round",
             strokeLinejoin: "round",
-            paintOrder: "markers stroke fill"
+            paintOrder: "markers stroke fill",
           }}
           x="80.674187"
           y="80.502472"
@@ -105,7 +105,7 @@ export default function SolvedAcTier(props: Props) {
               fontVariantCaps: "normal",
               fontVariantNumeric: "normal",
               fontVariantEastAsian: "normal",
-              strokeWidth: 1.32292
+              strokeWidth: 1.32292,
             }}
             x={80.674187 + (level <= 1 ? 5.0 : 0.0)}
             y="80.502472"

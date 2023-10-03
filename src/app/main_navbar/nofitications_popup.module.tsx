@@ -8,7 +8,7 @@ import {
   faCog,
   faEllipsis,
   faSignOut,
-  faTrash
+  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 

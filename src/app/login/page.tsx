@@ -27,7 +27,7 @@ export default function Login() {
       apiClient
         .login({
           userId: id,
-          password
+          password,
         })
         .then(() => {
           const params = new URLSearchParams(location.search);

@@ -37,7 +37,7 @@ export default function SignUp() {
           userId: id,
           name,
           password,
-          judgeAccount: bojId
+          judgeAccount: bojId,
         })
         .then(() => {
           alert("회원가입이 완료됐습니다!");

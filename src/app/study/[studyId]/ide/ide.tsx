@@ -18,7 +18,7 @@ export enum IdeChangeEventType {
   CodeTitle,
   Code,
   Input,
-  Output
+  Output,
 }
 
 export enum IdeHighlighterType {
@@ -26,7 +26,7 @@ export enum IdeHighlighterType {
   Cpp,
   Python,
   Java,
-  Javascript
+  Javascript,
 }
 
 export type Language = {
@@ -109,7 +109,7 @@ export default function Ide(props: Props) {
             className={styles.textarea}
             style={{
               fontFamily: '"Fira code", "Fira Mono", monospace',
-              fontSize: 20
+              fontSize: 20,
             }}
           />
         </div>

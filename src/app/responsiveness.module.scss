@@ -1,25 +1,25 @@
 .container {
-    margin: 0px auto;
-    width: 1024px;
+  margin: 0px auto;
+  width: 1024px;
 }
 
 .narrowContainer {
-    margin: 0px 20px;
+  margin: 0px 20px;
 }
 
 @media screen and (min-width: 1023px) {
-    .mobileOnly {
-        display: none !important;
-    }   
+  .mobileOnly {
+    display: none !important;
+  }
 }
 
 @media screen and (max-width: 1024px) {
-    .container {
-        margin: 0px 20px;
-        width: initial;
-    }
+  .container {
+    margin: 0px 20px;
+    width: initial;
+  }
 
-    .desktopOnly {
-        display: none !important;
-    }
+  .desktopOnly {
+    display: none !important;
+  }
 }

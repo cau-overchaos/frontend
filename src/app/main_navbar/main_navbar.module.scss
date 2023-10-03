@@ -1,83 +1,83 @@
 @import url(//fonts.googleapis.com/earlyaccess/jejugothic.css);
 
 .navbar {
-    background: #ebffe580;
-    color: black;
-    padding: 12px;
-    box-shadow: rgb(214, 214, 214) 0px 4px 4px;
+  background: #ebffe580;
+  color: black;
+  padding: 12px;
+  box-shadow: rgb(214, 214, 214) 0px 4px 4px;
 
-    --navbar-height: 40px;
-    @media screen and (max-width: 500px) {
-        --navbar-height: 30px;
-    }
-    @media screen and (max-width: 400px) {
-        --navbar-height: 20px;
-    }
+  --navbar-height: 40px;
+  @media screen and (max-width: 500px) {
+    --navbar-height: 30px;
+  }
+  @media screen and (max-width: 400px) {
+    --navbar-height: 20px;
+  }
 
-    .container {
-        display: flex;
-        flex-direction: row;
-        gap: 40px;
-        height: var(--navbar-height);
-        align-items: center;
-        
-        .logo {
-            font-size: var(--navbar-height);
-            font-family: 'Jeju Gothic', sans-serif;
-            font-weight: 600;
-            margin-top: 3px;
-        }
-        
-        .menu {
-            display: flex;
-            flex-direction: row;
-            flex-grow: 1;
-            gap: 40px;
+  .container {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    height: var(--navbar-height);
+    align-items: center;
 
-            .item {
-                font-size: 16px;
-                line-height: 40px;
-                font-weight: 700;
-            }
-        }
-
-        .icons {
-            margin-left: auto;
-
-            .item {
-                display: inline-block;
-                & + .item {
-                    margin-left: 30px;
-                    @media screen and (max-width: 500px) {
-                        margin-left: 10px;
-                    }
-                }
-            }
-            
-            svg {
-                color: black;
-                height: 36px;
-                @media screen and (max-width: 500px) {
-                    height: 24px;
-                }
-            }
-        }
+    .logo {
+      font-size: var(--navbar-height);
+      font-family: "Jeju Gothic", sans-serif;
+      font-weight: 600;
+      margin-top: 3px;
     }
 
-    .mobileMenu {
-        margin-top: 10px;
+    .menu {
+      display: flex;
+      flex-direction: row;
+      flex-grow: 1;
+      gap: 40px;
 
-        .item {
-            display: block;
-            padding: 10px 0px;
-            @media screen and (max-width: 500px) {
-                padding: 6px 0px;
-            }
-            @media screen and (max-width: 400px) {
-                padding: 4px 0px;
-            }
-            font-size: 16px;
-            font-weight: 700;
-        }
+      .item {
+        font-size: 16px;
+        line-height: 40px;
+        font-weight: 700;
+      }
     }
+
+    .icons {
+      margin-left: auto;
+
+      .item {
+        display: inline-block;
+        & + .item {
+          margin-left: 30px;
+          @media screen and (max-width: 500px) {
+            margin-left: 10px;
+          }
+        }
+      }
+
+      svg {
+        color: black;
+        height: 36px;
+        @media screen and (max-width: 500px) {
+          height: 24px;
+        }
+      }
+    }
+  }
+
+  .mobileMenu {
+    margin-top: 10px;
+
+    .item {
+      display: block;
+      padding: 10px 0px;
+      @media screen and (max-width: 500px) {
+        padding: 6px 0px;
+      }
+      @media screen and (max-width: 400px) {
+        padding: 4px 0px;
+      }
+      font-size: 16px;
+      font-weight: 700;
+    }
+  }
 }

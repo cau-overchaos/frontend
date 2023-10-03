@@ -1,12 +1,12 @@
 .boards {
-    display: flex;
-    padding: 86px 0px;
-    flex-direction: row;
-    justify-content: center;
-    flex-flow: wrap;
-    gap: 20px;
+  display: flex;
+  padding: 86px 0px;
+  flex-direction: row;
+  justify-content: center;
+  flex-flow: wrap;
+  gap: 20px;
 
-    & > * {
-        min-width: 400px;
-    }
+  & > * {
+    min-width: 400px;
+  }
 }

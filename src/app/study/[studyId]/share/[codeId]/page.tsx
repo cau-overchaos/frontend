@@ -27,42 +27,42 @@ export default function ViewCode() {
                     authorId: "aa",
                     content: "asdf",
                     id: "2",
-                    profileImgUrl: null
+                    profileImgUrl: null,
                   },
                   {
                     authorId: "aa",
                     content: "asdf".repeat(10000),
                     id: "3",
-                    profileImgUrl: null
+                    profileImgUrl: null,
                   },
                   {
                     authorId: "aa",
                     content: "asdf",
                     id: "4",
-                    profileImgUrl: null
+                    profileImgUrl: null,
                   },
                   {
                     authorId: "aa",
                     content: "asdf",
                     id: "5",
-                    profileImgUrl: null
-                  }
-                ]
+                    profileImgUrl: null,
+                  },
+                ],
               },
               {
                 authorId: "aa",
                 content: "asdf",
                 id: "6",
                 profileImgUrl: null,
-                subcomments: []
+                subcomments: [],
               },
               {
                 authorId: "aa",
                 content: "asdf",
                 id: "7",
                 profileImgUrl: null,
-                subcomments: []
-              }
+                subcomments: [],
+              },
             ]}
             onNewCommentRequest={(message) => {
               console.log(message);

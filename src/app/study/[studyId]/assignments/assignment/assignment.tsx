@@ -41,7 +41,7 @@ export function Assignee(props: AssigneeProps) {
         className={styles.profile}
         style={{
           background: props.profileImageUrl && `url(${props.profileImageUrl})`,
-          backgroundSize: "cover"
+          backgroundSize: "cover",
         }}
       />
       <div className={styles.nickname}>{props.nickname}</div>

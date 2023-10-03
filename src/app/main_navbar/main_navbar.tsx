@@ -9,7 +9,7 @@ import {
   faBars,
   faBell,
   faSearch,
-  faUserCircle
+  faUserCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import UserPopup from "./user_popup";
@@ -37,16 +37,16 @@ export default function MainNavbar(props: PropsType) {
   const menus: MenuItem[] = [
     {
       name: "내 스터디",
-      href: "#"
+      href: "#",
     },
     {
       name: "스터디원 모집",
-      href: "#"
+      href: "#",
     },
     {
       name: "코딩 테스트 대회",
-      href: "#"
-    }
+      href: "#",
+    },
   ];
 
   useEffect(() => {

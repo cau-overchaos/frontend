@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import CommentableCodeViewer, {
-  Props as CodeViewerProps
+  Props as CodeViewerProps,
 } from "../commentableCodeViewer";
 import styles from "./sharedCodeViewer.module.scss";
 
