@@ -16,6 +16,13 @@
     max-width: 100%;
     overflow-x: scroll;
 
+    .difficultyIcon {
+      height: 1.45em;
+      width: auto;
+      vertical-align: middle;
+      display: inline-block;
+    }
+
     h2 {
       margin: 20px 0px;
       padding: 0px;

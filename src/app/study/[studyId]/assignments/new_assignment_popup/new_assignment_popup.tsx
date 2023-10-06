@@ -5,6 +5,7 @@ import "react-datetime-picker/dist/DateTimePicker.css";
 import "react-calendar/dist/Calendar.css";
 import "react-clock/dist/Clock.css";
 import { MouseEventHandler } from "react";
+import SolvedAcTier from "../solved_ac_tier";
 
 type Props = {
   onCloseClick: () => void;
@@ -44,7 +45,13 @@ export default function NewAssignmentPopup(props: Props) {
           <tbody>
             <tr>
               <td>백준</td>
-              <td>1112</td>
+              <td>
+                <SolvedAcTier
+                  level={3}
+                  className={styles.difficultyIcon}
+                ></SolvedAcTier>{" "}
+                1112
+              </td>
               <td>Lorem ipsum</td>
               <td>
                 <Button small>삭제</Button>
