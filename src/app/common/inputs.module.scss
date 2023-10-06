@@ -7,6 +7,11 @@ button.input {
   height: fit-content;
   cursor: pointer;
 
+  &.small {
+    font-size: 1em;
+    padding: 0.3em 0.6em;
+  }
+
   &:hover {
     background: #d5ffc7;
   }
@@ -16,31 +21,34 @@ button.input {
   }
 }
 
-input.input {
-  &[type="input"],
-  &[type="number"],
-  &[type="password"] {
-    border: none;
-    background-color: #fcfcfc;
-    padding: 0.4em;
-    font-size: 1.2em;
-    padding: 0.6em;
-    border-radius: 1.2em;
-    border: 1px solid #e0e0e0;
+input.input[type="input"],
+input.input[type="number"],
+input.input[type="password"],
+select.input {
+  border: none;
+  background-color: #fcfcfc;
+  font-size: 1.2em;
+  padding: 0.6em;
+  border-radius: 1.2em;
+  border: 1px solid #e0e0e0;
 
-    &:hover {
-      background-color: #f8f8f8;
-    }
+  &.small {
+    font-size: 1em;
+    padding: 0.4em 0.8em;
+  }
+  
+  &:hover {
+    background-color: #f8f8f8;
+  }
 
-    &:active,
-    &:focus {
-      background-color: #eeeeee;
-    }
+  &:active,
+  &:focus {
+    background-color: #eeeeee;
+  }
 
-    &:user-invalid,
-    .invalid {
-      border: 1px solid #ff7d7d;
-    }
+  &:user-invalid,
+  .invalid {
+    border: 1px solid #ff7d7d;
   }
 }
 

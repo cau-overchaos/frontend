@@ -1,4 +1,10 @@
-import { ChangeEventHandler, MouseEventHandler, ReactNode } from "react";
+import {
+  ChangeEventHandler,
+  DetailedHTMLProps,
+  MouseEventHandler,
+  ReactNode,
+  SelectHTMLAttributes
+} from "react";
 import styles from "./inputs.module.scss";
 import classNames from "classnames";
 
@@ -6,6 +12,7 @@ type ButtonProps = {
   children: ReactNode;
   submit?: boolean;
   className?: string;
+  small?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;
 };
 
@@ -15,6 +22,7 @@ type InputCommonProps<T> = {
   className?: string;
   name?: string;
   required?: boolean;
+  small?: boolean;
   onChange?: ChangeEventHandler<T>;
 };
 
@@ -30,7 +38,7 @@ export function Button(props: ButtonProps) {
   return (
     <button
       type={props.submit ? "submit" : "button"}
-      className={classNames(styles.input, props.className)}
+      className={classNames(styles.input, props.small && styles.small, props.className)}
       onClick={props.onClick}
     >
       {props.children}
@@ -52,7 +60,8 @@ export function Input(props: InputProps) {
       className={classNames(
         styles.input,
         props.className,
-        props.invalid && "invalid"
+        props.invalid && "invalid",
+        props.small && styles.small
       )}
       value={props.value}
       onChange={props.onChange}
@@ -80,5 +89,25 @@ export function Textarea(
       onChange={props.onChange}
       placeholder={props.placeholder}
     ></textarea>
+  );
+}
+
+export function Select(
+  props: DetailedHTMLProps<
+    SelectHTMLAttributes<HTMLSelectElement>,
+    HTMLSelectElement
+  > & {
+    small?: boolean;
+  }
+) {
+  return (
+    <select
+      {...props}
+      className={classNames(
+        styles.input,
+        props.className,
+        props.small && styles.small
+      )}
+    ></select>
   );
 }
