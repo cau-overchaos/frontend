@@ -18,6 +18,7 @@ button.input {
 
 input.input {
   &[type="input"],
+  &[type="number"],
   &[type="password"] {
     border: none;
     background-color: #fcfcfc;
@@ -51,6 +52,10 @@ textarea.input {
   padding: 0.6em;
   border-radius: 1.2em;
   box-sizing: border-box;
+
+  &.border {
+    border: 1px solid #e0e0e0;
+  }
 
   &.noBackground {
     background-color: initial;
