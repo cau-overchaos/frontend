@@ -21,6 +21,7 @@ type Prop = {
   title?: string;
   noAuthor?: boolean;
   noDate?: boolean;
+  withProblem?: boolean;
   loading?: boolean;
   error?: string;
   pagination?: PaginationProp;
@@ -41,6 +42,11 @@ type ArticleProp = {
   author?: string;
   date?: Date;
   href?: string;
+  problem?: {
+    tier: ReactNode;
+    id: string;
+    title: string;
+  };
   onClick?: () => void;
 } & ({ href: string } | { onClick: () => void });
 
@@ -109,6 +115,12 @@ export function Article(props: ArticleProp) {
           {props.title}
         </a>
       </td>
+      {props.problem && (
+        <td className={styles.problem}>
+          <div className={styles.tier}>{props.problem.tier}</div>&nbsp;
+          {props.problem.id} - {props.problem.title}
+        </td>
+      )}
       <td className={classNames(styles.fitAndCenter, styles.author)}>
         {props.author}
       </td>
@@ -121,11 +133,12 @@ export function Article(props: ArticleProp) {
 
 export default function Board(props: Prop) {
   let message = null;
+  let columns = props.withProblem ? 4 : 3;
   const router = useRouter();
   if (props.error) {
     message = (
       <tr>
-        <td colSpan={3} className={styles.loading}>
+        <td colSpan={columns} className={styles.loading}>
           <FontAwesomeIcon icon={faExclamationTriangle}></FontAwesomeIcon>
           <br />
           {props.error}
@@ -135,7 +148,7 @@ export default function Board(props: Prop) {
   } else if (props.loading) {
     message = (
       <tr>
-        <td colSpan={3} className={styles.loading}>
+        <td colSpan={columns} className={styles.loading}>
           <FontAwesomeIcon icon={faSpinner} spin></FontAwesomeIcon>
           <br />
           불러오고 있습니다...
@@ -145,7 +158,7 @@ export default function Board(props: Prop) {
   } else if (!props.children) {
     message = (
       <tr>
-        <td colSpan={3} className={styles.empty}>
+        <td colSpan={columns} className={styles.empty}>
           게시글이 없습니다
         </td>
       </tr>
@@ -165,6 +178,7 @@ export default function Board(props: Prop) {
         <thead>
           <tr>
             <th>제목</th>
+            {props.withProblem && <th>문제</th>}
             <th className={classNames(styles.fitAndCenter, styles.author)}>
               글쓴이
             </th>
