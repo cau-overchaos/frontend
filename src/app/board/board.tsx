@@ -6,15 +6,27 @@ import {
   faAngleLeft,
   faAngleRight,
   faAnglesLeft,
-  faAnglesRight
+  faAnglesRight,
+  faExclamationTriangle,
+  faSpinner
 } from "@fortawesome/free-solid-svg-icons";
 import { MouseEventHandler, ReactNode } from "react";
 import formatDate from "./formatDate";
+import classNames from "classnames";
+import { Button } from "../common/inputs";
+import { useRouter } from "next/navigation";
 
 type Prop = {
   children?: ReactNode;
   title?: string;
+  noAuthor?: boolean;
+  noDate?: boolean;
+  loading?: boolean;
+  error?: string;
   pagination?: PaginationProp;
+  writeButtonText?: string;
+  writeButtonHref?: string;
+  onWriteButtonClick?: () => void;
 };
 
 type PaginationProp = {
@@ -26,8 +38,8 @@ type PaginationProp = {
 
 type ArticleProp = {
   title: string;
-  author: string;
-  date: Date;
+  author?: string;
+  date?: Date;
   href?: string;
   onClick?: () => void;
 } & ({ href: string } | { onClick: () => void });
@@ -80,7 +92,7 @@ function Navigation(props: PaginationProp) {
 }
 
 export function Article(props: ArticleProp) {
-  const dateString = formatDate(props.date);
+  const dateString = props.date ? formatDate(props.date) : null;
 
   return (
     <tr>
@@ -97,38 +109,90 @@ export function Article(props: ArticleProp) {
           {props.title}
         </a>
       </td>
-      <td className={styles.fitAndCenter}>{props.author}</td>
-      <td className={styles.fitAndCenter}>{dateString}</td>
+      <td className={classNames(styles.fitAndCenter, styles.author)}>
+        {props.author}
+      </td>
+      <td className={classNames(styles.fitAndCenter, styles.date)}>
+        {dateString}
+      </td>
     </tr>
   );
 }
 
 export default function Board(props: Prop) {
+  let message = null;
+  const router = useRouter();
+  if (props.error) {
+    message = (
+      <tr>
+        <td colSpan={3} className={styles.loading}>
+          <FontAwesomeIcon icon={faExclamationTriangle}></FontAwesomeIcon>
+          <br />
+          {props.error}
+        </td>
+      </tr>
+    );
+  } else if (props.loading) {
+    message = (
+      <tr>
+        <td colSpan={3} className={styles.loading}>
+          <FontAwesomeIcon icon={faSpinner} spin></FontAwesomeIcon>
+          <br />
+          불러오고 있습니다...
+        </td>
+      </tr>
+    );
+  } else if (!props.children) {
+    message = (
+      <tr>
+        <td colSpan={3} className={styles.empty}>
+          게시글이 없습니다
+        </td>
+      </tr>
+    );
+  }
+
   return (
-    <div className={styles.board}>
+    <div
+      className={classNames(
+        styles.board,
+        props.noAuthor && styles.noAuthor,
+        props.noDate && styles.noDate
+      )}
+    >
       {props.title && <h1>{props.title}</h1>}
       <table className={styles.articles}>
         <thead>
           <tr>
             <th>제목</th>
-            <th className={styles.fitAndCenter}>글쓴이</th>
-            <th className={styles.fitAndCenter}>날짜</th>
+            <th className={classNames(styles.fitAndCenter, styles.author)}>
+              글쓴이
+            </th>
+            <th className={classNames(styles.fitAndCenter, styles.date)}>
+              날짜
+            </th>
           </tr>
         </thead>
-        <tbody>
-          {!props.children ? (
-            <tr>
-              <td colSpan={3} className={styles.empty}>
-                게시글이 없습니다
-              </td>
-            </tr>
-          ) : (
-            props.children
-          )}
-        </tbody>
+        <tbody>{message || props.children}</tbody>
       </table>
 
-      {props.pagination && <Navigation {...props.pagination}></Navigation>}
+      <div className={styles.navAndWrite}>
+        {props.pagination && <Navigation {...props.pagination}></Navigation>}
+        <Button
+          className={styles.write}
+          onClick={(evt) => {
+            evt.preventDefault();
+
+            if (props.writeButtonHref) {
+              router.push(props.writeButtonHref);
+            } else if (props.onWriteButtonClick) {
+              props.onWriteButtonClick();
+            }
+          }}
+        >
+          {props.writeButtonText || "작성"}
+        </Button>
+      </div>
     </div>
   );
 }
