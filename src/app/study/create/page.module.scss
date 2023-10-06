@@ -1,0 +1,25 @@
+h1.title {
+  padding: 0px;
+  margin: 0.6em 0em;
+}
+.form {
+  padding-left: 0.5em;
+  .field {
+    & + .field {
+      margin-top: 0.6em;
+    }
+    label.label {
+      display: block;
+      margin-bottom: 0.3em;
+      font-size: 1.1em;
+    }
+    .input {
+      width: 30em;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    textarea {
+      height: 10em;
+    }
+  }
+}
