@@ -1,12 +1,24 @@
-.assignments {
+.assignmentsContainer {
   display: flex;
+  flex-direction: column;
   padding: 70px;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 100px;
-  @media screen and (max-width: 1024px) {
-    padding: 30px;
-    gap: 30px;
+  gap: 10px;
+  width: 100%;
+
+  & > button {
+    width: fit-content;
+    align-self: flex-end;
+  }
+
+  .assignments {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 100px;
+    @media screen and (max-width: 1024px) {
+      padding: 30px;
+      gap: 30px;
+    }
   }
 }
 

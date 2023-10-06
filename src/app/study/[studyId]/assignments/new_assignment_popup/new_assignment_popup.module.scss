@@ -1,0 +1,76 @@
+.container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #00000080;
+  .popup {
+    background-color: white;
+    padding: 1em 2em 2em 2em;
+    border-radius: 10px;
+    box-shadow: 2px 2px 8px #00000080;
+    max-width: 100%;
+    overflow-x: scroll;
+
+    .difficultyIcon {
+      height: 1.45em;
+      width: auto;
+      vertical-align: middle;
+      display: inline-block;
+    }
+
+    h2 {
+      margin: 20px 0px;
+      padding: 0px;
+    }
+
+    :global(.react-datetime-picker__wrapper) {
+      padding: 2px 5px;
+      border-radius: 15px;
+    }
+
+    .dateField {
+      padding: 5px 0px;
+    }
+
+    table.table {
+      --table-border-radius: 12px;
+      border: 1px solid black;
+      border-collapse: collapse;
+      border-radius: var(--table-border-radius);
+      border-style: hidden;
+      box-shadow: 0px 0px 0px 1px rgb(0, 0, 0);
+      margin: 1rem 0em;
+      font-size: 16px;
+
+      tr,
+      th,
+      td {
+        border: 1px solid black;
+      }
+
+      th,
+      td {
+        padding: 8px 20px;
+        @media screen and (max-width: 1024px) {
+          padding: 2px 8px;
+        }
+        text-align: center;
+      }
+
+      th {
+        background-color: #e5ffdd;
+        &:first-child {
+          border-radius: var(--table-border-radius) 0px 0px 0px;
+        }
+        &:last-child {
+          border-radius: 0px var(--table-border-radius) 0px 0px;
+        }
+      }
+    }
+  }
+}
