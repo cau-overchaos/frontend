@@ -9,6 +9,7 @@ import {
   faAnglesRight
 } from "@fortawesome/free-solid-svg-icons";
 import { MouseEventHandler, ReactNode } from "react";
+import formatDate from "./formatDate";
 
 type Prop = {
   children?: ReactNode;
@@ -79,9 +80,7 @@ function Navigation(props: PaginationProp) {
 }
 
 export function Article(props: ArticleProp) {
-  const dateString = `${props.date.getFullYear()}. ${
-    props.date.getMonth() + 1
-  }. ${props.date.getDate()}`;
+  const dateString = formatDate(props.date);
 
   return (
     <tr>
