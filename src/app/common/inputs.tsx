@@ -5,6 +5,7 @@ import classNames from "classnames";
 type ButtonProps = {
   children: ReactNode;
   submit?: boolean;
+  className?: string;
   onClick?: MouseEventHandler<HTMLButtonElement>;
 };
 
@@ -29,7 +30,7 @@ export function Button(props: ButtonProps) {
   return (
     <button
       type={props.submit ? "submit" : "button"}
-      className={styles.input}
+      className={classNames(styles.input, props.className)}
       onClick={props.onClick}
     >
       {props.children}
