@@ -11,8 +11,8 @@ type ArticlePropTypes = {
   title: string;
   href: string;
   tags: string[];
-  startDate: Date;
-  dueDate: Date;
+  startDate?: Date;
+  dueDate?: Date;
 };
 
 function formatDate(date: Date) {
@@ -33,12 +33,16 @@ export function SummariedArticle(props: ArticlePropTypes) {
     <li className={styles.article}>
       <Link href={props.href}>
         <div className={styles.title}>{props.title}</div>
-        <div className={styles.dueDate}>
-          신청 마감일: {formatDate(props.startDate)}
-        </div>
-        <div className={styles.startDate}>
-          개최일: {formatDate(props.dueDate)}
-        </div>
+        {props.startDate && (
+          <div className={styles.dueDate}>
+            신청 마감일: {formatDate(props.startDate)}
+          </div>
+        )}
+        {props.dueDate && (
+          <div className={styles.startDate}>
+            개최일: {formatDate(props.dueDate)}
+          </div>
+        )}
         <ul className={styles.tags}>
           {props.tags.map((i) => (
             <li className={styles.tag} key={i}>
