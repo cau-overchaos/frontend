@@ -3,17 +3,26 @@ import styles from "./article.module.scss";
 import formatDate from "./formatDate";
 import {
   faAngleLeft,
+  faCalendar,
   faClock,
-  faUser
+  faTag,
+  faTags,
+  faUser,
+  faUserPlus
 } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
+import { ReactNode } from "react";
 
 type Props = {
   title: string;
   author: string;
+  startDate?: Date;
+  endDate?: Date;
+  tags?: string[];
+  wantedCount?: number;
   date: Date;
   listHref: string;
-  contentHtml: string;
+  children: ReactNode;
 };
 
 export default function Article(props: Props) {
@@ -32,13 +41,30 @@ export default function Article(props: Props) {
         <li>
           <FontAwesomeIcon icon={faUser}></FontAwesomeIcon> {props.author}
         </li>
+        {(props.startDate || props.endDate) && (
+          <li>
+            <FontAwesomeIcon icon={faCalendar}></FontAwesomeIcon>&nbsp;
+            {props.startDate ? formatDate(props.startDate) : ""} ~&nbsp;
+            {props.endDate ? formatDate(props.endDate) : ""}
+          </li>
+        )}
+        {props.wantedCount && (
+          <li>
+            <FontAwesomeIcon icon={faUserPlus}></FontAwesomeIcon>&nbsp;
+            {props.wantedCount}인 필요
+          </li>
+        )}
+        {(props.tags?.length ?? 0) > 0 && (
+          <li>
+            <FontAwesomeIcon
+              icon={props.tags?.length === 1 ? faTag : faTags}
+            ></FontAwesomeIcon>
+            &nbsp;
+            {props.tags?.join(", ")}
+          </li>
+        )}
       </ul>
-      <p
-        className={styles.content}
-        dangerouslySetInnerHTML={{
-          __html: props.contentHtml
-        }}
-      ></p>
+      <div className={styles.content}>{props.children}</div>
     </div>
   );
 }
