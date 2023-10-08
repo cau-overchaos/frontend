@@ -11,13 +11,14 @@ import classNames from "classnames";
 type ButtonProps = {
   children: ReactNode;
   submit?: boolean;
+  className?: string;
   small?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;
 };
 
 type InputCommonProps<T> = {
   placeholder?: string;
-  value?: string;
+  value?: string | number;
   className?: string;
   name?: string;
   required?: boolean;
@@ -30,13 +31,14 @@ type InputProps = InputCommonProps<HTMLInputElement> & {
   invalid?: boolean;
   minLength?: number;
   pattern?: string;
+  number?: boolean;
 };
 
 export function Button(props: ButtonProps) {
   return (
     <button
       type={props.submit ? "submit" : "button"}
-      className={classNames(styles.input, props.small && styles.small)}
+      className={classNames(styles.input, props.small && styles.small, props.className)}
       onClick={props.onClick}
     >
       {props.children}
@@ -45,11 +47,14 @@ export function Button(props: ButtonProps) {
 }
 
 export function Input(props: InputProps) {
+  let type = "input";
+  if (props.password) type = "password";
+  else if (props.number) type = "number";
   return (
     <input
       required={props.required}
       pattern={props.pattern}
-      type={props.password ? "password" : "input"}
+      type={type}
       name={props.name}
       minLength={props.minLength}
       className={classNames(
@@ -66,7 +71,10 @@ export function Input(props: InputProps) {
 }
 
 export function Textarea(
-  props: InputCommonProps<HTMLTextAreaElement> & { noBackground?: boolean }
+  props: InputCommonProps<HTMLTextAreaElement> & {
+    noBackground?: boolean;
+    border?: boolean;
+  }
 ) {
   return (
     <textarea
@@ -74,7 +82,8 @@ export function Textarea(
       className={classNames(
         styles.input,
         props.className,
-        props.noBackground && styles.noBackground
+        props.noBackground && styles.noBackground,
+        props.border && styles.border
       )}
       value={props.value}
       onChange={props.onChange}

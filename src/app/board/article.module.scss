@@ -1,0 +1,25 @@
+.article {
+  padding-top: 2em;
+  .goToList {
+    all: revert;
+    text-decoration: none;
+    font-size: 1.1em;
+  }
+  .title {
+    margin: 0em 0em 0.1em 0em;
+  }
+  .info {
+    margin: 0;
+    padding: 0em 0em 0.2em 0em;
+    display: block;
+    list-style: none;
+    border-bottom: 1.5px solid black;
+    li {
+      display: inline-block;
+      margin-left: 1em;
+      &:first-child {
+        margin-left: 0;
+      }
+    }
+  }
+}

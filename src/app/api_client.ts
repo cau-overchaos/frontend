@@ -24,6 +24,14 @@ type ApiResponse = {
   message: string;
 };
 
+export type StudyRoom = {
+  id: number;
+  title: string;
+  description: string;
+  studyRoomVisibility: "PUBLIC" | "PRIVATE";
+  maxUserCnt: number;
+};
+
 type EventType = "loggedInOrloggedOut";
 
 class ApiClient {
@@ -31,7 +39,7 @@ class ApiClient {
   private cached: boolean = false;
   private cachedMyProfile: UserProfile | null = null;
   private listeners: { [key in EventType]: Function[] } = {
-    loggedInOrloggedOut: [],
+    loggedInOrloggedOut: []
   };
 
   /**
@@ -64,7 +72,7 @@ class ApiClient {
     }
 
     const response = await fetch(this.apiEndpoint + "/users/me", {
-      credentials: "include",
+      credentials: "include"
     });
     const responseData: ApiResponse = await response.json();
 
@@ -84,7 +92,7 @@ class ApiClient {
   async logout() {
     const response = await fetch(this.apiEndpoint + "/logout", {
       method: "POST",
-      credentials: "include",
+      credentials: "include"
     });
 
     if (!response.ok) {
@@ -103,8 +111,8 @@ class ApiClient {
       credentials: "include",
       body: JSON.stringify(form),
       headers: {
-        "Content-Type": "application/json",
-      },
+        "Content-Type": "application/json"
+      }
     });
 
     if (!response.ok) {
@@ -121,14 +129,51 @@ class ApiClient {
       credentials: "include",
       body: JSON.stringify(form),
       headers: {
-        "Content-Type": "application/json",
-      },
+        "Content-Type": "application/json"
+      }
     });
 
     if (!response.ok) {
       const responseData: ApiResponse = await response.json();
       throw new Error(responseData.message);
     }
+  }
+
+  async studyrooms(type: "all" | "participated" = "all"): Promise<StudyRoom[]> {
+    const endpoint =
+      type === "all"
+        ? this.apiEndpoint + "/studyrooms"
+        : this.apiEndpoint + "/studyrooms/participated";
+    const response = await fetch(endpoint, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+
+    const responseData: ApiResponse = await response.json();
+    if (!response.ok) {
+      throw new Error(responseData.message);
+    }
+
+    return responseData.data.studyRoomList;
+  }
+
+  async createStudyroom(room: Omit<StudyRoom, "id">): Promise<StudyRoom> {
+    const response = await fetch(this.apiEndpoint + "/studyrooms", {
+      method: "POST",
+      credentials: "include",
+      body: JSON.stringify(room),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+
+    const data: ApiResponse = await response.json();
+    if (!response.ok) throw new Error(data.message);
+
+    return data.data;
   }
 }
 

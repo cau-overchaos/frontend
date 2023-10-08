@@ -22,6 +22,7 @@ button.input {
 }
 
 input.input[type="input"],
+input.input[type="number"],
 input.input[type="password"],
 select.input {
   border: none;
@@ -35,7 +36,7 @@ select.input {
     font-size: 1em;
     padding: 0.4em 0.8em;
   }
-
+  
   &:hover {
     background-color: #f8f8f8;
   }
@@ -59,6 +60,10 @@ textarea.input {
   padding: 0.6em;
   border-radius: 1.2em;
   box-sizing: border-box;
+
+  &.border {
+    border: 1px solid #e0e0e0;
+  }
 
   &.noBackground {
     background-color: initial;

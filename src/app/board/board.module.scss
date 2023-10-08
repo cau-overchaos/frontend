@@ -1,0 +1,101 @@
+.board {
+  &.noAuthor {
+    .author {
+      display: none;
+    }
+  }
+  &.noDate {
+    .date {
+      display: none;
+    }
+  }
+  width: 100%;
+  .title {
+    margin: 1em 0em 0.5em 0em;
+    padding: 0;
+    font-size: 2em;
+  }
+  .articles {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 1.1em;
+    .fitAndCenter {
+      width: 6.5em;
+      text-align: center;
+    }
+    thead {
+      tr {
+        border-width: 2px 0px;
+        border-color: #b4b4b4;
+      }
+      th {
+        background-color: #b8b8b8;
+      }
+    }
+    tbody {
+      tr {
+        border: 1px solid #b3b3b3;
+        border-width: 1px 0px;
+        &:nth-child(even) {
+          background-color: #e9e9e9;
+        }
+        td.empty,
+        td.loading {
+          text-align: center;
+          padding: 2em 1em;
+          &.loading svg {
+            height: 2em;
+            width: auto;
+          }
+        }
+      }
+    }
+    td,
+    th {
+      font-size: 1.2em;
+      padding: 0.3em 1em;
+      &.problem {
+        width: 12em;
+        .tier {
+          display: inline-block;
+          vertical-align: middle;
+          & > * {
+            width: auto;
+            vertical-align: text-top;
+            height: 1.3em;
+          }
+        }
+      }
+    }
+  }
+
+  .navAndWrite {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 1em;
+    nav.pagination {
+      width: 100%;
+      text-align: center;
+      ul {
+        display: block;
+        list-style: none;
+        li {
+          display: inline-block;
+          margin-left: 10px;
+          &:first-child {
+            margin-left: 0px;
+          }
+          a {
+            all: revert;
+            text-decoration: none;
+          }
+        }
+      }
+    }
+
+    .write {
+      margin-left: auto;
+    }
+  }
+}
