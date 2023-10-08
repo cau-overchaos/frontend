@@ -30,6 +30,7 @@ export default function CreationForm() {
 
   return (
     <MainLayout>
+      <div className={styles.container}>
       <h1 className={styles.title}>스터디방 생성</h1>
       <form className={styles.form} onSubmit={onSubmit}>
         <div className={styles.field}>
@@ -85,6 +86,7 @@ export default function CreationForm() {
           <Button submit>생성</Button>
         </div>
       </form>
+      </div>
     </MainLayout>
   );
 }
