@@ -3,6 +3,8 @@ import styles from "./people.module.scss";
 import SolvedAcTier from "../assignments/solved_ac_tier";
 import { Button } from "@/app/common/inputs";
 import DefaultProfileImageUrl from "@/app/default_profile_image_url";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUserPlus } from "@fortawesome/free-solid-svg-icons";
 
 export function Person() {
   return (
@@ -41,6 +43,12 @@ export default function People() {
         <Person></Person>
         <Person></Person>
         <Person></Person>
+        <div className={styles.invite}>
+          <div className={styles.icon}>
+            <FontAwesomeIcon icon={faUserPlus}></FontAwesomeIcon>
+          </div>
+          <div>스터디원 초대</div>
+        </div>
       </div>
     </div>
   );
