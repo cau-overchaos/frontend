@@ -1,0 +1,51 @@
+.container {
+  padding: 40px;
+
+  h1 {
+    margin: 5px 0px 30px 0px;
+  }
+
+  .profileImg {
+    border-radius: 25px;
+    height: 50px;
+    width: 50px;
+    background-color: gray;
+  }
+
+  .people {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 30px;
+
+    .person {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      border: #ebffe5 10px solid;
+      border-radius: 15px;
+      padding: 15px 40px;
+      .nickname {
+        font-size: 1.2em;
+      }
+      .line {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 30px;
+      }
+      .tier {
+        margin: auto;
+        svg {
+          height: 3em;
+          width: auto;
+        }
+      }
+      .actions {
+        button + button {
+          margin-left: 0.5em;
+        }
+      }
+    }
+  }
+}
