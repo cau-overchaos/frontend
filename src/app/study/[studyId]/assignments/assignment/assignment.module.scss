@@ -1,3 +1,5 @@
+@import "../../../../variable.scss";
+
 .assignmentsContainer {
   display: flex;
   flex-direction: column;
@@ -25,7 +27,7 @@
 .assignment {
   .problem,
   .assignees {
-    background: #ebffe5;
+    background: $primary_theme_color;
     border-radius: 15px;
 
     &.problem {

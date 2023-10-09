@@ -1,5 +1,7 @@
+@import "../../../../variable.scss";
+
 .code {
-  border: #ebffe5 8px solid;
+  border: $primary_theme_color 8px solid;
   border-radius: 15px;
   margin: 0px;
   padding: 20px 0px;

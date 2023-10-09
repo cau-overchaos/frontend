@@ -34,7 +34,7 @@ function LineComment(props: CommentProps) {
         style={{
           backgroundImage: `url("${
             props.profileImageUrl ?? DefaultProfileImageUrl()
-          }")`,
+          }")`
         }}
       ></div>
       <div className={styles.content}>{props.comment.content}</div>
@@ -91,7 +91,7 @@ export default function LineComments(props: Props) {
     <div className={styles.container}>
       <div className={styles.arrow}>
         <svg width="10" height="10">
-          <polygon points="10,0 0,5 10,10" fill="#EBFFE5" />
+          <polygon points="10,0 0,5 10,10" className={styles.fill} />
         </svg>
       </div>
       <div className={styles.commentsPopup}>
@@ -135,12 +135,12 @@ export default function LineComments(props: Props) {
                             onEnter={(message) =>
                               props.onNewSubcommentRequest(message, i.id)
                             }
-                          ></ReplyingTo>,
+                          ></ReplyingTo>
                         ]
                       : []
                   )}
               </div>
-            ) : null,
+            ) : null
           ])}
         </div>
       </div>

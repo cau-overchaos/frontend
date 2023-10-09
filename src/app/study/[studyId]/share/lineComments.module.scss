@@ -1,9 +1,16 @@
+@import "../../../variable.scss";
+
 .container {
   display: flex;
   flex-direction: row;
+
+  .fill {
+    fill: $primary_theme_color;
+  }
+
   .commentsPopup {
     border-radius: 15px;
-    background-color: #ebffe5;
+    background-color: $primary_theme_color;
     padding: 20px 0px;
     min-width: 500px;
 

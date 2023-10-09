@@ -1,3 +1,5 @@
+@import "../../../../variable.scss";
+
 .codes {
   display: flex;
   flex-direction: row;
@@ -5,7 +7,7 @@
   width: 100%;
   .left {
     flex: 1;
-    border: #ebffe5 8px solid;
+    border: $primary_theme_color 8px solid;
     border-right-width: 4px;
     border-radius: 15px 0px 0px 15px;
     margin: 0px;
@@ -13,7 +15,7 @@
   }
   .right {
     flex: 1;
-    border: #ebffe5 8px solid;
+    border: $primary_theme_color 8px solid;
     border-left-width: 4px;
     border-radius: 0px 15px 15px 0px;
     margin: 0px;
