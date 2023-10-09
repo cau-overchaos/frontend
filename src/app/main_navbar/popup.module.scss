@@ -1,3 +1,4 @@
+@use "sass:color";
 @import "../variable.scss";
 
 .container {
@@ -20,7 +21,8 @@
   }
   .divider {
     border: none;
-    border-top: 0.3px solid #5bb73f;
+    border-top: 0.3px solid
+      color.change($primary_theme_color, $saturation: 50%, $lightness: 50%);
     margin: 0px;
     padding: 0px;
   }

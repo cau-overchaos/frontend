@@ -1,3 +1,4 @@
+@use "sass:color";
 @import "../variable.scss";
 
 button.input {
@@ -15,11 +16,11 @@ button.input {
   }
 
   &:hover {
-    background: #d5ffc7;
+    background: color.adjust($primary_theme_color, $lightness: -3%);
   }
 
   &:active {
-    background: #c4ffb4;
+    background: color.adjust($primary_theme_color, $lightness: -8%);
   }
 }
 

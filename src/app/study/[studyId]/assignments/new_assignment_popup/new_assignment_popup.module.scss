@@ -1,3 +1,5 @@
+@import "../../../../variable.scss";
+
 .container {
   position: fixed;
   top: 0;
@@ -63,7 +65,7 @@
       }
 
       th {
-        background-color: #e5ffdd;
+        background-color: $primary_theme_color;
         &:first-child {
           border-radius: var(--table-border-radius) 0px 0px 0px;
         }
