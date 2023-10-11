@@ -114,6 +114,7 @@ export default function LineComments(props: Props) {
         <div className={styles.comments}>
           {props.comments.map((i) => [
             <LineComment
+              key={i.id}
               comment={i}
               onReplyClick={() => setReplyingTo(i.id)}
             ></LineComment>,
@@ -122,6 +123,7 @@ export default function LineComments(props: Props) {
                 {i.subcomments
                   .map((j) => (
                     <LineComment
+                      key={j.id}
                       subcomment
                       comment={j}
                       onReplyClick={() => setReplyingTo(i.id)}
@@ -131,6 +133,7 @@ export default function LineComments(props: Props) {
                     replyingTo === i.id
                       ? [
                           <ReplyingTo
+                            key={i.id + "_replying"}
                             onCloseButtonClick={() => setReplyingTo(null)}
                             onEnter={(message) =>
                               props.onNewSubcommentRequest(message, i.id)

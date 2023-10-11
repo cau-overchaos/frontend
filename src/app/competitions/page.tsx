@@ -1,7 +1,7 @@
 import Board, { Article } from "../board/board";
 import MainLayout from "../main_layout";
 
-export default function () {
+export default function CompeititonArticleListPage() {
   return (
     <MainLayout>
       <Board noAuthor title="코딩 테스트/대회 공고">

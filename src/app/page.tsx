@@ -41,6 +41,7 @@ export default function Home() {
         <SummariedBoardWidget boardName="알고리즘 스터디 모임">
           {all.map((i) => (
             <SummariedArticle
+              key={i.id}
               title={i.title}
               href={`/study/${i.id}`}
               tags={[]}
@@ -50,6 +51,7 @@ export default function Home() {
         <SummariedBoardWidget boardName="내 스터디">
           {participated.map((i) => (
             <SummariedArticle
+              key={i.id}
               title={i.title}
               href={`/study/${i.id}`}
               tags={[]}

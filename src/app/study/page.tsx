@@ -6,7 +6,7 @@ import MainLayout from "../main_layout";
 import { useEffect, useState } from "react";
 import apiClient, { StudyRoom } from "../api_client";
 
-export default function () {
+export default function StudyListPage() {
   const [loading, setLoading] = useState<boolean>(true);
   const [studies, setStudies] = useState<StudyRoom[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -53,7 +53,11 @@ export default function () {
         {studies.length === 0
           ? null
           : studies.map((i) => (
-              <Article title={i.title} href={`/study/${i.id}`}></Article>
+              <Article
+                key={i.id}
+                title={i.title}
+                href={`/study/${i.id}`}
+              ></Article>
             ))}
       </Board>
     </MainLayout>

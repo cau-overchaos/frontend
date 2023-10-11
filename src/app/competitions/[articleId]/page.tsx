@@ -1,7 +1,7 @@
 import Article from "@/app/board/article";
 import MainLayout from "@/app/main_layout";
 
-export default function () {
+export default function CompetitionArticlePage() {
   return (
     <MainLayout>
       <Article

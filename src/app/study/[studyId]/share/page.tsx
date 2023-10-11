@@ -2,7 +2,7 @@ import Board, { Article } from "@/app/board/board";
 import SolvedAcTier from "../assignments/solved_ac_tier";
 import styles from "./page.module.scss";
 
-export default function () {
+export default function SharePage() {
   return (
     <div className={styles.padded}>
       <Board title="코드 공유" withProblem>
