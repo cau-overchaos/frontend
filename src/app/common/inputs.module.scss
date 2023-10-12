@@ -1,6 +1,9 @@
+@use "sass:color";
+@import "../variable.scss";
+
 button.input {
   border: #e0e0e0 0.5px solid;
-  background: #ebffe5;
+  background: $primary_theme_color;
   font-size: 1.2em;
   padding: 0.3em 0.4em;
   border-radius: 0.8em;
@@ -13,11 +16,11 @@ button.input {
   }
 
   &:hover {
-    background: #d5ffc7;
+    background: color.adjust($primary_theme_color, $lightness: -3%);
   }
 
   &:active {
-    background: #c4ffb4;
+    background: color.adjust($primary_theme_color, $lightness: -8%);
   }
 }
 
@@ -36,7 +39,7 @@ select.input {
     font-size: 1em;
     padding: 0.4em 0.8em;
   }
-  
+
   &:hover {
     background-color: #f8f8f8;
   }

@@ -34,7 +34,7 @@ function LineComment(props: CommentProps) {
         style={{
           backgroundImage: `url("${
             props.profileImageUrl ?? DefaultProfileImageUrl()
-          }")`,
+          }")`
         }}
       ></div>
       <div className={styles.content}>{props.comment.content}</div>
@@ -91,7 +91,7 @@ export default function LineComments(props: Props) {
     <div className={styles.container}>
       <div className={styles.arrow}>
         <svg width="10" height="10">
-          <polygon points="10,0 0,5 10,10" fill="#EBFFE5" />
+          <polygon points="10,0 0,5 10,10" className={styles.fill} />
         </svg>
       </div>
       <div className={styles.commentsPopup}>
@@ -114,6 +114,7 @@ export default function LineComments(props: Props) {
         <div className={styles.comments}>
           {props.comments.map((i) => [
             <LineComment
+              key={i.id}
               comment={i}
               onReplyClick={() => setReplyingTo(i.id)}
             ></LineComment>,
@@ -122,6 +123,7 @@ export default function LineComments(props: Props) {
                 {i.subcomments
                   .map((j) => (
                     <LineComment
+                      key={j.id}
                       subcomment
                       comment={j}
                       onReplyClick={() => setReplyingTo(i.id)}
@@ -131,16 +133,17 @@ export default function LineComments(props: Props) {
                     replyingTo === i.id
                       ? [
                           <ReplyingTo
+                            key={i.id + "_replying"}
                             onCloseButtonClick={() => setReplyingTo(null)}
                             onEnter={(message) =>
                               props.onNewSubcommentRequest(message, i.id)
                             }
-                          ></ReplyingTo>,
+                          ></ReplyingTo>
                         ]
                       : []
                   )}
               </div>
-            ) : null,
+            ) : null
           ])}
         </div>
       </div>

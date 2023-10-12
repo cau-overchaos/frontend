@@ -1,7 +1,7 @@
 import Board, { Article } from "../../board/board";
 import MainLayout from "../../main_layout";
 
-export default function () {
+export default function WantedListPage() {
   return (
     <MainLayout>
       <Board title="스터디원 구인">

@@ -1,3 +1,5 @@
+@import "../variable.scss";
+
 .widget {
   ul,
   li {
@@ -17,7 +19,7 @@
   ul.articles {
     padding: 10px;
     border-radius: 8px;
-    background: #ebffe5;
+    background: $primary_theme_color;
     li.article {
       background: white;
       color: black;

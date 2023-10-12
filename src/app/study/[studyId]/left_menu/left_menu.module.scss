@@ -1,8 +1,11 @@
+@use "sass:color";
+@import "../../../variable.scss";
+
 .leftMenu {
   margin-top: 4px;
   ul {
     list-style-type: none;
-    background-color: #e4ffdc81;
+    background-color: color.change($primary_theme_color, $alpha: 0.5);
     padding: 25px 18px;
     margin: 0px;
     height: 100%;

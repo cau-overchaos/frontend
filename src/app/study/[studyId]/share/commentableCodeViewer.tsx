@@ -17,7 +17,7 @@ import { faComment } from "@fortawesome/free-solid-svg-icons";
 export enum DiffType {
   Add,
   Delete,
-  Normal,
+  Normal
 }
 
 export type Props = {
@@ -94,6 +94,7 @@ export default function CommentableCodeViewer(props: Props) {
 
     return html.split("\n").map((line, idx) => (
       <div
+        key={idx}
         className={classNames(
           styles.line,
           commentToggledLine === idx ? styles.commentActive : null,
@@ -104,7 +105,7 @@ export default function CommentableCodeViewer(props: Props) {
             : null
         )}
         style={{
-          padding: props.linePadding,
+          padding: props.linePadding
         }}
       >
         <span dangerouslySetInnerHTML={{ __html: line }}></span>

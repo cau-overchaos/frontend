@@ -1,9 +1,17 @@
+@use "sass:color";
+@import "../../../variable.scss";
+
 .container {
   display: flex;
   flex-direction: row;
+
+  .fill {
+    fill: $primary_theme_color;
+  }
+
   .commentsPopup {
     border-radius: 15px;
-    background-color: #ebffe5;
+    background-color: $primary_theme_color;
     padding: 20px 0px;
     min-width: 500px;
 
@@ -19,7 +27,12 @@
 
     .divider {
       margin: 20px 0px;
-      border: #5bb73f solid;
+      border: color.change(
+          $primary_theme_color,
+          $saturation: 50%,
+          $lightness: 50%
+        )
+        solid;
       border-width: 0.3px 0px 0px 0px;
     }
 

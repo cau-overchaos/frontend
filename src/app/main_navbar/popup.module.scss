@@ -1,3 +1,6 @@
+@use "sass:color";
+@import "../variable.scss";
+
 .container {
   position: absolute;
 }
@@ -7,7 +10,7 @@
   margin-top: 30px;
   .top,
   .bottom {
-    background: #ebffe5;
+    background: $primary_theme_color;
     padding: 20px 30px;
     &.top {
       border-radius: 15px 15px 0px 0px;
@@ -18,7 +21,8 @@
   }
   .divider {
     border: none;
-    border-top: 0.3px solid #5bb73f;
+    border-top: 0.3px solid
+      color.change($primary_theme_color, $saturation: 50%, $lightness: 50%);
     margin: 0px;
     padding: 0px;
   }

@@ -1,5 +1,5 @@
 import People from "./people";
 
-export default function () {
+export default function PeoplePage() {
   return <People></People>;
 }

@@ -4,7 +4,7 @@ import Assignment, {
 } from "./assignment/assignment";
 import NewAssignmentPopup from "./new_assignment_popup/new_assignment_popup";
 
-export default function () {
+export default function AssignemntsPage() {
   return (
     <AssignmentContainer>
       <Assignment problemId={1234} problemName="Ipsum" solvedAcTier={3}>

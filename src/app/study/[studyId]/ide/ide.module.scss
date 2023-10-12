@@ -1,3 +1,5 @@
+@import "../../../variable.scss";
+
 .ide {
   display: flex;
   flex-direction: row;
@@ -34,7 +36,7 @@
   }
 
   .code {
-    border: #ebffe5 8px solid;
+    border: $primary_theme_color 8px solid;
     border-radius: 15px;
     flex: 1;
     .textarea {
@@ -46,7 +48,7 @@
 
   .input,
   .output {
-    border: #ebffe5 8px solid;
+    border: $primary_theme_color 8px solid;
     border-radius: 15px;
     flex: 1;
     h1 {

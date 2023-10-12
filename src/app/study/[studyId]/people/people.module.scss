@@ -1,3 +1,5 @@
+@import "../../../variable.scss";
+
 .container {
   padding: 40px;
 
@@ -24,7 +26,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background-color: #ebffe5;
+      background-color: $primary_theme_color;
       border-radius: 15px;
       padding: 25px 50px;
       cursor: pointer;
@@ -41,7 +43,7 @@
       width: 200px;
       flex-direction: column;
       gap: 15px;
-      border: #ebffe5 10px solid;
+      border: $primary_theme_color 10px solid;
       border-radius: 15px;
       padding: 15px 40px;
       * {
