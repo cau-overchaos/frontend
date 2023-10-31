@@ -4,14 +4,66 @@ import DateTimePicker from "react-datetime-picker";
 import "react-datetime-picker/dist/DateTimePicker.css";
 import "react-calendar/dist/Calendar.css";
 import "react-clock/dist/Clock.css";
-import { MouseEventHandler } from "react";
+import { MouseEventHandler, useState } from "react";
 import SolvedAcTier from "../solved_ac_tier";
+import apiClient, {
+  Problem,
+  ProblemProviderKey,
+  problemProviderKeyToValue
+} from "@/app/api_client/api_client";
+import { useParams } from "next/navigation";
 
 type Props = {
   onCloseClick: () => void;
 };
 
+type AssignmentProps = Pick<
+  Problem,
+  "pid" | "provider" | "difficultyLevel" | "title"
+>;
+
+function AssingmentRow(
+  props: AssignmentProps & {
+    onDeleteBtnClick: (assignment: AssignmentProps) => void;
+  }
+) {
+  return (
+    <tr>
+      <td>{problemProviderKeyToValue(props.provider)}</td>
+      <td>
+        <SolvedAcTier
+          level={props.difficultyLevel}
+          className={styles.difficultyIcon}
+        ></SolvedAcTier>
+        &nbsp;
+        {props.pid}
+      </td>
+      <td>{props.title}</td>
+      <td>
+        <Button
+          small
+          onClick={() => {
+            props.onDeleteBtnClick(props);
+          }}
+        >
+          삭제
+        </Button>
+      </td>
+    </tr>
+  );
+}
+
 export default function NewAssignmentPopup(props: Props) {
+  const params = useParams();
+  const [startDate, setStartDate] = useState<Date>(new Date());
+  const [endDate, setEndDate] = useState<Date>(
+    new Date(Date.now() + 1000 * 60 * 60 * 24 * 7)
+  );
+  const [problems, setProblems] = useState<AssignmentProps[]>([]);
+  const [problemIdInput, setProblemIdInput] = useState<number | undefined>(
+    undefined
+  );
+
   const closeWindowOnOutsideClick: MouseEventHandler<HTMLDivElement> = (
     evt
   ) => {
@@ -29,6 +81,27 @@ export default function NewAssignmentPopup(props: Props) {
       props.onCloseClick();
     }
   };
+
+  const addProblem = async (id: number) => {
+    const problem = await apiClient.getProblem(id, "BAEKJOON");
+    if (!problems.some((i) => i.pid === id))
+      setProblems([...problems, problem]);
+    else alert("이미 추가된 문제입니다.");
+  };
+
+  const createAssignment = async () => {
+    await apiClient.createAssignment(parseInt(params.studyId as string), {
+      dueDate: endDate,
+      startDate,
+      problemList: problems.map((problem) => ({
+        pid: problem.pid,
+        provider: problem.provider
+      }))
+    });
+
+    props.onCloseClick();
+  };
+
   return (
     <div className={styles.container} onClick={closeWindowOnOutsideClick}>
       <div className={styles.popup}>
@@ -43,31 +116,47 @@ export default function NewAssignmentPopup(props: Props) {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>백준</td>
-              <td>
-                <SolvedAcTier
-                  level={3}
-                  className={styles.difficultyIcon}
-                ></SolvedAcTier>{" "}
-                1112
-              </td>
-              <td>Lorem ipsum</td>
-              <td>
-                <Button small>삭제</Button>
-              </td>
-            </tr>
+            {problems.map((i, idx) => (
+              <AssingmentRow
+                key={i.pid}
+                {...i}
+                onDeleteBtnClick={(_assignment) => {
+                  setProblems([
+                    ...problems.slice(0, idx),
+                    ...problems.slice(idx + 1)
+                  ]);
+                }}
+              ></AssingmentRow>
+            ))}
             <tr>
               <td>
                 <Select small name="" id="">
-                  <option value="">백준</option>
+                  <option value="" selected>
+                    백준
+                  </option>
                 </Select>
               </td>
               <td colSpan={2}>
-                <Input small />
+                <Input
+                  small
+                  number
+                  value={problemIdInput}
+                  onChange={(evt) =>
+                    setProblemIdInput(evt.target.valueAsNumber)
+                  }
+                />
               </td>
               <td>
-                <Button small>추가</Button>
+                <Button
+                  small
+                  onClick={() => {
+                    if (typeof problemIdInput !== "undefined")
+                      addProblem(problemIdInput);
+                    else alert("문제 번호를 입력해주세요!");
+                  }}
+                >
+                  추가
+                </Button>
               </td>
             </tr>
           </tbody>
@@ -75,7 +164,10 @@ export default function NewAssignmentPopup(props: Props) {
         <div className={styles.dateField}>
           과제 시작일:&nbsp;
           <DateTimePicker
-            value={new Date()}
+            value={startDate}
+            onChange={(v) => {
+              if (v !== null) setStartDate(v);
+            }}
             disableClock
             format="y-MM-dd H:mm"
           ></DateTimePicker>
@@ -83,13 +175,18 @@ export default function NewAssignmentPopup(props: Props) {
         <div className={styles.dateField}>
           과제 종료일:&nbsp;
           <DateTimePicker
-            value={new Date()}
+            value={endDate}
+            onChange={(v) => {
+              if (v !== null) setEndDate(v);
+            }}
             disableClock
             format="y-MM-dd H:mm"
           ></DateTimePicker>
         </div>
         <div>
-          <Button small>과제 생성</Button>
+          <Button small onClick={createAssignment}>
+            과제 생성
+          </Button>
         </div>
       </div>
     </div>

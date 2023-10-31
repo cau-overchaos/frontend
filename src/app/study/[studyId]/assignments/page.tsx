@@ -1,30 +1,41 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Assignment, {
   Assignee,
   AssignmentContainer
 } from "./assignment/assignment";
-import NewAssignmentPopup from "./new_assignment_popup/new_assignment_popup";
+import apiClient, {
+  AssignmentInfo as AssignmentData
+} from "@/app/api_client/api_client";
+import { useParams } from "next/navigation";
+import DefaultProfileImageUrl from "@/app/default_profile_image_url";
 
 export default function AssignemntsPage() {
+  const params = useParams();
+  const [assignments, setAssignments] = useState<AssignmentData[]>([]);
+  useEffect(() => {
+    apiClient
+      .getAssignments(parseInt(params.studyId as string))
+      .then(setAssignments);
+  });
+
   return (
     <AssignmentContainer>
-      <Assignment problemId={1234} problemName="Ipsum" solvedAcTier={3}>
-        <Assignee nickname="Lorem"></Assignee>
-        <Assignee nickname="Lorem"></Assignee>
-        <Assignee nickname="Lorem"></Assignee>
-        <Assignee nickname="Lorem"></Assignee>
-      </Assignment>
-      <Assignment problemId={1234} problemName="Ipsum" solvedAcTier={12}>
-        <Assignee nickname="Lorem"></Assignee>
-        <Assignee nickname="Lorem"></Assignee>
-        <Assignee nickname="Lorem"></Assignee>
-        <Assignee nickname="Lorem"></Assignee>
-      </Assignment>
-      <Assignment problemId={1234} problemName="Ipsum" solvedAcTier={20}>
-        <Assignee nickname="Lorem"></Assignee>
-        <Assignee nickname="Lorem"></Assignee>
-        <Assignee nickname="Lorem"></Assignee>
-        <Assignee nickname="Lorem"></Assignee>
-      </Assignment>
+      {assignments.map((i) => (
+        <Assignment
+          problemId={i.problem.pid}
+          problemName={i.problem.title}
+          solvedAcTier={i.problem.difficultyLevel}
+        >
+          {i.solvedUsers.map((j) => (
+            <Assignee
+              nickname={j.name}
+              profileImageUrl={DefaultProfileImageUrl()}
+            ></Assignee>
+          ))}
+        </Assignment>
+      ))}
     </AssignmentContainer>
   );
 }
