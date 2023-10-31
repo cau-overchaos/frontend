@@ -14,7 +14,7 @@ import {
 import { useEffect, useState } from "react";
 import UserPopup from "./user_popup";
 import NotificationPopup from "./nofitications_popup.module";
-import apiClient, { UserProfile } from "../api_client";
+import apiClient, { UserProfile } from "../api_client/api_client";
 import md5 from "md5";
 import SearchPopup from "./search_popup";
 import DefaultProfileImageUrl from "../default_profile_image_url";

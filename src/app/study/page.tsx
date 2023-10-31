@@ -4,7 +4,7 @@ import { useSearchParams } from "next/navigation";
 import Board, { Article } from "../board/board";
 import MainLayout from "../main_layout";
 import { useEffect, useState } from "react";
-import apiClient, { StudyRoom } from "../api_client";
+import apiClient, { StudyRoom } from "../api_client/api_client";
 
 export default function StudyListPage() {
   const [loading, setLoading] = useState<boolean>(true);
