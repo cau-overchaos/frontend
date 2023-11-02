@@ -65,7 +65,7 @@ export function Datetime(props: DatetimeProps) {
     const now = new Date();
     let result = "";
     if (now.getFullYear() != dt.getFullYear())
-      result += `${now.getFullYear()}년 `;
+      result += `${dt.getFullYear()}년 `;
     result += `${
       dt.getMonth() + 1
     }월 ${dt.getDate()}일 ${dt.getHours()}:${dt.getMonth()}`;
