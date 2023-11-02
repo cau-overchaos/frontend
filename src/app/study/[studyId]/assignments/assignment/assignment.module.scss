@@ -25,6 +25,14 @@
 }
 
 .assignment {
+  width: 400px;
+  @media screen and (max-width: 1750px) {
+    width: 300px;
+  }
+  @media screen and (max-width: 900px) {
+    width: 100%;
+  }
+
   .problem,
   .assignees {
     background: $primary_theme_color;
@@ -50,6 +58,7 @@
 
       .name {
         margin-left: 30px;
+        word-break: break-all;
       }
     }
 
