@@ -83,6 +83,8 @@ export type Assignment = {
 
 export type AssignmentInfo = {
   problem: Problem;
+  startDate: Date;
+  dueDate: Date;
   solvedUsers: {
     id: string;
     name: string;
@@ -275,6 +277,8 @@ class ApiClient {
             pid: i.problemPid,
             provider: "BAEKJOON"
           },
+          startDate: new Date(i.startDate),
+          dueDate: new Date(i.dueDate),
           solvedUsers: i.solvedUserInfoList.map((j: any) => ({
             id: j.userId,
             name: j.name,

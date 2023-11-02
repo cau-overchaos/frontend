@@ -5,6 +5,8 @@ import SolvedAcTier from "../solved_ac_tier";
 import styles from "./assignment.module.scss";
 import { Button } from "@/app/common/inputs";
 import NewAssignmentPopup from "../new_assignment_popup/new_assignment_popup";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
 
 type AssignmentProps = {
   solvedAcTier: number;
@@ -16,6 +18,11 @@ type AssignmentProps = {
 type AssigneeProps = {
   profileImageUrl?: string;
   nickname: string;
+};
+
+type DatetimeProps = {
+  dueDate: Date;
+  startDate: Date;
 };
 
 export default function Assignment(props: AssignmentProps) {
@@ -50,6 +57,28 @@ export function Assignee(props: AssigneeProps) {
       />
       <div className={styles.nickname}>{props.nickname}</div>
     </li>
+  );
+}
+
+export function Datetime(props: DatetimeProps) {
+  const formatDatetime = (dt: Date) => {
+    const now = new Date();
+    let result = "";
+    if (now.getFullYear() != dt.getFullYear())
+      result += `${now.getFullYear()}년 `;
+    result += `${
+      dt.getMonth() + 1
+    }월 ${dt.getDate()}일 ${dt.getHours()}:${dt.getMonth()}`;
+
+    return result;
+  };
+
+  return (
+    <div className={styles.datetime}>
+      <FontAwesomeIcon icon={faCalendarAlt}></FontAwesomeIcon>&nbsp;
+      {formatDatetime(props.startDate)} ~&nbsp;
+      {formatDatetime(props.dueDate)}
+    </div>
   );
 }
 

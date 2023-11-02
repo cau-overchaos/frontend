@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import Assignment, {
   Assignee,
-  AssignmentContainer
+  AssignmentContainer,
+  Datetime
 } from "./assignment/assignment";
 import apiClient, {
   AssignmentInfo as AssignmentData
@@ -43,6 +44,7 @@ export default function AssignemntsPage() {
           problemName={i.problem.title}
           solvedAcTier={i.problem.difficultyLevel}
         >
+          <Datetime dueDate={i.dueDate} startDate={i.startDate}></Datetime>
           {i.solvedUsers.map((j) => (
             <Assignee
               nickname={j.name}
