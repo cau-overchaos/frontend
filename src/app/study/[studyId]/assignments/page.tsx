@@ -10,17 +10,32 @@ import apiClient, {
 } from "@/app/api_client/api_client";
 import { useParams } from "next/navigation";
 import DefaultProfileImageUrl from "@/app/default_profile_image_url";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import loadingStyles from "./loading.module.scss";
 
 export default function AssignemntsPage() {
   const params = useParams();
   const [assignments, setAssignments] = useState<AssignmentData[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   useEffect(() => {
-    apiClient
-      .getAssignments(parseInt(params.studyId as string))
-      .then(setAssignments);
+    const interval = setInterval(
+      () =>
+        apiClient
+          .getAssignments(parseInt(params.studyId as string))
+          .then(setAssignments)
+          .then(() => setLoading(false)),
+      500
+    );
+
+    return () => clearInterval(interval);
   });
 
-  return (
+  return loading ? (
+    <div className={loadingStyles.loading}>
+      <FontAwesomeIcon icon={faSpinner} spin></FontAwesomeIcon>
+    </div>
+  ) : (
     <AssignmentContainer>
       {assignments.map((i) => (
         <Assignment
