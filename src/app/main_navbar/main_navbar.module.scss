@@ -9,13 +9,7 @@
   box-shadow: color.change($primary_theme_color, $alpha: 0.8, $saturation: 40%)
     0px 4px 4px;
 
-  --navbar-height: 40px;
-  @media screen and (max-width: 500px) {
-    --navbar-height: 30px;
-  }
-  @media screen and (max-width: 400px) {
-    --navbar-height: 20px;
-  }
+  @include navbarHeight;
 
   .container {
     display: flex;

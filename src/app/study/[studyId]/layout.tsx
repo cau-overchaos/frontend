@@ -9,12 +9,12 @@ import {
   faCode,
   faComments,
   faShare,
-  faUsers,
+  faUsers
 } from "@fortawesome/free-solid-svg-icons";
 import { usePathname } from "next/navigation";
 
 export default function StudyLayout({
-  children,
+  children
 }: {
   children?: ReactNode | ReactNode[];
 }) {
@@ -52,7 +52,7 @@ export default function StudyLayout({
             href={prefix + "/people"}
           ></LeftMenuItem>
         </LeftMenu>
-        {children}
+        <div className={styles.children}>{children}</div>
       </div>
     </div>
   );
