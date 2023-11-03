@@ -16,6 +16,13 @@ export type UserProfile = {
   profileImage: string | null;
 };
 
+export type StudyroomMember = Omit<UserProfile, "password" | "profileImage"> & {
+  isValidJudgeAccount: boolean;
+  admin: boolean;
+  solvedTier: number;
+  isMe: boolean;
+};
+
 type LoginForm = {
   userId: string;
   password: string;
@@ -332,6 +339,114 @@ class ApiClient {
     if (!response.ok) throw new Error(data.message);
 
     return data.data;
+  }
+
+  studyroom(roomId: number) {
+    const apiEndpoint = this.apiEndpoint;
+    return {
+      async getMembers(): Promise<StudyroomMember[]> {
+        const response = await fetch(
+          apiEndpoint + `/studyrooms/${roomId}/members`,
+          {
+            method: "GET",
+            credentials: "include"
+          }
+        );
+
+        const data: ApiResponse = await response.json();
+        if (!response.ok) {
+          throw new Error(data.message);
+        }
+
+        return data.data.studyRoomMemberDtoList.map((i: any) => ({
+          userId: i.userId,
+          name: i.name,
+          isValidJudgeAccount: i.isValidJudgeAccount,
+          judgeAccount: i.judgeAccount,
+          solvedTier: i.tierLevel,
+          isMe: i.isMe,
+          admin: i.studyRoomRole === "MANAGER"
+        }));
+      },
+      async addMember(memberId: string): Promise<void> {
+        const response = await fetch(
+          apiEndpoint + `/studyrooms/${roomId}/members/add`,
+          {
+            method: "POST",
+            credentials: "include",
+            body: JSON.stringify({ targetUserId: memberId }),
+            headers: {
+              "Content-Type": "application/json"
+            }
+          }
+        );
+
+        const data: ApiResponse = await response.json();
+        if (!response.ok) {
+          throw new Error(data.message);
+        }
+      },
+      async deleteMember(memberId: string): Promise<void> {
+        const response = await fetch(
+          apiEndpoint + `/studyrooms/${roomId}/members/delete`,
+          {
+            method: "POST",
+            credentials: "include",
+            body: JSON.stringify({ targetUserId: memberId }),
+            headers: {
+              "Content-Type": "application/json"
+            }
+          }
+        );
+
+        const data: ApiResponse = await response.json();
+        if (!response.ok) {
+          throw new Error(data.message);
+        }
+      },
+      async toggleMemberAuthoritory(memberId: string): Promise<void> {
+        const response = await fetch(
+          apiEndpoint + `/studyrooms/${roomId}/members/authority`,
+          {
+            method: "POST",
+            credentials: "include",
+            body: JSON.stringify({ targetUserId: memberId }),
+            headers: {
+              "Content-Type": "application/json"
+            }
+          }
+        );
+
+        const data: ApiResponse = await response.json();
+        if (!response.ok) {
+          throw new Error(data.message);
+        }
+      },
+      async amIMember(): Promise<boolean> {
+        const response = await fetch(
+          apiEndpoint + `/studyrooms/${roomId}/is-member`,
+          {
+            method: "POST",
+            credentials: "include"
+          }
+        );
+
+        const data: ApiResponse = await response.json();
+        return data.status === "success";
+      },
+      async amIAdmin(): Promise<boolean> {
+        const response = await fetch(
+          apiEndpoint + `/studyrooms/${roomId}/is-manager`,
+          {
+            method: "POST",
+            credentials: "include"
+          }
+        );
+
+        const data: ApiResponse = await response.json();
+        return data.status === "success";
+      }
+    };
   }
 }
 
