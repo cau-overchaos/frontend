@@ -18,6 +18,7 @@ import apiClient, { UserProfile } from "../api_client/api_client";
 import md5 from "md5";
 import SearchPopup from "./search_popup";
 import DefaultProfileImageUrl from "../default_profile_image_url";
+import gravatarUrl from "../gravatarUrl";
 
 type MenuItem = {
   name: string;
@@ -114,10 +115,7 @@ export default function MainNavbar(props: PropsType) {
                 backgroundUrl={
                   user === null
                     ? DefaultProfileImageUrl()
-                    : user?.profileImage ??
-                      `https://www.gravatar.com/avatar/${md5(
-                        user?.userId ?? user?.name ?? ""
-                      )}?d=identicon`
+                    : gravatarUrl(user?.profileImage, user?.userId, user?.name)
                 }
                 nickname={user?.name}
                 loggedIn={user !== null}
