@@ -32,13 +32,18 @@ type InputProps = InputCommonProps<HTMLInputElement> & {
   minLength?: number;
   pattern?: string;
   number?: boolean;
+  onEnter?: () => void;
 };
 
 export function Button(props: ButtonProps) {
   return (
     <button
       type={props.submit ? "submit" : "button"}
-      className={classNames(styles.input, props.small && styles.small, props.className)}
+      className={classNames(
+        styles.input,
+        props.small && styles.small,
+        props.className
+      )}
       onClick={props.onClick}
     >
       {props.children}
@@ -65,6 +70,16 @@ export function Input(props: InputProps) {
       )}
       value={props.value}
       onChange={props.onChange}
+      onKeyUp={
+        typeof props.onEnter !== "undefined"
+          ? (evt) => {
+              if (evt.key === "Enter") {
+                evt.preventDefault();
+                props.onEnter!();
+              }
+            }
+          : undefined
+      }
       placeholder={props.placeholder}
     ></input>
   );

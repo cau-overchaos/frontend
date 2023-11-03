@@ -25,6 +25,14 @@
 }
 
 .assignment {
+  width: 400px;
+  @media screen and (max-width: 1750px) {
+    width: 300px;
+  }
+  @media screen and (max-width: 900px) {
+    width: 100%;
+  }
+
   .problem,
   .assignees {
     background: $primary_theme_color;
@@ -50,6 +58,7 @@
 
       .name {
         margin-left: 30px;
+        word-break: break-all;
       }
     }
 
@@ -57,8 +66,11 @@
       display: block;
       padding: 10px;
       list-style-type: none;
+      height: 250px;
+      overflow-y: scroll;
 
-      .assignee {
+      .assignee,
+      .datetime {
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -66,21 +78,30 @@
         border-radius: 15px;
         padding: 10px;
 
-        & + .assignee {
+        &.datetime {
+          font-size: 0.85em;
+          padding: 3px 10px;
+          justify-content: center;
+        }
+
+        & + .assignee,
+        & + .datetime {
           margin-top: 10px;
         }
 
-        .profile {
-          width: 60px;
-          height: 60px;
-          border-radius: 30px;
-          background: gray;
-          background-size: cover;
-        }
+        &.assignee {
+          .profile {
+            width: 60px;
+            height: 60px;
+            border-radius: 30px;
+            background: gray;
+            background-size: cover;
+          }
 
-        .nickname {
-          flex: 1;
-          text-align: center;
+          .nickname {
+            flex: 1;
+            text-align: center;
+          }
         }
       }
     }

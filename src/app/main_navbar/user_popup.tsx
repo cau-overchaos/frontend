@@ -4,7 +4,7 @@ import popupStyles from "./popup.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCog, faSignIn, faSignOut } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
-import apiClient from "../api_client";
+import apiClient from "../api_client/api_client";
 
 type propsType = {
   nickname?: string;

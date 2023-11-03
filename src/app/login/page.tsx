@@ -4,7 +4,7 @@ import { FormEventHandler, useState } from "react";
 import { Button, Input } from "../common/inputs";
 import styles from "./page.module.scss";
 import MainLayout from "../main_layout";
-import apiClient from "../api_client";
+import apiClient from "../api_client/api_client";
 import Link from "next/link";
 
 export default function Login() {
@@ -27,7 +27,7 @@ export default function Login() {
       apiClient
         .login({
           userId: id,
-          password,
+          password
         })
         .then(() => {
           const params = new URLSearchParams(location.search);

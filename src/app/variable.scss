@@ -1,1 +1,11 @@
 $primary_theme_color: #79efff;
+
+@mixin navbarHeight {
+  --navbar-height: 40px;
+  @media screen and (max-width: 500px) {
+    --navbar-height: 30px;
+  }
+  @media screen and (max-width: 400px) {
+    --navbar-height: 20px;
+  }
+}

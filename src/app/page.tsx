@@ -6,7 +6,7 @@ import SummariedBoardWidget, {
 } from "./summaried_board_widget/summaried_board_widget";
 import MainLayout from "./main_layout";
 import { useEffect, useState } from "react";
-import apiClient, { StudyRoom } from "./api_client";
+import apiClient, { StudyRoom } from "./api_client/api_client";
 
 export default function Home() {
   const [allLoaded, setAllLoaded] = useState<boolean>(false);

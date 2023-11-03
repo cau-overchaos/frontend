@@ -4,7 +4,7 @@ import { FormEventHandler, useState } from "react";
 import { Button, Input } from "../common/inputs";
 import styles from "./page.module.scss";
 import MainLayout from "../main_layout";
-import apiClient from "../api_client";
+import apiClient from "../api_client/api_client";
 
 export default function SignUp() {
   const [id, setId] = useState<string>("");
@@ -37,7 +37,7 @@ export default function SignUp() {
           userId: id,
           name,
           password,
-          judgeAccount: bojId,
+          judgeAccount: bojId
         })
         .then(() => {
           alert("회원가입이 완료됐습니다!");
