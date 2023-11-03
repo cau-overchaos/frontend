@@ -46,9 +46,7 @@ export default function Assignment(props: AssignmentProps) {
 export function Assignee(props: AssigneeProps) {
   return (
     <li className={styles.assignee}>
-      <img
-        src=""
-        alt=""
+      <div
         className={styles.profile}
         style={{
           background: props.profileImageUrl && `url(${props.profileImageUrl})`,
