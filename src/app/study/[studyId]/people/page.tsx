@@ -4,6 +4,9 @@ import { useEffect, useMemo, useState } from "react";
 import People, { Person } from "./people";
 import apiClient, { StudyroomMember } from "@/app/api_client";
 import { useParams } from "next/navigation";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import styles from "./people.module.scss";
 
 export default function PeoplePage() {
   const params = useParams();
@@ -30,8 +33,28 @@ export default function PeoplePage() {
     if (adminMode === null) studyRoom.amIAdmin().then(setAdminMode);
   });
 
-  return (
-    <People inviteButton onInviteClick={() => {}}>
+  return loading === "firstLoading" ? (
+    <div className={styles.loading}>
+      <FontAwesomeIcon spin icon={faSpinner}></FontAwesomeIcon>
+    </div>
+  ) : (
+    <People
+      inviteButton
+      onInviteClick={() => {
+        const id = prompt("초대할 사람의 ID를 입력해주세요.");
+        if (id?.trim() !== "" && id !== null) {
+          apiClient
+            .studyroom(parseInt(params.studyId as string))
+            .addMember(id)
+            .then(() => {
+              setLoading("refreshing");
+            })
+            .catch((err) => {
+              alert("오류: " + err.message);
+            });
+        }
+      }}
+    >
       {members.map((i) => (
         <Person
           admin={i.admin}
@@ -43,9 +66,17 @@ export default function PeoplePage() {
             studyRoom
               .toggleMemberAuthoritory(i.userId)
               .catch((err) => alert(err.message))
+              .then(() => {
+                setLoading("refreshing");
+              })
           }
           onDeleteClick={() =>
-            studyRoom.deleteMember(i.userId).catch((err) => alert(err.message))
+            studyRoom
+              .deleteMember(i.userId)
+              .catch((err) => alert(err.message))
+              .then(() => {
+                setLoading("refreshing");
+              })
           }
           adminMode={adminMode ?? false}
         ></Person>
