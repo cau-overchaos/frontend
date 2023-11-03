@@ -20,6 +20,9 @@
     padding: 10px;
     border-radius: 8px;
     background: $primary_theme_color;
+    height: 300px;
+    overflow-y: scroll;
+
     li.article {
       background: white;
       color: black;
