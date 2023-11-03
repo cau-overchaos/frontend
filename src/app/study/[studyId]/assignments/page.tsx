@@ -14,6 +14,7 @@ import DefaultProfileImageUrl from "@/app/default_profile_image_url";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import loadingStyles from "./loading.module.scss";
+import gravatarUrl from "@/app/gravatarUrl";
 
 export default function AssignemntsPage() {
   const params = useParams();
@@ -48,7 +49,7 @@ export default function AssignemntsPage() {
           {i.solvedUsers.map((j) => (
             <Assignee
               nickname={j.name}
-              profileImageUrl={DefaultProfileImageUrl()}
+              profileImageUrl={gravatarUrl(null, j.id, j.name)}
             ></Assignee>
           ))}
         </Assignment>
