@@ -144,6 +144,11 @@ export default function NewAssignmentPopup(props: Props) {
                   onChange={(evt) =>
                     setProblemIdInput(evt.target.valueAsNumber)
                   }
+                  onEnter={() => {
+                    if (typeof problemIdInput !== "undefined")
+                      addProblem(problemIdInput);
+                    else alert("문제 번호를 입력해주세요!");
+                  }}
                 />
               </td>
               <td>
