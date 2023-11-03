@@ -44,10 +44,14 @@ export default function AssignemntsPage() {
           problemId={i.problem.pid}
           problemName={i.problem.title}
           solvedAcTier={i.problem.difficultyLevel}
+          key={
+            i.problem.pid + " " + i.dueDate.getTime() + i.startDate.getTime()
+          }
         >
           <Datetime dueDate={i.dueDate} startDate={i.startDate}></Datetime>
           {i.solvedUsers.map((j) => (
             <Assignee
+              key={j.id}
               nickname={j.name}
               profileImageUrl={gravatarUrl(null, j.id, j.name)}
             ></Assignee>
