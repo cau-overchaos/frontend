@@ -78,7 +78,7 @@ export default function PeoplePage() {
                 setLoading("refreshing");
               })
           }
-          adminMode={adminMode ?? false}
+          adminMode={(adminMode ?? false) && !i.isMe}
         ></Person>
       ))}
     </People>
