@@ -17,9 +17,11 @@
   }
 
   ul.articles {
-    padding: 10px;
+    border: 10px solid $primary_theme_color;
     border-radius: 8px;
-    background: $primary_theme_color;
+    height: 300px;
+    overflow-y: scroll;
+
     li.article {
       background: white;
       color: black;
