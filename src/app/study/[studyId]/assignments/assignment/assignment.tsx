@@ -68,7 +68,7 @@ export function Datetime(props: DatetimeProps) {
       result += `${dt.getFullYear()}년 `;
     result += `${
       dt.getMonth() + 1
-    }월 ${dt.getDate()}일 ${dt.getHours()}:${dt.getMonth()}`;
+    }월 ${dt.getDate()}일 ${dt.getHours()}:${dt.getMinutes()}`;
 
     return result;
   };
