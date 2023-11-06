@@ -109,6 +109,40 @@ type AssignmentCreationForm = {
   }[];
 };
 
+export type SharedSourceCode = {
+  id: number;
+  title: string;
+  problem: {
+    title: string;
+    difficultyLevel: number;
+  };
+  writer: {
+    id: string;
+    nickname: string;
+  };
+  language: {
+    id: string;
+    name: string;
+  };
+  createdAt: Date;
+  getSourceCode: () => Promise<string>;
+};
+
+export type SharedSourceCodeCreationForm = {
+  title: string;
+  sourceCode: string;
+  languageId: number;
+  problem: {
+    provider: ProblemProviderKey;
+    pid: number;
+  };
+};
+
+export type ProgammingLanguage = {
+  id: number;
+  name: string;
+};
+
 type EventType = "loggedInOrloggedOut";
 
 const transformDatetime = (dt: Date): string =>
@@ -445,8 +479,67 @@ class ApiClient {
 
         const data: ApiResponse = await response.json();
         return data.status === "success";
+      },
+      async sharedSourceCodes(): Promise<SharedSourceCode[]> {
+        const response = await fetch(
+          apiEndpoint + `/studyrooms/${roomId}/shared-sourcecodes`,
+          {
+            method: "GET",
+            credentials: "include"
+          }
+        );
+
+        const data: ApiResponse = await response.json();
+
+        if (!response.ok) throw new Error(data.message);
+
+        return (data.data.sharedSourceCodeInfoDtoList as any[]).map(
+          (i: any) => ({
+            id: i.sharedSourceCodeId,
+            title: i.sharedSourceCodeTitle,
+            problem: {
+              difficultyLevel: i.problemDifficultyLevel,
+              title: i.problemTitle
+            },
+            writer: {
+              id: i.writerUserId,
+              nickname: i.writerName
+            },
+            language: {
+              id: i.programmingLanguageId,
+              name: i.programmingLanguageName
+            },
+            createdAt: new Date(i.createdAt),
+            async getSourceCode() {
+              const response = await fetch(
+                apiEndpoint +
+                  `/studyrooms/${roomId}/shared-sourcecodes/${i.sharedSourceCodeId}s`,
+                {
+                  method: "GET",
+                  credentials: "include"
+                }
+              );
+
+              const data: ApiResponse = await response.json();
+              if (!response.ok) throw new Error(data.message);
+
+              return data.data.sourceCodeText;
+            }
+          })
+        );
       }
     };
+  }
+
+  async programmingLanguages(): Promise<ProgammingLanguage[]> {
+    const response = await fetch(this.apiEndpoint + `/programming-languages`, {
+      method: "GET",
+      credentials: "include"
+    });
+
+    const data: ApiResponse = await response.json();
+    if (!response.ok) throw new Error(data.message);
+    return data.data.problemResponseDtoList as ProgammingLanguage[];
   }
 }
 
