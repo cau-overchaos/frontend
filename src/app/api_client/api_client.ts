@@ -480,6 +480,48 @@ class ApiClient {
         const data: ApiResponse = await response.json();
         return data.status === "success";
       },
+      async shareSourceCode(
+        form: SharedSourceCodeCreationForm
+      ): Promise<SharedSourceCode> {
+        const response = await fetch(
+          apiEndpoint + `/studyrooms/${roomId}/shared-sourcecodes`,
+          {
+            method: "POST",
+            credentials: "include",
+            body: JSON.stringify({
+              title: form.title,
+              sourceCode: form.sourceCode,
+              programmingLanguageId: form.languageId,
+              problemInfoRequestDto: form.problem
+            }),
+            headers: {
+              "Content-Type": "application/json"
+            }
+          }
+        );
+
+        const data: ApiResponse = await response.json();
+        if (!response.ok) throw new Error(data.message);
+
+        return {
+          createdAt: new Date(data.data.createdAt),
+          getSourceCode: () => data.data.sourceCodeText,
+          id: data.data.sharedSourceCodeId,
+          title: data.data.sharedSourceCodeTitle,
+          language: {
+            id: data.data.programmingLanguageId,
+            name: data.data.programmingLanguageName
+          },
+          problem: {
+            difficultyLevel: data.data.problemDifficultyLevel,
+            title: data.data.problemTitle
+          },
+          writer: {
+            id: data.data.writerUserId,
+            nickname: data.data.writerName
+          }
+        };
+      },
       async sharedSourceCodes(): Promise<SharedSourceCode[]> {
         const response = await fetch(
           apiEndpoint + `/studyrooms/${roomId}/shared-sourcecodes`,
