@@ -140,6 +140,7 @@ class ApiClient {
     endpoint: string = process.env.NEXT_PUBLIC_API_ENDPOINT ?? "/api"
   ) {
     this.apiEndpoint = endpoint;
+    this.fetchApi = this.fetchApi.bind(this);
   }
 
   on(type: EventType, listener: Function) {
@@ -161,8 +162,11 @@ class ApiClient {
     init?: RequestInit
   ): Promise<ApiResponse> {
     const response = await fetch(this.apiEndpoint + pathname, {
-      ...init,
-      credentials: "include"
+      headers: {
+        "Content-Type": "application/json"
+      },
+      credentials: "include",
+      ...init
     });
 
     const data: ApiResponse = await response.json();
