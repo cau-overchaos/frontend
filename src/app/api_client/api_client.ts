@@ -108,6 +108,11 @@ export type ProgammingLanguage = {
   name: string;
 };
 
+export type ApiFetcher = (
+  pathname: string,
+  init?: RequestInit
+) => Promise<ApiResponse>;
+
 type EventType = "loggedInOrloggedOut";
 
 const transformDatetime = (dt: Date): string =>
@@ -151,6 +156,21 @@ class ApiClient {
     });
   }
 
+  private async fetchApi(
+    pathname: string,
+    init?: RequestInit
+  ): Promise<ApiResponse> {
+    const response = await fetch(this.apiEndpoint + pathname, {
+      ...init,
+      credentials: "include"
+    });
+
+    const data: ApiResponse = await response.json();
+    if (!response.ok) throw new Error(data.message);
+
+    return data;
+  }
+
   async me(skipCache: boolean = false): Promise<UserProfile | null> {
     if (!skipCache && this.cached) {
       return this.cachedMyProfile;
@@ -175,105 +195,70 @@ class ApiClient {
   }
 
   async logout() {
-    const response = await fetch(this.apiEndpoint + "/logout", {
-      method: "POST",
-      credentials: "include"
+    await this.fetchApi("/logout", {
+      method: "POST"
     });
-
-    if (!response.ok) {
-      throw new Error(
-        `HTTP ${response.status}: ${(await response.json()).message}`
-      );
-    }
 
     this.cached = false;
     this.fireEvent("loggedInOrloggedOut");
   }
 
   async login(form: LoginForm) {
-    const response = await fetch(this.apiEndpoint + "/login", {
+    await this.fetchApi("/login", {
       method: "POST",
-      credentials: "include",
       body: JSON.stringify(form),
       headers: {
         "Content-Type": "application/json"
       }
     });
-
-    if (!response.ok) {
-      const responseData: ApiResponse = await response.json();
-      throw new Error(responseData.message);
-    }
 
     this.fireEvent("loggedInOrloggedOut");
   }
 
   async signUp(form: SignUpForm) {
-    const response = await fetch(this.apiEndpoint + "/signup", {
+    await this.fetchApi("/signup", {
       method: "POST",
-      credentials: "include",
       body: JSON.stringify(form),
       headers: {
         "Content-Type": "application/json"
       }
     });
-
-    if (!response.ok) {
-      const responseData: ApiResponse = await response.json();
-      throw new Error(responseData.message);
-    }
   }
 
   async studyrooms(type: "all" | "participated" = "all"): Promise<StudyRoom[]> {
     const endpoint =
-      type === "all"
-        ? this.apiEndpoint + "/studyrooms"
-        : this.apiEndpoint + "/studyrooms/participated";
-    const response = await fetch(endpoint, {
+      type === "all" ? "/studyrooms" : "/studyrooms/participated";
+    const response = await this.fetchApi(endpoint, {
       method: "GET",
-      credentials: "include",
       headers: {
         "Content-Type": "application/json"
       }
     });
 
-    const responseData: ApiResponse = await response.json();
-    if (!response.ok) {
-      throw new Error(responseData.message);
-    }
-
-    return responseData.data.studyRoomList;
+    return response.data.studyRoomList;
   }
 
   async createStudyroom(room: Omit<StudyRoom, "id">): Promise<StudyRoom> {
-    const response = await fetch(this.apiEndpoint + "/studyrooms", {
+    const response = await this.fetchApi("/studyrooms", {
       method: "POST",
-      credentials: "include",
       body: JSON.stringify(room),
       headers: {
         "Content-Type": "application/json"
       }
     });
 
-    const data: ApiResponse = await response.json();
-    if (!response.ok) throw new Error(data.message);
-
-    return data.data;
+    return response.data;
   }
 
   async getAssignments(studyRoomId: number): Promise<AssignmentInfo[]> {
-    const response = await fetch(
-      this.apiEndpoint + `/studyrooms/${studyRoomId}/assignments`,
+    const response = await this.fetchApi(
+      `/studyrooms/${studyRoomId}/assignments`,
       {
-        method: "GET",
-        credentials: "include"
+        method: "GET"
       }
     );
 
-    const data: ApiResponse = await response.json();
-    if (!response.ok) throw new Error(data.message);
-
-    return data.data.assignmentInfoList.map(
+    return response.data.assignmentInfoList.map(
       (i: any) =>
         ({
           problem: {
@@ -299,11 +284,10 @@ class ApiClient {
     studyRoomId: number,
     assignemnt: AssignmentCreationForm
   ): Promise<Assignment> {
-    const response = await fetch(
-      this.apiEndpoint + `/studyrooms/${studyRoomId}/assignments`,
+    const response = await this.fetchApi(
+      `/studyrooms/${studyRoomId}/assignments`,
       {
         method: "POST",
-        credentials: "include",
         body: JSON.stringify({
           ...assignemnt,
           dueDate: transformDatetime(assignemnt.dueDate),
@@ -316,43 +300,33 @@ class ApiClient {
       }
     );
 
-    const data: ApiResponse = await response.json();
-    if (!response.ok) throw new Error(data.message);
-
-    return data.data;
+    return response.data;
   }
 
   async getProblem(
     problemId: number,
     provider: ProblemProviderKey
   ): Promise<Problem> {
-    const response = await fetch(
-      this.apiEndpoint + `/problems?pid=${problemId}&provider=${provider}`,
+    const response = await this.fetchApi(
+      `/problems?pid=${problemId}&provider=${provider}`,
       {
-        method: "GET",
-        credentials: "include"
+        method: "GET"
       }
     );
 
-    const data: ApiResponse = await response.json();
-    if (!response.ok) throw new Error(data.message);
-
-    return data.data;
+    return response.data;
   }
 
   studyroom(roomId: number) {
-    return createStudyroomClient(this.apiEndpoint, roomId);
+    return createStudyroomClient(this.fetchApi, roomId);
   }
 
   async programmingLanguages(): Promise<ProgammingLanguage[]> {
-    const response = await fetch(this.apiEndpoint + `/programming-languages`, {
-      method: "GET",
-      credentials: "include"
+    const response = await this.fetchApi(`/programming-languages`, {
+      method: "GET"
     });
 
-    const data: ApiResponse = await response.json();
-    if (!response.ok) throw new Error(data.message);
-    return data.data.problemResponseDtoList as ProgammingLanguage[];
+    return response.data.problemResponseDtoList as ProgammingLanguage[];
   }
 }
 
