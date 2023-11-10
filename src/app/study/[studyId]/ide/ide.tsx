@@ -97,7 +97,7 @@ export default function Ide(props: Props) {
         })
         .catch(() => {
           setProblemDetail({
-            level: null,
+            level: 0,
             pid: props.selectedProblem?.pid!,
             provider: props.selectedProblem?.provider ?? "BAEKJOON",
             title: "????"
