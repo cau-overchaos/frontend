@@ -3,8 +3,10 @@
 import apiClient, { ProgammingLanguage } from "@/app/api_client/api_client";
 import Ide, { IdeChangeEventType, IdeHighlighterType, Language } from "./ide";
 import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 
 export default function PeoplePage() {
+  const params = useParams();
   const [availableLanguages, setAvailableLanguages] = useState<
     ProgammingLanguage[]
   >([]);
@@ -56,7 +58,26 @@ export default function PeoplePage() {
       code={sourceCode}
       input={programInput}
       output={programOutput}
-      onSave={() => {}}
+      onSave={() => {
+        if (title.trim() === "") return alert("제목을 입력해주세요!");
+
+        if (selectedLanguage === null)
+          return alert("프로그래밍 언어를 선택해주세요!");
+
+        apiClient
+          .studyroom(parseInt(params.studyId as string))
+          .shareSourceCode({
+            languageId: selectedLanguage!.id,
+            problem: {
+              pid: selectedPid,
+              provider: "BAEKJOON"
+            },
+            sourceCode,
+            title
+          })
+          .then(() => alert("저장했습니다!"))
+          .catch((err) => alert("오류: " + err.message));
+      }}
       onChange={(type, val) => {
         switch (type) {
           case IdeChangeEventType.Code:
