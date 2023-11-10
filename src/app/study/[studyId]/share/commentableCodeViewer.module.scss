@@ -1,6 +1,8 @@
 .code {
   .line {
+    min-height: 1.6em;
     white-space: pre;
+    display: block;
     &.add {
       background-color: #ccffad80;
     }
