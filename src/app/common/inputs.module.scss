@@ -24,6 +24,69 @@ button.input {
   }
 }
 
+.problemInput {
+  border: none;
+  background-color: #fcfcfc;
+  font-size: 1.2em;
+  line-height: 1.2em;
+  padding: 0.6em;
+  border-radius: 1.2em;
+  border: 1px solid #e0e0e0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  width: fit-content;
+
+  &.small {
+    font-size: 1em;
+    padding: 0.4em 0.8em;
+  }
+
+  & > input {
+    background: none;
+    font-size: 1em;
+    border: none;
+    padding: 0px;
+    margin: 0px;
+
+    appearance: textfield;
+    -moz-appearance: textfield;
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+
+  .tier {
+    box-sizing: border-box;
+    margin-right: 0.5em;
+    & > * {
+      display: block;
+      height: 1.05em;
+      margin-top: 0px;
+      width: auto;
+    }
+  }
+
+  & > * {
+    display: inline-block;
+  }
+
+  .problemTitle {
+    margin-left: auto;
+  }
+
+  &:hover {
+    background-color: #f8f8f8;
+  }
+
+  &:active,
+  &:focus {
+    background-color: #eeeeee;
+  }
+}
+
 input.input[type="input"],
 input.input[type="number"],
 input.input[type="password"],
