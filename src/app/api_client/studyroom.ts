@@ -153,7 +153,7 @@ export default function createStudyroomClient(
 
       return {
         ...transformToSharedSourceCodeObj(response.data),
-        getSourceCode: () => response.data.sourceCodeText,
+        getSourceCode: async () => response.data.sourceCodeText,
         getFeedback: () =>
           createFeedbackClient(
             fetchApi,
@@ -162,6 +162,21 @@ export default function createStudyroomClient(
           )
       };
     },
+    async getSharedSourceCodeById(id: number): Promise<SharedSourceCode> {
+      const response = await fetchApi(
+        `/studyrooms/${roomId}/shared-sourcecodes/${id}`,
+        {
+          method: "GET"
+        }
+      );
+
+      return {
+        ...transformToSharedSourceCodeObj(response.data),
+        getFeedback: () => createFeedbackClient(fetchApi, roomId, id),
+        getSourceCode: async () => response.data.sourceCodeText
+      };
+    },
+
     async sharedSourceCodes(): Promise<SharedSourceCode[]> {
       const response = await fetchApi(
         `/studyrooms/${roomId}/shared-sourcecodes`,
@@ -175,7 +190,7 @@ export default function createStudyroomClient(
           ...transformToSharedSourceCodeObj(i),
           async getSourceCode() {
             const response = await fetchApi(
-              `/studyrooms/${roomId}/shared-sourcecodes/${i.sharedSourceCodeId}s`,
+              `/studyrooms/${roomId}/shared-sourcecodes/${i.sharedSourceCodeId}`,
               {
                 method: "GET"
               }
