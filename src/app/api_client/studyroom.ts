@@ -4,6 +4,7 @@ import {
   ProblemProviderKey,
   UserProfile
 } from "./api_client";
+import createFeedbackClient, { FeedbackClient } from "./feedbacks";
 
 export type SharedSourceCode = {
   id: number;
@@ -22,6 +23,7 @@ export type SharedSourceCode = {
   };
   createdAt: Date;
   getSourceCode: () => Promise<string>;
+  getFeedback: () => FeedbackClient;
 };
 
 export type SharedSourceCodeCreationForm = {
@@ -143,7 +145,13 @@ export default function createStudyroomClient(
         writer: {
           id: response.data.writerUserId,
           nickname: response.data.writerName
-        }
+        },
+        getFeedback: () =>
+          createFeedbackClient(
+            fetchApi,
+            roomId,
+            response.data.sharedSourceCodeId
+          )
       };
     },
     async sharedSourceCodes(): Promise<SharedSourceCode[]> {
@@ -180,7 +188,10 @@ export default function createStudyroomClient(
             );
 
             return response.data.sourceCodeText;
-          }
+          },
+
+          getFeedback: () =>
+            createFeedbackClient(fetchApi, roomId, i.sharedSourceCodeId)
         })
       );
     }
