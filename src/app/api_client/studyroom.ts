@@ -47,6 +47,28 @@ export default function createStudyroomClient(
   fetchApi: ApiFetcher,
   roomId: number
 ) {
+  const transformToSharedSourceCodeObj = (
+    i: any
+  ): Omit<SharedSourceCode, "getSourceCode" | "getFeedback"> => {
+    return {
+      id: i.sharedSourceCodeId,
+      title: i.sharedSourceCodeTitle,
+      problem: {
+        difficultyLevel: i.problemDifficultyLevel,
+        title: i.problemTitle
+      },
+      writer: {
+        id: i.writerUserId,
+        nickname: i.writerName
+      },
+      language: {
+        id: i.programmingLanguageId,
+        name: i.programmingLanguageName
+      },
+      createdAt: new Date(i.createdAt)
+    };
+  };
+
   return {
     async getMembers(): Promise<StudyroomMember[]> {
       const response = await fetchApi(`/studyrooms/${roomId}/members`, {
@@ -130,22 +152,8 @@ export default function createStudyroomClient(
       );
 
       return {
-        createdAt: new Date(response.data.createdAt),
+        ...transformToSharedSourceCodeObj(response.data),
         getSourceCode: () => response.data.sourceCodeText,
-        id: response.data.sharedSourceCodeId,
-        title: response.data.sharedSourceCodeTitle,
-        language: {
-          id: response.data.programmingLanguageId,
-          name: response.data.programmingLanguageName
-        },
-        problem: {
-          difficultyLevel: response.data.problemDifficultyLevel,
-          title: response.data.problemTitle
-        },
-        writer: {
-          id: response.data.writerUserId,
-          nickname: response.data.writerName
-        },
         getFeedback: () =>
           createFeedbackClient(
             fetchApi,
@@ -164,21 +172,7 @@ export default function createStudyroomClient(
 
       return (response.data.sharedSourceCodeInfoDtoList as any[]).map(
         (i: any) => ({
-          id: i.sharedSourceCodeId,
-          title: i.sharedSourceCodeTitle,
-          problem: {
-            difficultyLevel: i.problemDifficultyLevel,
-            title: i.problemTitle
-          },
-          writer: {
-            id: i.writerUserId,
-            nickname: i.writerName
-          },
-          language: {
-            id: i.programmingLanguageId,
-            name: i.programmingLanguageName
-          },
-          createdAt: new Date(i.createdAt),
+          ...transformToSharedSourceCodeObj(i),
           async getSourceCode() {
             const response = await fetchApi(
               `/studyrooms/${roomId}/shared-sourcecodes/${i.sharedSourceCodeId}s`,
