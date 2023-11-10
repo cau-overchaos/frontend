@@ -1,4 +1,9 @@
-import { ApiResponse, ProblemProviderKey, UserProfile } from "./api_client";
+import {
+  ApiFetcher,
+  ApiResponse,
+  ProblemProviderKey,
+  UserProfile
+} from "./api_client";
 
 export type SharedSourceCode = {
   id: number;
@@ -37,25 +42,16 @@ export type StudyroomMember = Omit<UserProfile, "password" | "profileImage"> & {
 };
 
 export default function createStudyroomClient(
-  apiEndpoint: string,
+  fetchApi: ApiFetcher,
   roomId: number
 ) {
   return {
     async getMembers(): Promise<StudyroomMember[]> {
-      const response = await fetch(
-        apiEndpoint + `/studyrooms/${roomId}/members`,
-        {
-          method: "GET",
-          credentials: "include"
-        }
-      );
+      const response = await fetchApi(`/studyrooms/${roomId}/members`, {
+        method: "GET"
+      });
 
-      const data: ApiResponse = await response.json();
-      if (!response.ok) {
-        throw new Error(data.message);
-      }
-
-      return data.data.studyRoomMemberDtoList.map((i: any) => ({
+      return response.data.studyRoomMemberDtoList.map((i: any) => ({
         userId: i.userId,
         name: i.name,
         isValidJudgeAccount: i.isValidJudgeAccount,
@@ -66,91 +62,59 @@ export default function createStudyroomClient(
       }));
     },
     async addMember(memberId: string): Promise<void> {
-      const response = await fetch(
-        apiEndpoint + `/studyrooms/${roomId}/members/add`,
-        {
-          method: "POST",
-          credentials: "include",
-          body: JSON.stringify({ targetUserId: memberId }),
-          headers: {
-            "Content-Type": "application/json"
-          }
+      await fetchApi(`/studyrooms/${roomId}/members/add`, {
+        method: "POST",
+        body: JSON.stringify({ targetUserId: memberId }),
+        headers: {
+          "Content-Type": "application/json"
         }
-      );
-
-      const data: ApiResponse = await response.json();
-      if (!response.ok) {
-        throw new Error(data.message);
-      }
+      });
     },
     async deleteMember(memberId: string): Promise<void> {
-      const response = await fetch(
-        apiEndpoint + `/studyrooms/${roomId}/members/delete`,
-        {
-          method: "POST",
-          credentials: "include",
-          body: JSON.stringify({ targetUserId: memberId }),
-          headers: {
-            "Content-Type": "application/json"
-          }
+      await fetchApi(`/studyrooms/${roomId}/members/delete`, {
+        method: "POST",
+        body: JSON.stringify({ targetUserId: memberId }),
+        headers: {
+          "Content-Type": "application/json"
         }
-      );
-
-      const data: ApiResponse = await response.json();
-      if (!response.ok) {
-        throw new Error(data.message);
-      }
+      });
     },
     async toggleMemberAuthoritory(memberId: string): Promise<void> {
-      const response = await fetch(
-        apiEndpoint + `/studyrooms/${roomId}/members/authority`,
-        {
-          method: "POST",
-          credentials: "include",
-          body: JSON.stringify({ targetUserId: memberId }),
-          headers: {
-            "Content-Type": "application/json"
-          }
+      await fetchApi(`/studyrooms/${roomId}/members/authority`, {
+        method: "POST",
+        body: JSON.stringify({ targetUserId: memberId }),
+        headers: {
+          "Content-Type": "application/json"
         }
-      );
-
-      const data: ApiResponse = await response.json();
-      if (!response.ok) {
-        throw new Error(data.message);
-      }
+      });
     },
     async amIMember(): Promise<boolean> {
-      const response = await fetch(
-        apiEndpoint + `/studyrooms/${roomId}/is-member`,
-        {
-          method: "POST",
-          credentials: "include"
-        }
-      );
-
-      const data: ApiResponse = await response.json();
-      return data.status === "success";
+      try {
+        await fetchApi(`/studyrooms/${roomId}/is-member`, {
+          method: "POST"
+        });
+        return true;
+      } catch {
+        return false;
+      }
     },
     async amIAdmin(): Promise<boolean> {
-      const response = await fetch(
-        apiEndpoint + `/studyrooms/${roomId}/is-manager`,
-        {
-          method: "POST",
-          credentials: "include"
-        }
-      );
-
-      const data: ApiResponse = await response.json();
-      return data.status === "success";
+      try {
+        await fetchApi(`/studyrooms/${roomId}/is-manager`, {
+          method: "POST"
+        });
+        return true;
+      } catch {
+        return false;
+      }
     },
     async shareSourceCode(
       form: SharedSourceCodeCreationForm
     ): Promise<SharedSourceCode> {
-      const response = await fetch(
-        apiEndpoint + `/studyrooms/${roomId}/shared-sourcecodes`,
+      const response = await fetchApi(
+        `/studyrooms/${roomId}/shared-sourcecodes`,
         {
           method: "POST",
-          credentials: "include",
           body: JSON.stringify({
             title: form.title,
             sourceCode: form.sourceCode,
@@ -163,73 +127,62 @@ export default function createStudyroomClient(
         }
       );
 
-      const data: ApiResponse = await response.json();
-      if (!response.ok) throw new Error(data.message);
-
       return {
-        createdAt: new Date(data.data.createdAt),
-        getSourceCode: () => data.data.sourceCodeText,
-        id: data.data.sharedSourceCodeId,
-        title: data.data.sharedSourceCodeTitle,
+        createdAt: new Date(response.data.createdAt),
+        getSourceCode: () => response.data.sourceCodeText,
+        id: response.data.sharedSourceCodeId,
+        title: response.data.sharedSourceCodeTitle,
         language: {
-          id: data.data.programmingLanguageId,
-          name: data.data.programmingLanguageName
+          id: response.data.programmingLanguageId,
+          name: response.data.programmingLanguageName
         },
         problem: {
-          difficultyLevel: data.data.problemDifficultyLevel,
-          title: data.data.problemTitle
+          difficultyLevel: response.data.problemDifficultyLevel,
+          title: response.data.problemTitle
         },
         writer: {
-          id: data.data.writerUserId,
-          nickname: data.data.writerName
+          id: response.data.writerUserId,
+          nickname: response.data.writerName
         }
       };
     },
     async sharedSourceCodes(): Promise<SharedSourceCode[]> {
-      const response = await fetch(
-        apiEndpoint + `/studyrooms/${roomId}/shared-sourcecodes`,
+      const response = await fetchApi(
+        `/studyrooms/${roomId}/shared-sourcecodes`,
         {
-          method: "GET",
-          credentials: "include"
+          method: "GET"
         }
       );
 
-      const data: ApiResponse = await response.json();
-
-      if (!response.ok) throw new Error(data.message);
-
-      return (data.data.sharedSourceCodeInfoDtoList as any[]).map((i: any) => ({
-        id: i.sharedSourceCodeId,
-        title: i.sharedSourceCodeTitle,
-        problem: {
-          difficultyLevel: i.problemDifficultyLevel,
-          title: i.problemTitle
-        },
-        writer: {
-          id: i.writerUserId,
-          nickname: i.writerName
-        },
-        language: {
-          id: i.programmingLanguageId,
-          name: i.programmingLanguageName
-        },
-        createdAt: new Date(i.createdAt),
-        async getSourceCode() {
-          const response = await fetch(
-            apiEndpoint +
+      return (response.data.sharedSourceCodeInfoDtoList as any[]).map(
+        (i: any) => ({
+          id: i.sharedSourceCodeId,
+          title: i.sharedSourceCodeTitle,
+          problem: {
+            difficultyLevel: i.problemDifficultyLevel,
+            title: i.problemTitle
+          },
+          writer: {
+            id: i.writerUserId,
+            nickname: i.writerName
+          },
+          language: {
+            id: i.programmingLanguageId,
+            name: i.programmingLanguageName
+          },
+          createdAt: new Date(i.createdAt),
+          async getSourceCode() {
+            const response = await fetchApi(
               `/studyrooms/${roomId}/shared-sourcecodes/${i.sharedSourceCodeId}s`,
-            {
-              method: "GET",
-              credentials: "include"
-            }
-          );
+              {
+                method: "GET"
+              }
+            );
 
-          const data: ApiResponse = await response.json();
-          if (!response.ok) throw new Error(data.message);
-
-          return data.data.sourceCodeText;
-        }
-      }));
+            return response.data.sourceCodeText;
+          }
+        })
+      );
     }
   };
 }
