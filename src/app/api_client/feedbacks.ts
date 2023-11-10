@@ -74,7 +74,11 @@ export default function createFeedbackClient(
         `/studyrooms/${roomId}/shared-sourcecodes/${sharedSourceCodeId}/feedbacks`,
         {
           method: "POST",
-          body: JSON.stringify(form)
+          body: JSON.stringify({
+            comment: form.comment,
+            lineNumber: form.lineNumber,
+            replyParentFeedbackId: form.replyToId
+          })
         }
       );
 
