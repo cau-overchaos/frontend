@@ -4,8 +4,9 @@ import Board, { Article } from "@/app/board/board";
 import SolvedAcTier from "../assignments/solved_ac_tier";
 import styles from "./page.module.scss";
 import { useEffect, useState } from "react";
-import apiClient, { SharedSourceCode } from "@/app/api_client/api_client";
+import apiClient from "@/app/api_client/api_client";
 import { useParams } from "next/navigation";
+import { SharedSourceCode } from "@/app/api_client/studyroom";
 
 export default function SharePage() {
   const params = useParams();
