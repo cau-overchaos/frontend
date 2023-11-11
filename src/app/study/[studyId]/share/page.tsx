@@ -10,11 +10,13 @@ import { SharedSourceCode } from "@/app/api_client/studyroom";
 
 export default function SharePage() {
   const params = useParams();
-  const [sharedCodes, setSharedCodes] = useState<SharedSourceCode[]>([]);
+  const [sharedCodes, setSharedCodes] = useState<SharedSourceCode[] | null>(
+    null
+  );
   const [error, setError] = useState<string | undefined>(undefined);
 
   useEffect(() => {
-    if (sharedCodes.length === 0)
+    if (sharedCodes === null)
       apiClient
         .studyroom(parseInt(params.studyId as string))
         .sharedSourceCodes()
@@ -28,10 +30,10 @@ export default function SharePage() {
       <Board
         title="코드 공유"
         withProblem
-        loading={sharedCodes.length === 0}
+        loading={sharedCodes === null}
         error={error}
       >
-        {sharedCodes.map((i) => (
+        {(sharedCodes ?? []).map((i) => (
           <Article
             title={i.title}
             author={i.writer.nickname}
