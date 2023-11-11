@@ -11,6 +11,8 @@ import { useParams } from "next/navigation";
 import apiClient from "@/app/api_client/api_client";
 import { LineFeedbackWithChildren } from "@/app/api_client/feedbacks";
 import gravatarUrl from "@/app/gravatarUrl";
+import SolvedAcTier from "../../assignments/solved_ac_tier";
+import Article from "@/app/board/article";
 
 function ApiLineComment(props: {
   roomId: number;
@@ -116,7 +118,43 @@ export default function ViewCode() {
 
   return (
     <div className={styles.container}>
+      <Article
+        author={sharedSourceCode?.writer.nickname ?? ""}
+        title={sharedSourceCode?.title ?? ""}
+        date={sharedSourceCode?.createdAt ?? new Date(1970, 1, 1)}
+        problem={sharedSourceCode?.problem}
+        language={sharedSourceCode?.language.name}
+        listHref="../share"
+      >
+        <SharedCodeViewer
+          code={sourceCode ?? ""}
+          highlight={highligherType}
+          className={styles.code}
+          onCommentClick={(line) => (
+            <ApiLineComment
+              roomId={parseInt(params.studyId as string)}
+              lineNumber={line}
+              sharedSrcCodeId={parseInt(params.codeId as string)}
+            ></ApiLineComment>
+          )}
+        ></SharedCodeViewer>
+      </Article>
+    </div>
+  );
+
+  /*return (
+    <div className={styles.container}>
       <Button>풀이 비교</Button>
+      <h1>코드 공유 - {sharedSourceCode?.title ?? "로딩중"}</h1>
+      <p className={styles.description}>
+        문제:&nbsp;
+        <SolvedAcTier
+          level={sharedSourceCode?.problem.difficultyLevel ?? 0}
+        ></SolvedAcTier>
+        &nbsp;
+        {sharedSourceCode?.problem.title}
+        <br />
+      </p>
       <SharedCodeViewer
         code={sourceCode ?? ""}
         highlight={highligherType}
@@ -130,5 +168,5 @@ export default function ViewCode() {
         )}
       ></SharedCodeViewer>
     </div>
-  );
+  );*/
 }
