@@ -1,34 +1,26 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 알고모여 프론트엔드
 
-## Getting Started
+[알고모여](https://algogather.com)의 프론트엔드입니다.
 
-First, run the development server:
+## 실행방법
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+1. nodejs를 설치합니다.
+1. `npm i`
+1. `npm run dev` or `yarn dev` or (any package manager you like :D)
+1. [http://localhost:3000](http://localhost:3000) 접속하면 OK
+   - p.s. [http://127.0.0.1:3000](http://127.0.0.1:3000)로 접속시 CORS 오류날 수 있음.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 빌드방법
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. `.env.production`을 생성하거나 수정합니다. (아래는 예시)
+   ```ini
+   NEXT_PUBLIC_API_ENDPOINT=http://example.com:1234
+   ```
+1. nodejs를 설치합니다.
+1. `npm i`
+1. `NODE_ENV=production npm run build` or `NODE_ENV=produciton yarn build` or (any nodejs package manager you like :D)
+1. 빌드 완료
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### 프로덕션 실행방법
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+`NODE_ENV=productino npm run start` or `NODE_ENV=productino yarn start` or (any nodejs package manager you like :D)
