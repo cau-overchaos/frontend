@@ -2,11 +2,12 @@
 
 import { useEffect, useMemo, useState } from "react";
 import People, { Person } from "./people";
-import apiClient, { StudyroomMember } from "@/app/api_client/api_client";
+import apiClient from "@/app/api_client/api_client";
 import { useParams } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import styles from "./people.module.scss";
+import { StudyroomMember } from "@/app/api_client/studyroom";
 
 export default function PeoplePage() {
   const params = useParams();
