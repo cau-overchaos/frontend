@@ -35,6 +35,7 @@ export default function SharePage() {
       >
         {(sharedCodes ?? []).map((i) => (
           <Article
+            key={i.id}
             title={i.title}
             author={i.writer.nickname}
             date={new Date()}
