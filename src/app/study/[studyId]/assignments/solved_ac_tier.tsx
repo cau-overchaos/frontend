@@ -24,6 +24,7 @@ export default function SolvedAcTier(props: Props) {
   } else {
     level = props.level % 5;
     if (level == 0) level = 5;
+    level = 6 - level;
   }
 
   if (1 <= props.level && props.level <= 5) {
