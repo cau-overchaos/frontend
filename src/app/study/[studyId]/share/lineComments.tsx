@@ -57,19 +57,24 @@ function ReplyingTo(props: {
   onCloseButtonClick: () => void;
   onEnter: (message: string) => void;
 }) {
+  const [message, setMessage] = useState<string>("");
+
   return (
     <div className={styles.comment}>
       <div className={styles.profile}></div>
-      <input
-        type="text"
-        placeholder="답댓글을 입력해주세요."
-        onKeyUp={(evt) => {
-          if (evt.key === "Enter") {
-            props.onEnter((evt.target as HTMLInputElement).value);
-            evt.preventDefault();
-          }
+      <form
+        onSubmit={(evt) => {
+          evt.preventDefault();
+          props.onEnter(message);
         }}
-      ></input>
+      >
+        <input
+          type="text"
+          placeholder="답댓글을 입력해주세요."
+          value={message}
+          onChange={(evt) => setMessage(evt.target.value)}
+        ></input>
+      </form>
       <a
         href="#"
         className={styles.cancelReply}
@@ -86,6 +91,7 @@ function ReplyingTo(props: {
 
 export default function LineComments(props: Props) {
   const [replyingTo, setReplyingTo] = useState<string | null>();
+  const [comment, setComment] = useState<string>("");
 
   return (
     <div className={styles.container}>
@@ -97,18 +103,19 @@ export default function LineComments(props: Props) {
       <div className={styles.commentsPopup}>
         <div className={styles.newComment}>
           <div className={styles.profile}></div>
-          <input
-            type="text"
-            placeholder="댓글을 입력해주세요..."
-            onKeyUp={(evt) => {
-              if (evt.key === "Enter") {
-                props.onNewCommentRequest(
-                  (evt.target as HTMLInputElement).value
-                );
-                evt.preventDefault();
-              }
+          <form
+            onSubmit={(evt) => {
+              evt.preventDefault();
+              props.onNewCommentRequest(comment);
             }}
-          ></input>
+          >
+            <input
+              type="text"
+              placeholder="댓글을 입력해주세요..."
+              value={comment}
+              onChange={(evt) => setComment(evt.target.value)}
+            ></input>
+          </form>
         </div>
         <div className={styles.divider} />
         <div className={styles.comments}>
