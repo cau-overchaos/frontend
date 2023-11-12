@@ -73,6 +73,10 @@
           overflow-wrap: anywhere;
           white-space: break-spaces;
           align-self: center;
+          .writer {
+            font-size: 70%;
+            color: #5e5e5e;
+          }
         }
       }
       .subcomments {
