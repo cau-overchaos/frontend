@@ -22,6 +22,7 @@ type Props = {
 
 type CommentProps = {
   profileImageUrl?: string | null;
+  writerName: string;
   comment: SubComment;
   onReplyClick: () => void;
   subcomment?: boolean;
@@ -38,7 +39,10 @@ function LineComment(props: CommentProps) {
           }")`
         }}
       ></div>
-      <div className={styles.content}>{props.comment.content}</div>
+      <div className={styles.content}>
+        {props.comment.content}&nbsp;
+        <span className={styles.writer}>-- {props.writerName}</span>
+      </div>
       <div className={styles.replyTo}>
         <a
           href="#"
@@ -141,6 +145,7 @@ export default function LineComments(props: Props) {
               comment={i}
               profileImageUrl={i.profileImgUrl}
               onReplyClick={() => setReplyingTo(i.id)}
+              writerName={i.authorId}
             ></LineComment>,
             i.subcomments.length !== 0 || replyingTo === i.id ? (
               <div className={classNames(styles.comments, styles.subcomments)}>
@@ -152,6 +157,7 @@ export default function LineComments(props: Props) {
                       comment={j}
                       profileImageUrl={j.profileImgUrl}
                       onReplyClick={() => setReplyingTo(i.id)}
+                      writerName={i.authorId}
                     ></LineComment>
                   ))
                   .concat(
