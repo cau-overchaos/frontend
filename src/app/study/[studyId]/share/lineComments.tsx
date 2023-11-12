@@ -14,6 +14,7 @@ type SubComment = {
 type Comment = SubComment & { subcomments: SubComment[] };
 
 type Props = {
+  myProfileImgUrl?: string;
   comments: Comment[];
   onNewCommentRequest: (message: string) => void;
   onNewSubcommentRequest: (message: string, replyTo: string) => void;
@@ -54,6 +55,7 @@ function LineComment(props: CommentProps) {
 }
 
 function ReplyingTo(props: {
+  myProfileImgUrl?: string;
   onCloseButtonClick: () => void;
   onEnter: (message: string) => void;
 }) {
@@ -61,7 +63,14 @@ function ReplyingTo(props: {
 
   return (
     <div className={styles.comment}>
-      <div className={styles.profile}></div>
+      <div
+        className={styles.profile}
+        style={{
+          backgroundImage: `url("${
+            props.myProfileImgUrl ?? DefaultProfileImageUrl()
+          }")`
+        }}
+      ></div>
       <form
         onSubmit={(evt) => {
           evt.preventDefault();
@@ -102,7 +111,14 @@ export default function LineComments(props: Props) {
       </div>
       <div className={styles.commentsPopup}>
         <div className={styles.newComment}>
-          <div className={styles.profile}></div>
+          <div
+            className={styles.profile}
+            style={{
+              backgroundImage: `url("${
+                props.myProfileImgUrl ?? DefaultProfileImageUrl()
+              }")`
+            }}
+          ></div>
           <form
             onSubmit={(evt) => {
               evt.preventDefault();
@@ -123,6 +139,7 @@ export default function LineComments(props: Props) {
             <LineComment
               key={i.id}
               comment={i}
+              profileImageUrl={i.profileImgUrl}
               onReplyClick={() => setReplyingTo(i.id)}
             ></LineComment>,
             i.subcomments.length !== 0 || replyingTo === i.id ? (
@@ -133,6 +150,7 @@ export default function LineComments(props: Props) {
                       key={j.id}
                       subcomment
                       comment={j}
+                      profileImageUrl={j.profileImgUrl}
                       onReplyClick={() => setReplyingTo(i.id)}
                     ></LineComment>
                   ))
@@ -141,6 +159,7 @@ export default function LineComments(props: Props) {
                       ? [
                           <ReplyingTo
                             key={i.id + "_replying"}
+                            myProfileImgUrl={props.myProfileImgUrl}
                             onCloseButtonClick={() => setReplyingTo(null)}
                             onEnter={(message) =>
                               props.onNewSubcommentRequest(message, i.id)

@@ -8,16 +8,18 @@ import SharedCodeViewer from "./sharedCodeViewer";
 import { useEffect, useState } from "react";
 import { SharedSourceCode } from "@/app/api_client/studyroom";
 import { useParams } from "next/navigation";
-import apiClient from "@/app/api_client/api_client";
+import apiClient, { UserProfile } from "@/app/api_client/api_client";
 import { LineFeedbackWithChildren } from "@/app/api_client/feedbacks";
 import gravatarUrl from "@/app/gravatarUrl";
 import SolvedAcTier from "../../assignments/solved_ac_tier";
 import Article from "@/app/board/article";
+import DefaultProfileImageUrl from "@/app/default_profile_image_url";
 
 function ApiLineComment(props: {
   roomId: number;
   sharedSrcCodeId: number;
   lineNumber: number;
+  me: UserProfile | null;
 }) {
   const [loading, setLoading] = useState<"firstLoading" | "loading" | "loaded">(
     "firstLoading"
@@ -40,6 +42,11 @@ function ApiLineComment(props: {
 
   return (
     <LineComments
+      myProfileImgUrl={
+        props.me === null
+          ? DefaultProfileImageUrl()
+          : gravatarUrl(null, props.me.name, props.me.userId)
+      }
       comments={
         comments?.map((i) => ({
           authorId: i.writer.nickname,
@@ -88,6 +95,11 @@ export default function ViewCode() {
   const [sharedSourceCode, setSharedSourceCode] =
     useState<SharedSourceCode | null>(null);
   const [sourceCode, setSourceCode] = useState<string | null>(null);
+  const [me, setMe] = useState<UserProfile | null>(null);
+
+  useEffect(() => {
+    if (me === null) apiClient.me().then(setMe);
+  }, [me]);
 
   const studyroomClient = apiClient.studyroom(
     parseInt(params.studyId as string)
@@ -132,6 +144,7 @@ export default function ViewCode() {
           className={styles.code}
           onCommentClick={(line) => (
             <ApiLineComment
+              me={me}
               roomId={parseInt(params.studyId as string)}
               lineNumber={line}
               sharedSrcCodeId={parseInt(params.codeId as string)}
