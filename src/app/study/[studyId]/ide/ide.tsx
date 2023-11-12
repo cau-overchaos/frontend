@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "./ide.module.scss";
-import { Button, Input, Textarea } from "@/app/common/inputs";
+import { Button, Input, ProblemInput, Textarea } from "@/app/common/inputs";
 import ReactSelect from "react-select";
 import CodeEditor from "react-simple-code-editor";
 import { highlight, languages } from "prismjs";
@@ -13,12 +13,14 @@ import "prismjs/components/prism-python";
 import "prismjs/components/prism-java";
 import "prismjs/themes/prism.css";
 import { encode } from "html-entities";
+import apiClient, { ProblemProviderKey } from "@/app/api_client/api_client";
+import { useEffect, useState } from "react";
 
 export enum IdeChangeEventType {
   CodeTitle,
   Code,
   Input,
-  Output,
+  Output
 }
 
 export enum IdeHighlighterType {
@@ -26,7 +28,7 @@ export enum IdeHighlighterType {
   Cpp,
   Python,
   Java,
-  Javascript,
+  Javascript
 }
 
 export type Language = {
@@ -34,13 +36,17 @@ export type Language = {
   value: string;
   highlight?: IdeHighlighterType;
 };
-export type Problem = { label: string; value: number };
+export type Problem = {
+  title: string;
+  pid: number;
+  level: number;
+  provider: ProblemProviderKey;
+};
 
 type Props = {
   supportedLanuages: Language[];
   selectedLanguage?: Language;
-  availableProblems: Problem[];
-  selectedProblem?: Problem;
+  selectedProblem?: Pick<Problem, "pid" | "provider">;
   codeTitle: string;
   code: string;
   input: string;
@@ -50,7 +56,9 @@ type Props = {
   onCompile: () => void;
   onChange: (type: IdeChangeEventType, newValue: string) => void;
   onLanguageSelect: (newLanguage: Language | null) => void;
-  onProblemSelect: (newProblem: Problem | null) => void;
+  onProblemIdInput: (
+    newProblem: Pick<Problem, "pid" | "provider"> | null
+  ) => void;
 };
 
 export default function Ide(props: Props) {
@@ -71,16 +79,56 @@ export default function Ide(props: Props) {
     }
   };
 
+  const [problemDetail, setProblemDetail] = useState<Problem | null>(null);
+  useEffect(() => {
+    if (
+      props.selectedProblem &&
+      problemDetail?.pid !== props.selectedProblem.pid
+    ) {
+      apiClient
+        .getProblem(props.selectedProblem?.pid, props.selectedProblem?.provider)
+        .then((result) => {
+          setProblemDetail({
+            level: result.difficultyLevel,
+            pid: result.pid,
+            provider: result.provider,
+            title: result.title
+          });
+        })
+        .catch(() => {
+          setProblemDetail({
+            level: 0,
+            pid: props.selectedProblem?.pid!,
+            provider: props.selectedProblem?.provider ?? "BAEKJOON",
+            title: "????"
+          });
+        });
+    }
+  }, [props.selectedProblem?.pid]);
+
   return (
     <div className={styles.ide}>
       <div className={styles.hasCode}>
         <div className={styles.menu}>
-          <ReactSelect<Problem>
+          {/* <ReactSelect<Problem>
             placeholder="문제 제목"
             options={props.availableProblems}
             defaultValue={props.selectedProblem}
             onChange={(newValue) => props.onProblemSelect(newValue)}
-          ></ReactSelect>
+          ></ReactSelect> */}
+          <ProblemInput
+            placeholder="문제 번호"
+            problemLevel={problemDetail?.level}
+            problemTitle={problemDetail?.title}
+            className={styles.saveBtn}
+            value={props.selectedProblem?.pid}
+            onChange={(evt) => {
+              props.onProblemIdInput({
+                pid: evt.target.valueAsNumber,
+                provider: "BAEKJOON"
+              });
+            }}
+          ></ProblemInput>
           <Input
             placeholder="코드 이름"
             className={styles.saveBtn}
@@ -109,7 +157,7 @@ export default function Ide(props: Props) {
             className={styles.textarea}
             style={{
               fontFamily: '"Fira code", "Fira Mono", monospace',
-              fontSize: 20,
+              fontSize: 20
             }}
           />
         </div>

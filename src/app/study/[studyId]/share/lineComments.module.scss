@@ -20,8 +20,11 @@
       display: flex;
       flex-direction: row;
       gap: 10px;
-      input {
+      form {
         flex: 1;
+        input {
+          width: 100%;
+        }
       }
     }
 
@@ -57,8 +60,11 @@
           align-self: center;
         }
 
-        input {
+        form {
           flex: 1;
+          input {
+            width: 100%;
+          }
         }
 
         .content {
@@ -67,6 +73,10 @@
           overflow-wrap: anywhere;
           white-space: break-spaces;
           align-self: center;
+          .writer {
+            font-size: 70%;
+            color: #5e5e5e;
+          }
         }
       }
       .subcomments {

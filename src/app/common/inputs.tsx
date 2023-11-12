@@ -7,6 +7,7 @@ import {
 } from "react";
 import styles from "./inputs.module.scss";
 import classNames from "classnames";
+import SolvedAcTier from "../study/[studyId]/assignments/solved_ac_tier";
 
 type ButtonProps = {
   children: ReactNode;
@@ -24,6 +25,11 @@ type InputCommonProps<T> = {
   required?: boolean;
   small?: boolean;
   onChange?: ChangeEventHandler<T>;
+};
+
+type ProblemInputProps = InputCommonProps<HTMLInputElement> & {
+  problemTitle?: string;
+  problemLevel?: number;
 };
 
 type InputProps = InputCommonProps<HTMLInputElement> & {
@@ -48,6 +54,31 @@ export function Button(props: ButtonProps) {
     >
       {props.children}
     </button>
+  );
+}
+
+export function ProblemInput(props: ProblemInputProps) {
+  return (
+    <div
+      className={classNames(
+        styles.problemInput,
+        props.className,
+        props.small && styles.small
+      )}
+    >
+      <div className={styles.tier}>
+        <SolvedAcTier level={props.problemLevel ?? 0}></SolvedAcTier>
+      </div>
+      <input
+        required={props.required}
+        type="number"
+        name={props.name}
+        value={props.value}
+        onChange={props.onChange}
+        placeholder={props.placeholder}
+      ></input>
+      <div className={styles.problemTitle}>{props.problemTitle}</div>
+    </div>
   );
 }
 

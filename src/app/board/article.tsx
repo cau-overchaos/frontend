@@ -5,6 +5,7 @@ import {
   faAngleLeft,
   faCalendar,
   faClock,
+  faCode,
   faTag,
   faTags,
   faUser,
@@ -12,6 +13,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { ReactNode } from "react";
+import SolvedAcTier from "../study/[studyId]/assignments/solved_ac_tier";
 
 type Props = {
   title: string;
@@ -19,6 +21,11 @@ type Props = {
   startDate?: Date;
   endDate?: Date;
   tags?: string[];
+  problem?: {
+    difficultyLevel: number;
+    title: string;
+  };
+  language?: string;
   wantedCount?: number;
   date: Date;
   listHref: string;
@@ -61,6 +68,23 @@ export default function Article(props: Props) {
             ></FontAwesomeIcon>
             &nbsp;
             {props.tags?.join(", ")}
+          </li>
+        )}
+        {props.problem && (
+          <li>
+            <SolvedAcTier
+              className={styles.solvedAc}
+              level={props.problem.difficultyLevel}
+            ></SolvedAcTier>
+            &nbsp;
+            {props.problem.title}
+          </li>
+        )}
+        {props.language && (
+          <li>
+            <FontAwesomeIcon icon={faCode}></FontAwesomeIcon>
+            &nbsp;
+            {props.language}
           </li>
         )}
       </ul>

@@ -46,7 +46,10 @@ export default function CommentableCodeViewer(props: Props) {
           now = (now.parentNode as HTMLElement) ?? null;
           continue;
         }
-        if (now.className.includes(styles.comments)) {
+        if (
+          typeof now.className === "string" &&
+          now.className.includes(styles.comments)
+        ) {
           clickedComment = true;
           break;
         }
@@ -108,13 +111,16 @@ export default function CommentableCodeViewer(props: Props) {
           padding: props.linePadding
         }}
       >
-        <span dangerouslySetInnerHTML={{ __html: line }}></span>
+        <span
+          dangerouslySetInnerHTML={{ __html: line }}
+          className={styles.lineHtml}
+        ></span>
         <span className={styles.commentIcon}>
           &nbsp;
           <a href="#" onClick={activateComment(idx)}>
             <FontAwesomeIcon icon={faComment}></FontAwesomeIcon>
           </a>
-          <div className={styles.comments}>{props.onCommentClick(idx)}</div>
+          <div className={styles.comments}>{props.onCommentClick(idx + 1)}</div>
         </span>
       </div>
     ));

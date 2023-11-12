@@ -44,7 +44,7 @@ type ArticleProp = {
   href?: string;
   problem?: {
     tier: ReactNode;
-    id: string;
+    id?: number;
     title: string;
   };
   onClick?: () => void;
@@ -118,7 +118,8 @@ export function Article(props: ArticleProp) {
       {props.problem && (
         <td className={styles.problem}>
           <div className={styles.tier}>{props.problem.tier}</div>&nbsp;
-          {props.problem.id} - {props.problem.title}
+          {props.problem.id ? `${props.problem.id} - ` : ""}
+          {props.problem.title}
         </td>
       )}
       <td className={classNames(styles.fitAndCenter, styles.author)}>

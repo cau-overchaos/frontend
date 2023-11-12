@@ -1,5 +1,6 @@
 import { transform } from "typescript";
 import Assignment from "../study/[studyId]/assignments/assignment/assignment";
+import createStudyroomClient from "./studyroom";
 
 type SignUpForm = {
   userId: string;
@@ -16,19 +17,12 @@ export type UserProfile = {
   profileImage: string | null;
 };
 
-export type StudyroomMember = Omit<UserProfile, "password" | "profileImage"> & {
-  isValidJudgeAccount: boolean;
-  admin: boolean;
-  solvedTier: number;
-  isMe: boolean;
-};
-
 type LoginForm = {
   userId: string;
   password: string;
 };
 
-type ApiResponse = {
+export type ApiResponse = {
   status: string;
   data: any;
   message: string;
@@ -109,6 +103,16 @@ type AssignmentCreationForm = {
   }[];
 };
 
+export type ProgammingLanguage = {
+  id: number;
+  name: string;
+};
+
+export type ApiFetcher = (
+  pathname: string,
+  init?: RequestInit
+) => Promise<ApiResponse>;
+
 type EventType = "loggedInOrloggedOut";
 
 const transformDatetime = (dt: Date): string =>
@@ -136,6 +140,7 @@ class ApiClient {
     endpoint: string = process.env.NEXT_PUBLIC_API_ENDPOINT ?? "/api"
   ) {
     this.apiEndpoint = endpoint;
+    this.fetchApi = this.fetchApi.bind(this);
   }
 
   on(type: EventType, listener: Function) {
@@ -150,6 +155,24 @@ class ApiClient {
     this.listeners[type].forEach((i) => {
       setTimeout(i, 0);
     });
+  }
+
+  private async fetchApi(
+    pathname: string,
+    init?: RequestInit
+  ): Promise<ApiResponse> {
+    const response = await fetch(this.apiEndpoint + pathname, {
+      headers: {
+        "Content-Type": "application/json"
+      },
+      credentials: "include",
+      ...init
+    });
+
+    const data: ApiResponse = await response.json();
+    if (!response.ok) throw new Error(data.message);
+
+    return data;
   }
 
   async me(skipCache: boolean = false): Promise<UserProfile | null> {
@@ -176,105 +199,70 @@ class ApiClient {
   }
 
   async logout() {
-    const response = await fetch(this.apiEndpoint + "/logout", {
-      method: "POST",
-      credentials: "include"
+    await this.fetchApi("/logout", {
+      method: "POST"
     });
-
-    if (!response.ok) {
-      throw new Error(
-        `HTTP ${response.status}: ${(await response.json()).message}`
-      );
-    }
 
     this.cached = false;
     this.fireEvent("loggedInOrloggedOut");
   }
 
   async login(form: LoginForm) {
-    const response = await fetch(this.apiEndpoint + "/login", {
+    await this.fetchApi("/login", {
       method: "POST",
-      credentials: "include",
       body: JSON.stringify(form),
       headers: {
         "Content-Type": "application/json"
       }
     });
-
-    if (!response.ok) {
-      const responseData: ApiResponse = await response.json();
-      throw new Error(responseData.message);
-    }
 
     this.fireEvent("loggedInOrloggedOut");
   }
 
   async signUp(form: SignUpForm) {
-    const response = await fetch(this.apiEndpoint + "/signup", {
+    await this.fetchApi("/signup", {
       method: "POST",
-      credentials: "include",
       body: JSON.stringify(form),
       headers: {
         "Content-Type": "application/json"
       }
     });
-
-    if (!response.ok) {
-      const responseData: ApiResponse = await response.json();
-      throw new Error(responseData.message);
-    }
   }
 
   async studyrooms(type: "all" | "participated" = "all"): Promise<StudyRoom[]> {
     const endpoint =
-      type === "all"
-        ? this.apiEndpoint + "/studyrooms"
-        : this.apiEndpoint + "/studyrooms/participated";
-    const response = await fetch(endpoint, {
+      type === "all" ? "/studyrooms" : "/studyrooms/participated";
+    const response = await this.fetchApi(endpoint, {
       method: "GET",
-      credentials: "include",
       headers: {
         "Content-Type": "application/json"
       }
     });
 
-    const responseData: ApiResponse = await response.json();
-    if (!response.ok) {
-      throw new Error(responseData.message);
-    }
-
-    return responseData.data.studyRoomList;
+    return response.data.studyRoomList;
   }
 
   async createStudyroom(room: Omit<StudyRoom, "id">): Promise<StudyRoom> {
-    const response = await fetch(this.apiEndpoint + "/studyrooms", {
+    const response = await this.fetchApi("/studyrooms", {
       method: "POST",
-      credentials: "include",
       body: JSON.stringify(room),
       headers: {
         "Content-Type": "application/json"
       }
     });
 
-    const data: ApiResponse = await response.json();
-    if (!response.ok) throw new Error(data.message);
-
-    return data.data;
+    return response.data;
   }
 
   async getAssignments(studyRoomId: number): Promise<AssignmentInfo[]> {
-    const response = await fetch(
-      this.apiEndpoint + `/studyrooms/${studyRoomId}/assignments`,
+    const response = await this.fetchApi(
+      `/studyrooms/${studyRoomId}/assignments`,
       {
-        method: "GET",
-        credentials: "include"
+        method: "GET"
       }
     );
 
-    const data: ApiResponse = await response.json();
-    if (!response.ok) throw new Error(data.message);
-
-    return data.data.assignmentInfoList.map(
+    return response.data.assignmentInfoList.map(
       (i: any) =>
         ({
           problem: {
@@ -300,11 +288,10 @@ class ApiClient {
     studyRoomId: number,
     assignemnt: AssignmentCreationForm
   ): Promise<Assignment> {
-    const response = await fetch(
-      this.apiEndpoint + `/studyrooms/${studyRoomId}/assignments`,
+    const response = await this.fetchApi(
+      `/studyrooms/${studyRoomId}/assignments`,
       {
         method: "POST",
-        credentials: "include",
         body: JSON.stringify({
           ...assignemnt,
           dueDate: transformDatetime(assignemnt.dueDate),
@@ -317,136 +304,33 @@ class ApiClient {
       }
     );
 
-    const data: ApiResponse = await response.json();
-    if (!response.ok) throw new Error(data.message);
-
-    return data.data;
+    return response.data;
   }
 
   async getProblem(
     problemId: number,
     provider: ProblemProviderKey
   ): Promise<Problem> {
-    const response = await fetch(
-      this.apiEndpoint + `/problems?pid=${problemId}&provider=${provider}`,
+    const response = await this.fetchApi(
+      `/problems?pid=${problemId}&provider=${provider}`,
       {
-        method: "GET",
-        credentials: "include"
+        method: "GET"
       }
     );
 
-    const data: ApiResponse = await response.json();
-    if (!response.ok) throw new Error(data.message);
-
-    return data.data;
+    return response.data;
   }
 
   studyroom(roomId: number) {
-    const apiEndpoint = this.apiEndpoint;
-    return {
-      async getMembers(): Promise<StudyroomMember[]> {
-        const response = await fetch(
-          apiEndpoint + `/studyrooms/${roomId}/members`,
-          {
-            method: "GET",
-            credentials: "include"
-          }
-        );
+    return createStudyroomClient(this.fetchApi, roomId);
+  }
 
-        const data: ApiResponse = await response.json();
-        if (!response.ok) {
-          throw new Error(data.message);
-        }
+  async programmingLanguages(): Promise<ProgammingLanguage[]> {
+    const response = await this.fetchApi(`/programming-languages`, {
+      method: "GET"
+    });
 
-        return data.data.studyRoomMemberDtoList.map((i: any) => ({
-          userId: i.userId,
-          name: i.name,
-          isValidJudgeAccount: i.isValidJudgeAccount,
-          judgeAccount: i.judgeAccount,
-          solvedTier: i.tierLevel,
-          isMe: i.isMe,
-          admin: i.studyRoomRole === "MANAGER"
-        }));
-      },
-      async addMember(memberId: string): Promise<void> {
-        const response = await fetch(
-          apiEndpoint + `/studyrooms/${roomId}/members/add`,
-          {
-            method: "POST",
-            credentials: "include",
-            body: JSON.stringify({ targetUserId: memberId }),
-            headers: {
-              "Content-Type": "application/json"
-            }
-          }
-        );
-
-        const data: ApiResponse = await response.json();
-        if (!response.ok) {
-          throw new Error(data.message);
-        }
-      },
-      async deleteMember(memberId: string): Promise<void> {
-        const response = await fetch(
-          apiEndpoint + `/studyrooms/${roomId}/members/delete`,
-          {
-            method: "POST",
-            credentials: "include",
-            body: JSON.stringify({ targetUserId: memberId }),
-            headers: {
-              "Content-Type": "application/json"
-            }
-          }
-        );
-
-        const data: ApiResponse = await response.json();
-        if (!response.ok) {
-          throw new Error(data.message);
-        }
-      },
-      async toggleMemberAuthoritory(memberId: string): Promise<void> {
-        const response = await fetch(
-          apiEndpoint + `/studyrooms/${roomId}/members/authority`,
-          {
-            method: "POST",
-            credentials: "include",
-            body: JSON.stringify({ targetUserId: memberId }),
-            headers: {
-              "Content-Type": "application/json"
-            }
-          }
-        );
-
-        const data: ApiResponse = await response.json();
-        if (!response.ok) {
-          throw new Error(data.message);
-        }
-      },
-      async amIMember(): Promise<boolean> {
-        const response = await fetch(
-          apiEndpoint + `/studyrooms/${roomId}/is-member`,
-          {
-            method: "POST",
-            credentials: "include"
-          }
-        );
-
-        const data: ApiResponse = await response.json();
-        return data.status === "success";
-      },
-      async amIAdmin(): Promise<boolean> {
-        const response = await fetch(
-          apiEndpoint + `/studyrooms/${roomId}/is-manager`,
-          {
-            method: "POST",
-            credentials: "include"
-          }
-        );
-
-        const data: ApiResponse = await response.json();
-        return data.status === "success";
-      }
-    };
+    return response.data.problemResponseDtoList as ProgammingLanguage[];
   }
 }
 

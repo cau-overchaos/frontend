@@ -5,74 +5,181 @@ import { IdeHighlighterType } from "../../ide/ide";
 import styles from "./page.module.scss";
 import LineComments from "../lineComments";
 import SharedCodeViewer from "./sharedCodeViewer";
+import { useEffect, useState } from "react";
+import { SharedSourceCode } from "@/app/api_client/studyroom";
+import { useParams } from "next/navigation";
+import apiClient, { UserProfile } from "@/app/api_client/api_client";
+import { LineFeedbackWithChildren } from "@/app/api_client/feedbacks";
+import gravatarUrl from "@/app/gravatarUrl";
+import SolvedAcTier from "../../assignments/solved_ac_tier";
+import Article from "@/app/board/article";
+import DefaultProfileImageUrl from "@/app/default_profile_image_url";
+
+function ApiLineComment(props: {
+  roomId: number;
+  sharedSrcCodeId: number;
+  lineNumber: number;
+  me: UserProfile | null;
+}) {
+  const [loading, setLoading] = useState<"firstLoading" | "loading" | "loaded">(
+    "firstLoading"
+  );
+  const [comments, setComments] = useState<LineFeedbackWithChildren[] | null>(
+    null
+  );
+
+  useEffect(() => {
+    if (loading === "firstLoading") {
+      setLoading("loading");
+      apiClient
+        .studyroom(props.roomId)
+        .getSharedSourceCodeById(props.sharedSrcCodeId)
+        .then((i) => i.getFeedback().getFeedbacksByLineNumber(props.lineNumber))
+        .then(setComments)
+        .then((i) => setLoading("loaded"));
+    }
+  }, [loading]);
+
+  return (
+    <LineComments
+      myProfileImgUrl={
+        props.me === null
+          ? DefaultProfileImageUrl()
+          : gravatarUrl(null, props.me.name, props.me.userId)
+      }
+      comments={
+        comments?.map((i) => ({
+          authorId: i.writer.nickname,
+          content: i.comment,
+          id: i.id.toString(),
+          profileImgUrl: gravatarUrl(null, i.writer.nickname, i.writer.id),
+          subcomments: i.children.map((j) => ({
+            authorId: j.writer.nickname,
+            content: j.comment,
+            id: j.id.toString(),
+            profileImgUrl: gravatarUrl(null, j.writer.nickname, j.writer.id)
+          }))
+        })) ?? []
+      }
+      onNewCommentRequest={(message) => {
+        apiClient
+          .studyroom(props.roomId)
+          .getSharedSourceCodeById(props.sharedSrcCodeId)
+          .then((i) =>
+            i.getFeedback().postFeedback({
+              comment: message,
+              lineNumber: props.lineNumber
+            })
+          )
+          .then(() => setLoading("firstLoading"));
+      }}
+      onNewSubcommentRequest={(message, replyTo) => {
+        apiClient
+          .studyroom(props.roomId)
+          .getSharedSourceCodeById(props.sharedSrcCodeId)
+          .then((i) =>
+            i.getFeedback().postFeedback({
+              comment: message,
+              lineNumber: props.lineNumber,
+              replyToId: parseInt(replyTo)
+            })
+          )
+          .then(() => setLoading("firstLoading"));
+      }}
+    ></LineComments>
+  );
+}
 
 export default function ViewCode() {
+  const params = useParams();
+  const [sharedSourceCode, setSharedSourceCode] =
+    useState<SharedSourceCode | null>(null);
+  const [sourceCode, setSourceCode] = useState<string | null>(null);
+  const [me, setMe] = useState<UserProfile | null>(null);
+
+  useEffect(() => {
+    if (me === null) apiClient.me().then(setMe);
+  }, [me]);
+
+  const studyroomClient = apiClient.studyroom(
+    parseInt(params.studyId as string)
+  );
+
+  useEffect(() => {
+    if (sharedSourceCode === null) {
+      studyroomClient
+        .getSharedSourceCodeById(parseInt(params.codeId as string))
+        .then(setSharedSourceCode);
+    }
+  }, [sharedSourceCode]);
+
+  useEffect(() => {
+    if (sharedSourceCode !== null && sourceCode === null)
+      sharedSourceCode.getSourceCode().then(setSourceCode);
+  }, [sharedSourceCode, sourceCode]);
+
+  let highligherType: IdeHighlighterType = IdeHighlighterType.C;
+  if (sharedSourceCode?.language.name.toLowerCase().includes("python"))
+    highligherType = IdeHighlighterType.Python;
+  else if (sharedSourceCode?.language.name.toLowerCase().includes("javascript"))
+    highligherType = IdeHighlighterType.Javascript;
+  else if (sharedSourceCode?.language.name.toLowerCase().includes("java"))
+    highligherType = IdeHighlighterType.Java;
+  else if (sharedSourceCode?.language.name.toLowerCase().includes("c++"))
+    highligherType = IdeHighlighterType.Cpp;
+
   return (
     <div className={styles.container}>
+      <Article
+        author={sharedSourceCode?.writer.nickname ?? ""}
+        title={sharedSourceCode?.title ?? ""}
+        date={sharedSourceCode?.createdAt ?? new Date(1970, 1, 1)}
+        problem={sharedSourceCode?.problem}
+        language={sharedSourceCode?.language.name}
+        listHref="../share"
+      >
+        <SharedCodeViewer
+          code={sourceCode ?? ""}
+          highlight={highligherType}
+          className={styles.code}
+          onCommentClick={(line) => (
+            <ApiLineComment
+              me={me}
+              roomId={parseInt(params.studyId as string)}
+              lineNumber={line}
+              sharedSrcCodeId={parseInt(params.codeId as string)}
+            ></ApiLineComment>
+          )}
+        ></SharedCodeViewer>
+      </Article>
+    </div>
+  );
+
+  /*return (
+    <div className={styles.container}>
       <Button>풀이 비교</Button>
+      <h1>코드 공유 - {sharedSourceCode?.title ?? "로딩중"}</h1>
+      <p className={styles.description}>
+        문제:&nbsp;
+        <SolvedAcTier
+          level={sharedSourceCode?.problem.difficultyLevel ?? 0}
+        ></SolvedAcTier>
+        &nbsp;
+        {sharedSourceCode?.problem.title}
+        <br />
+      </p>
       <SharedCodeViewer
-        code={"#include <stdio.h>\n\nint main() {\n    //Do something\n}"}
-        highlight={IdeHighlighterType.C}
+        code={sourceCode ?? ""}
+        highlight={highligherType}
         className={styles.code}
-        onCommentClick={() => (
-          <LineComments
-            comments={[
-              {
-                authorId: "aa",
-                content: "asdf".repeat(10000),
-                id: "1",
-                profileImgUrl: null,
-                subcomments: [
-                  {
-                    authorId: "aa",
-                    content: "asdf",
-                    id: "2",
-                    profileImgUrl: null,
-                  },
-                  {
-                    authorId: "aa",
-                    content: "asdf".repeat(10000),
-                    id: "3",
-                    profileImgUrl: null,
-                  },
-                  {
-                    authorId: "aa",
-                    content: "asdf",
-                    id: "4",
-                    profileImgUrl: null,
-                  },
-                  {
-                    authorId: "aa",
-                    content: "asdf",
-                    id: "5",
-                    profileImgUrl: null,
-                  },
-                ],
-              },
-              {
-                authorId: "aa",
-                content: "asdf",
-                id: "6",
-                profileImgUrl: null,
-                subcomments: [],
-              },
-              {
-                authorId: "aa",
-                content: "asdf",
-                id: "7",
-                profileImgUrl: null,
-                subcomments: [],
-              },
-            ]}
-            onNewCommentRequest={(message) => {
-              console.log(message);
-            }}
-            onNewSubcommentRequest={(message, replyTo) => {
-              console.log(`${message} to ${replyTo}`);
-            }}
-          ></LineComments>
+        onCommentClick={(line) => (
+          <ApiLineComment
+            roomId={parseInt(params.studyId as string)}
+            lineNumber={line}
+            sharedSrcCodeId={parseInt(params.codeId as string)}
+          ></ApiLineComment>
         )}
       ></SharedCodeViewer>
     </div>
-  );
+  );*/
 }
