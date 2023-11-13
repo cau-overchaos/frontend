@@ -2,6 +2,7 @@ import {
   ApiFetcher,
   ApiResponse,
   ProblemProviderKey,
+  ProgammingLanguage,
   UserProfile
 } from "./api_client";
 import createFeedbackClient, { FeedbackClient } from "./feedbacks";
@@ -41,6 +42,18 @@ export type StudyroomMember = Omit<UserProfile, "password" | "profileImage"> & {
   admin: boolean;
   solvedTier: number;
   isMe: boolean;
+};
+
+export type DetailedStudyroomInfo = {
+  id: number;
+  title: string;
+  description: string;
+  userCount: {
+    current: number;
+    maximum: number;
+  };
+  managerUserIds: string[];
+  programmingLanguages: ProgammingLanguage[];
 };
 
 export default function createStudyroomClient(
@@ -131,6 +144,23 @@ export default function createStudyroomClient(
       } catch {
         return false;
       }
+    },
+    async getDetails(): Promise<DetailedStudyroomInfo> {
+      const data = await fetchApi(`/studyrooms/${roomId}`);
+      const { description, id, title } = data.data;
+
+      return {
+        description,
+        id,
+        title,
+        userCount: {
+          current: data.data.curUserCnt,
+          maximum: data.data.maxUserCnt
+        },
+        managerUserIds: data.data.managerUserIdList,
+        programmingLanguages:
+          data.data.programmingLanguageListResponseDto.problemResponseDtoList
+      };
     },
     async shareSourceCode(
       form: SharedSourceCodeCreationForm
