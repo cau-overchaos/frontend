@@ -242,7 +242,9 @@ class ApiClient {
     return response.data.studyRoomList;
   }
 
-  async createStudyroom(room: Omit<StudyRoom, "id">): Promise<StudyRoom> {
+  async createStudyroom(
+    room: Omit<StudyRoom, "id"> & { programmingLanguageList: number[] }
+  ): Promise<StudyRoom> {
     const response = await this.fetchApi("/studyrooms", {
       method: "POST",
       body: JSON.stringify(room),
