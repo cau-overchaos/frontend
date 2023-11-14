@@ -339,7 +339,8 @@ class ApiClient {
       method: "GET"
     });
 
-    return response.data.problemResponseDtoList as ProgammingLanguage[];
+    return response.data
+      .programmingLanguageResponseDtoList as ProgammingLanguage[];
   }
 
   recruitPosts() {
