@@ -27,7 +27,7 @@ export default function StudyroomDetails({
         <ul className={styles.details}>
           <li>
             <FontAwesomeIcon icon={faUserCog}></FontAwesomeIcon>&nbsp;관리자:{" "}
-            {details.managerUserIds}
+            {details.managerUserIds.join(", ")}
           </li>
           <li>
             <FontAwesomeIcon icon={faCode}></FontAwesomeIcon>&nbsp; 사용
