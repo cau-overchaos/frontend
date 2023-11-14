@@ -83,6 +83,7 @@ export default function WantedArticlePage() {
             }
             nickname={i.writer.name}
             comment={i.comment}
+            key={i.id}
             onInviteClick={() => {
               inviteUser(i.writer.id);
             }}

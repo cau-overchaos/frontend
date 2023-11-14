@@ -1,7 +1,7 @@
 import {
   ApiFetcher,
-  ApiResponse,
   ProblemProviderKey,
+  ProgammingLanguage,
   UserProfile
 } from "./api_client";
 import createFeedbackClient, { FeedbackClient } from "./feedbacks";
@@ -131,6 +131,12 @@ export default function createStudyroomClient(
       } catch {
         return false;
       }
+    },
+    async programmingLanguages(): Promise<ProgammingLanguage[]> {
+      const result = await fetchApi(
+        `/studyrooms/${roomId}/programming-languages`
+      );
+      return result.data.problemResponseDtoList;
     },
     async shareSourceCode(
       form: SharedSourceCodeCreationForm

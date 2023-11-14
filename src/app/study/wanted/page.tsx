@@ -25,6 +25,7 @@ export default function WantedListPage() {
             title={i.title}
             href={`/study/wanted/${i.id}`}
             author={i.writer.name}
+            key={i.id}
           ></Article>
         ))}
       </Board>
