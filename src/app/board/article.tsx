@@ -9,7 +9,7 @@ import {
   faTag,
   faTags,
   faUser,
-  faUserPlus
+  faUsers
 } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { ReactNode } from "react";
@@ -17,7 +17,7 @@ import SolvedAcTier from "../study/[studyId]/assignments/solved_ac_tier";
 
 type Props = {
   title: string;
-  author: string;
+  author?: string;
   startDate?: Date;
   endDate?: Date;
   tags?: string[];
@@ -26,7 +26,10 @@ type Props = {
     title: string;
   };
   language?: string;
-  wantedCount?: number;
+  userCount?: {
+    maximum: number;
+    current: number;
+  };
   date: Date;
   listHref: string;
   children: ReactNode;
@@ -45,9 +48,11 @@ export default function Article(props: Props) {
           <FontAwesomeIcon icon={faClock}></FontAwesomeIcon>{" "}
           {formatDate(props.date, true)}
         </li>
-        <li>
-          <FontAwesomeIcon icon={faUser}></FontAwesomeIcon> {props.author}
-        </li>
+        {props.author && (
+          <li>
+            <FontAwesomeIcon icon={faUser}></FontAwesomeIcon> {props.author}
+          </li>
+        )}
         {(props.startDate || props.endDate) && (
           <li>
             <FontAwesomeIcon icon={faCalendar}></FontAwesomeIcon>&nbsp;
@@ -55,10 +60,10 @@ export default function Article(props: Props) {
             {props.endDate ? formatDate(props.endDate) : ""}
           </li>
         )}
-        {props.wantedCount && (
+        {props.userCount?.maximum && props.userCount.current && (
           <li>
-            <FontAwesomeIcon icon={faUserPlus}></FontAwesomeIcon>&nbsp;
-            {props.wantedCount}인 필요
+            <FontAwesomeIcon icon={faUsers}></FontAwesomeIcon>&nbsp;
+            {props.userCount.current} / {props.userCount?.maximum}
           </li>
         )}
         {(props.tags?.length ?? 0) > 0 && (

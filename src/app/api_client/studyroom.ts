@@ -1,6 +1,5 @@
 import {
   ApiFetcher,
-  ApiResponse,
   ProblemProviderKey,
   ProgammingLanguage,
   UserProfile
@@ -161,6 +160,12 @@ export default function createStudyroomClient(
         programmingLanguages:
           data.data.programmingLanguageListResponseDto.problemResponseDtoList
       };
+    },
+    async programmingLanguages(): Promise<ProgammingLanguage[]> {
+      const result = await fetchApi(
+        `/studyrooms/${roomId}/programming-languages`
+      );
+      return result.data.problemResponseDtoList;
     },
     async shareSourceCode(
       form: SharedSourceCodeCreationForm

@@ -1,6 +1,7 @@
 import { transform } from "typescript";
 import Assignment from "../study/[studyId]/assignments/assignment/assignment";
 import createStudyroomClient from "./studyroom";
+import createRecruitClient from "./recruits";
 
 type SignUpForm = {
   userId: string;
@@ -229,9 +230,15 @@ class ApiClient {
     });
   }
 
-  async studyrooms(type: "all" | "participated" = "all"): Promise<StudyRoom[]> {
+  async studyrooms(
+    type: "all" | "participated" | "managing" = "all"
+  ): Promise<StudyRoom[]> {
     const endpoint =
-      type === "all" ? "/studyrooms" : "/studyrooms/participated";
+      type === "all"
+        ? "/studyrooms"
+        : type === "managing"
+        ? "/studyrooms/i-am-manager"
+        : "/studyrooms/participated";
     const response = await this.fetchApi(endpoint, {
       method: "GET",
       headers: {
@@ -242,7 +249,9 @@ class ApiClient {
     return response.data.studyRoomList;
   }
 
-  async createStudyroom(room: Omit<StudyRoom, "id">): Promise<StudyRoom> {
+  async createStudyroom(
+    room: Omit<StudyRoom, "id"> & { programmingLanguageList: number[] }
+  ): Promise<StudyRoom> {
     const response = await this.fetchApi("/studyrooms", {
       method: "POST",
       body: JSON.stringify(room),
@@ -331,6 +340,10 @@ class ApiClient {
     });
 
     return response.data.problemResponseDtoList as ProgammingLanguage[];
+  }
+
+  recruitPosts() {
+    return createRecruitClient(this.fetchApi);
   }
 }
 
