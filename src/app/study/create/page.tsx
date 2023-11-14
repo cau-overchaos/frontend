@@ -18,6 +18,10 @@ export default function CreationForm() {
 
   const onSubmit: FormEventHandler<HTMLFormElement> = (evt) => {
     evt.preventDefault();
+    if (selectedLanguages.length === 0) {
+      return alert("프로그래밍 언어를 선택해주세요!");
+    }
+
     apiClient
       .createStudyroom({
         title,
