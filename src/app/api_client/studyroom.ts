@@ -166,7 +166,7 @@ export default function createStudyroomClient(
       const result = await fetchApi(
         `/studyrooms/${roomId}/programming-languages`
       );
-      return result.data.problemResponseDtoList;
+      return result.data.programmingLanguageResponseDtoList;
     },
     async shareSourceCode(
       form: SharedSourceCodeCreationForm
