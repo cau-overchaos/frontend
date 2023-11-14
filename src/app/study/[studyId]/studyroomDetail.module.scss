@@ -1,0 +1,31 @@
+@use "sass:color";
+@import "../../variable.scss";
+
+.root {
+  padding: 40px;
+  h1 {
+    padding: 0px;
+    margin: 0px;
+  }
+  p {
+    padding: 0em 1em;
+    margin: 1em 0em;
+    .details {
+      list-style: none;
+      padding: 0em 1.5em;
+      border-left: 3px solid color.scale($primary_theme_color, $lightness: 50%);
+    }
+  }
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  svg {
+    height: 3em;
+    width: auto;
+  }
+  width: 100%;
+  height: 100%;
+}
