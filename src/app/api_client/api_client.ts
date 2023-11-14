@@ -230,9 +230,15 @@ class ApiClient {
     });
   }
 
-  async studyrooms(type: "all" | "participated" = "all"): Promise<StudyRoom[]> {
+  async studyrooms(
+    type: "all" | "participated" | "managing" = "all"
+  ): Promise<StudyRoom[]> {
     const endpoint =
-      type === "all" ? "/studyrooms" : "/studyrooms/participated";
+      type === "all"
+        ? "/studyrooms"
+        : type === "managing"
+        ? "/studyrooms/i-am-manager"
+        : "/studyrooms/participated";
     const response = await this.fetchApi(endpoint, {
       method: "GET",
       headers: {
