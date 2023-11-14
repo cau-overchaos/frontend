@@ -1,6 +1,7 @@
 import { transform } from "typescript";
 import Assignment from "../study/[studyId]/assignments/assignment/assignment";
 import createStudyroomClient from "./studyroom";
+import createRecruitClient from "./recruits";
 
 type SignUpForm = {
   userId: string;
@@ -331,6 +332,10 @@ class ApiClient {
     });
 
     return response.data.problemResponseDtoList as ProgammingLanguage[];
+  }
+
+  recruitPosts() {
+    return createRecruitClient(this.fetchApi);
   }
 }
 
