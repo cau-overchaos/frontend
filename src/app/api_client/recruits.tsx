@@ -65,7 +65,7 @@ export default function createRecruitClient(fetch: ApiFetcher) {
       managerUserId: resp.studyRoomInfoResponseDto.managerUserIdList,
       programmingLanguages:
         resp.studyRoomInfoResponseDto.programmingLanguageListResponseDto
-          .problemResponseDtoList,
+          .programmingLanguageResponseDtoList,
       userCount: {
         current: resp.studyRoomInfoResponseDto.curUserCnt,
         maximum: resp.studyRoomInfoResponseDto.maxUserCnt
