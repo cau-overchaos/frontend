@@ -158,7 +158,8 @@ export default function createStudyroomClient(
         },
         managerUserIds: data.data.managerUserIdList,
         programmingLanguages:
-          data.data.programmingLanguageListResponseDto.problemResponseDtoList
+          data.data.programmingLanguageListResponseDto
+            .programmingLanguageResponseDtoList
       };
     },
     async programmingLanguages(): Promise<ProgammingLanguage[]> {
