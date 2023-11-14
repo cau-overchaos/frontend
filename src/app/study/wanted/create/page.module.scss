@@ -1,0 +1,38 @@
+.form {
+  margin: 0 auto;
+  .row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+  }
+  .field {
+    margin: 0.5em 0em;
+    &.content {
+      textarea {
+        width: 100%;
+        min-height: 15em;
+      }
+    }
+    &.title {
+      flex: 1;
+      input {
+        width: 100%;
+        min-width: 20em;
+        box-sizing: border-box;
+      }
+    }
+    .label {
+      display: block;
+      margin-bottom: 0.25em;
+    }
+    .select {
+      width: fit-content;
+    }
+    :global(.react-datetime-picker__wrapper) {
+      padding: 2px 5px;
+      border-radius: 15px;
+    }
+  }
+}

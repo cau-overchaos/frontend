@@ -157,7 +157,7 @@ export default function LineComments(props: Props) {
                       comment={j}
                       profileImageUrl={j.profileImgUrl}
                       onReplyClick={() => setReplyingTo(i.id)}
-                      writerName={i.authorId}
+                      writerName={j.authorId}
                     ></LineComment>
                   ))
                   .concat(

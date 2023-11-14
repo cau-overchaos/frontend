@@ -101,7 +101,7 @@ export default function CreationForm() {
             <label className={styles.label}>언어</label>
             <div className={styles.langs}>
               {availableLanguages.map((i) => (
-                <label>
+                <label key={i.id}>
                   <input
                     type="checkbox"
                     name="lang"

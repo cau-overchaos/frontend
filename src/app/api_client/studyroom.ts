@@ -1,6 +1,5 @@
 import {
   ApiFetcher,
-  ApiResponse,
   ProblemProviderKey,
   ProgammingLanguage,
   UserProfile
