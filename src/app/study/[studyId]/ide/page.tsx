@@ -33,9 +33,15 @@ export default function PeoplePage() {
       : IdeHighlighterType.C // fallback to c
   });
 
+  const studyroomClient = apiClient.studyroom(
+    parseInt(params.studyId as string)
+  );
+
   useEffect(() => {
     if (availableLanguages.length === 0)
-      apiClient.programmingLanguages().then((i) => setAvailableLanguages(i));
+      studyroomClient
+        .programmingLanguages()
+        .then((i) => setAvailableLanguages(i));
   }, [availableLanguages]);
 
   return (
@@ -64,8 +70,7 @@ export default function PeoplePage() {
         if (selectedLanguage === null)
           return alert("프로그래밍 언어를 선택해주세요!");
 
-        apiClient
-          .studyroom(parseInt(params.studyId as string))
+        studyroomClient
           .shareSourceCode({
             languageId: selectedLanguage!.id,
             problem: {

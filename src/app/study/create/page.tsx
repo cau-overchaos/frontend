@@ -3,22 +3,32 @@
 import { Button, Input, Textarea } from "@/app/common/inputs";
 import MainLayout from "@/app/main_layout";
 import styles from "./page.module.scss";
-import { FormEventHandler, useState } from "react";
-import apiClient from "@/app/api_client/api_client";
+import { FormEventHandler, useEffect, useState } from "react";
+import apiClient, { ProgammingLanguage } from "@/app/api_client/api_client";
 
 export default function CreationForm() {
   const [title, setTitle] = useState<string>("");
   const [visible, setVisible] = useState<boolean>(true);
   const [maximum, setMaximum] = useState<number>(10);
   const [description, setDescription] = useState<string>("");
+  const [availableLanguages, setAvailableLanguages] = useState<
+    ProgammingLanguage[]
+  >([]);
+  const [selectedLanguages, setSelectedLanguages] = useState<number[]>([]);
+
   const onSubmit: FormEventHandler<HTMLFormElement> = (evt) => {
     evt.preventDefault();
+    if (selectedLanguages.length === 0) {
+      return alert("프로그래밍 언어를 선택해주세요!");
+    }
+
     apiClient
       .createStudyroom({
         title,
         studyRoomVisibility: visible ? "PUBLIC" : "PRIVATE",
         maxUserCnt: maximum,
-        description
+        description,
+        programmingLanguageList: selectedLanguages
       })
       .then((studyRoom) => {
         location.href = `/study/${studyRoom.id}`;
@@ -27,6 +37,11 @@ export default function CreationForm() {
         alert(`오류가 발생했습니다: ${err.message}`);
       });
   };
+
+  useEffect(() => {
+    if (availableLanguages.length === 0)
+      apiClient.programmingLanguages().then(setAvailableLanguages);
+  }, [availableLanguages]);
 
   return (
     <MainLayout>
@@ -81,6 +96,35 @@ export default function CreationForm() {
               value={description}
               onChange={(evt) => setDescription(evt.target.value)}
             ></Textarea>
+          </div>
+          <div className={styles.field}>
+            <label className={styles.label}>언어</label>
+            <div className={styles.langs}>
+              {availableLanguages.map((i) => (
+                <label>
+                  <input
+                    type="checkbox"
+                    name="lang"
+                    value={i.id}
+                    key={i.id}
+                    checked={selectedLanguages.includes(i.id)}
+                    onChange={(evt) => {
+                      if (evt.target.checked)
+                        setSelectedLanguages([...selectedLanguages, i.id]);
+                      else {
+                        const newval = JSON.parse(
+                          JSON.stringify(selectedLanguages)
+                        );
+                        while (newval.includes(i.id))
+                          newval.splice(newval.indexOf(i.id), 1);
+                        setSelectedLanguages(newval);
+                      }
+                    }}
+                  ></input>
+                  &nbsp;{i.name}
+                </label>
+              ))}
+            </div>
           </div>
           <div className={styles.field}>
             <Button submit>생성</Button>
