@@ -39,8 +39,11 @@
     border: $primary_theme_color 8px solid;
     border-radius: 15px;
     flex: 1;
+    overflow-y: scroll;
+    @include navbarHeight;
+    max-height: calc(100vh - 120px - var(--navbar-height));
     .textarea {
-      height: 100%;
+      height: max-content;
       min-width: 500px;
       min-height: 100%;
     }
