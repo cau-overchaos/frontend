@@ -7,6 +7,7 @@ import MainLayout from "@/app/main_layout";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Comments, { Comment } from "./comments";
+import gravatarUrl from "@/app/gravatarUrl";
 
 export default function WantedArticlePage() {
   const params = useParams();
@@ -84,6 +85,7 @@ export default function WantedArticlePage() {
             nickname={i.writer.name}
             comment={i.comment}
             key={i.id}
+            profileImgUrl={gravatarUrl(null, i.writer.id, i.writer.name)}
             onInviteClick={() => {
               inviteUser(i.writer.id);
             }}

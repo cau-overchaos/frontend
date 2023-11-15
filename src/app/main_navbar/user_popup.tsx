@@ -45,7 +45,9 @@ export default function UserPopup(props: propsType) {
                   <span>로그아웃</span>
                 </a>
               ) : (
-                <Link href="/login">
+                <Link
+                  href={`/login?redirect=${encodeURIComponent(location.href)}`}
+                >
                   <FontAwesomeIcon
                     className={styles.icon}
                     icon={faSignIn}

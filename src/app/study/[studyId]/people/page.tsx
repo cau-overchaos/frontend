@@ -61,6 +61,7 @@ export default function PeoplePage() {
           admin={i.admin}
           bojId={i.judgeAccount}
           nickname={i.name}
+          userId={i.userId}
           solvedTier={i.solvedTier}
           key={i.userId}
           onAuthorityClick={() =>

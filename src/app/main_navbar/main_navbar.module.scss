@@ -51,11 +51,25 @@
         }
       }
 
-      svg {
+      svg,
+      .profileImg {
         color: black;
         height: 36px;
+
+        &.profileImg {
+          display: inline-block;
+          border-radius: 18px;
+          width: 36px;
+          background-size: cover;
+          margin-bottom: -3px;
+        }
+
         @media screen and (max-width: 500px) {
           height: 24px;
+          &.profileImg {
+            border-radius: 12px;
+            width: 24px;
+          }
         }
       }
     }

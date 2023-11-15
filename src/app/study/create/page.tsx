@@ -5,6 +5,7 @@ import MainLayout from "@/app/main_layout";
 import styles from "./page.module.scss";
 import { FormEventHandler, useEffect, useState } from "react";
 import apiClient, { ProgammingLanguage } from "@/app/api_client/api_client";
+import navigateToLogin from "@/app/navgiateToLogin";
 
 export default function CreationForm() {
   const [title, setTitle] = useState<string>("");
@@ -15,6 +16,7 @@ export default function CreationForm() {
     ProgammingLanguage[]
   >([]);
   const [selectedLanguages, setSelectedLanguages] = useState<number[]>([]);
+  const [loginChecked, setLoginChecked] = useState<boolean>(false);
 
   const onSubmit: FormEventHandler<HTMLFormElement> = (evt) => {
     evt.preventDefault();
@@ -42,6 +44,18 @@ export default function CreationForm() {
     if (availableLanguages.length === 0)
       apiClient.programmingLanguages().then(setAvailableLanguages);
   }, [availableLanguages]);
+
+  useEffect(() => {
+    if (!loginChecked) {
+      apiClient.me(true).then((result) => {
+        if (result === null) {
+          alert("로그인해주세요!");
+          navigateToLogin();
+        }
+        setLoginChecked(true);
+      });
+    }
+  }, [loginChecked]);
 
   return (
     <MainLayout>
