@@ -24,6 +24,7 @@ export default function DiffCodeViewer(props: Props) {
         className={styles.left}
         diffs={props.left.diffs}
         onCommentClick={() => <div></div>}
+        commentCount={{}}
       ></CommentableCodeViewer>
       <CommentableCodeViewer
         linePadding="0px 25px"
@@ -32,6 +33,7 @@ export default function DiffCodeViewer(props: Props) {
         className={styles.right}
         diffs={props.right.diffs}
         onCommentClick={() => <div></div>}
+        commentCount={{}}
       ></CommentableCodeViewer>
     </div>
   );
