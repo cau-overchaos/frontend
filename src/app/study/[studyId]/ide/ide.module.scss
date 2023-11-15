@@ -15,10 +15,21 @@
     flex-direction: column;
     gap: 10px;
     &.hasCode {
-      flex: 2;
+      flex: 10000;
+      flex-basis: 0px;
     }
     &.hasIo {
       flex: 1;
+      flex-basis: 400px;
+      flex-direction: column;
+      display: flex;
+      width: fit-content;
+      & > * {
+        flex: 1;
+        max-height: calc(100vh - var(--navbar-height) - 220px);
+        overflow-y: scroll;
+        overflow-x: scroll;
+      }
     }
   }
   .menu {
@@ -53,6 +64,8 @@
   .output {
     border: $primary_theme_color 8px solid;
     border-radius: 15px;
+    word-break: break-all;
+    flex-basis: 0px;
     flex: 1;
     h1 {
       margin: 10px;
@@ -60,11 +73,35 @@
       line-height: 1.25em;
     }
 
-    textarea {
-      min-width: 400px;
+    textarea,
+    .outputContainer,
+    .loading {
       width: 100%;
       height: calc(100% - 1.25em - 20px);
-      overflow-y: scroll;
+      &.loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        & > * {
+          height: 3em;
+        }
+      }
+      &.outputContainer {
+        padding: 0.6em;
+        box-sizing: border-box;
+        white-space: pre-wrap;
+
+        .errorOutput,
+        .infoOutput {
+          font-size: 0.8em;
+          &.errorOutput {
+            color: darkred;
+          }
+          &.infoOutput {
+            color: gray;
+          }
+        }
+      }
     }
   }
 }

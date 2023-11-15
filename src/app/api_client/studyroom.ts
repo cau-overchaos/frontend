@@ -55,6 +55,58 @@ export type DetailedStudyroomInfo = {
   programmingLanguages: ProgammingLanguage[];
 };
 
+type CompileApiResponse = {
+  resultType: "execute_success" | "execute_fail" | "compile_fail";
+  result: {
+    cpu_time: string;
+    errorDescription: string;
+    exit_code: string;
+    output: string;
+    user_time: string;
+  };
+};
+
+type CompileResultData = {
+  cpuTime: string;
+  exitCode: number;
+  output: string;
+  userTime: string;
+  errorDescription: string;
+};
+
+type CompileSuccessResult = Pick<
+  CompileResultData,
+  "cpuTime" | "exitCode" | "output" | "userTime"
+>;
+
+type CompileFailureResult = Pick<
+  CompileResultData,
+  "exitCode" | "errorDescription"
+>;
+
+type ExecuteFailureResult = Pick<
+  CompileResultData,
+  "cpuTime" | "exitCode" | "userTime" | "errorDescription"
+>;
+
+type CompileResult = {
+  type: "success" | "compile_failure" | "execution_failure";
+  data: Partial<CompileResultData>;
+} & (
+  | {
+      type: "success";
+      data: CompileSuccessResult;
+    }
+  | {
+      type: "compile_failure";
+      data: CompileFailureResult;
+    }
+  | {
+      type: "execution_failure";
+      data: ExecuteFailureResult;
+    }
+);
+
 export default function createStudyroomClient(
   fetchApi: ApiFetcher,
   roomId: number
@@ -239,6 +291,56 @@ export default function createStudyroomClient(
             createFeedbackClient(fetchApi, roomId, i.sharedSourceCodeId)
         })
       );
+    },
+
+    async compile(
+      sourceCode: string,
+      languageId: number,
+      input: string
+    ): Promise<CompileResult> {
+      const response = await fetchApi(`/studyrooms/${roomId}/compile`, {
+        method: "POST",
+        body: JSON.stringify({
+          input,
+          sourceCodeText: sourceCode,
+          programmingLanguageId: languageId
+        })
+      });
+
+      const apiData = response.data as CompileApiResponse;
+
+      switch (apiData.resultType) {
+        case "execute_success":
+          return {
+            type: "success",
+            data: {
+              cpuTime: apiData.result.cpu_time,
+              exitCode: parseInt(apiData.result.exit_code),
+              output: apiData.result.output,
+              userTime: apiData.result.user_time
+            }
+          };
+        case "compile_fail":
+          return {
+            type: "compile_failure",
+            data: {
+              errorDescription: apiData.result.errorDescription,
+              exitCode: parseInt(apiData.result.exit_code)
+            }
+          };
+        case "execute_fail":
+          return {
+            type: "execution_failure",
+            data: {
+              cpuTime: apiData.result.cpu_time,
+              exitCode: parseInt(apiData.result.exit_code),
+              errorDescription: apiData.result.errorDescription,
+              userTime: apiData.result.user_time
+            }
+          };
+        default:
+          throw new Error("Unexcepted result_type " + apiData.resultType);
+      }
     }
   };
 }
