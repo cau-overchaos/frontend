@@ -14,6 +14,7 @@ type LeftMenuItemProps = {
   icon: IconDefinition;
   href: string;
   text: string;
+  active?: boolean;
 };
 
 export default function LeftMenu(props: LeftMenuProps) {
@@ -31,7 +32,13 @@ export function LeftMenuItem(props: LeftMenuItemProps) {
         <div className={styles.icon}>
           <FontAwesomeIcon icon={props.icon}></FontAwesomeIcon>
         </div>
-        <div className={classNames(styles.text, responsiveness.desktopOnly)}>
+        <div
+          className={classNames(
+            styles.text,
+            responsiveness.desktopOnly,
+            props.active && styles.active
+          )}
+        >
           {props.text}
         </div>
       </Link>
