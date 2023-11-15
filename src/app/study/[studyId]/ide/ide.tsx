@@ -15,6 +15,8 @@ import "prismjs/themes/prism.css";
 import { encode } from "html-entities";
 import apiClient, { ProblemProviderKey } from "@/app/api_client/api_client";
 import { useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 export enum IdeChangeEventType {
   CodeTitle,
@@ -51,6 +53,9 @@ type Props = {
   code: string;
   input: string;
   output: string;
+  errorOutput?: string;
+  infoOutput?: string;
+  loadingOutput?: boolean;
 
   onSave: () => void;
   onCompile: () => void;
@@ -175,13 +180,29 @@ export default function Ide(props: Props) {
         </div>
         <div className={styles.output}>
           <h1>출력</h1>
-          <Textarea
-            noBackground
-            value={props.output}
-            onChange={(evt) =>
-              props.onChange(IdeChangeEventType.Output, evt.target.value)
-            }
-          ></Textarea>
+          {props.loadingOutput ? (
+            <div className={styles.loading}>
+              <FontAwesomeIcon icon={faSpinner} spin></FontAwesomeIcon>
+            </div>
+          ) : (
+            <div className={styles.outputContainer}>
+              {props.output}
+              {props.errorOutput && (
+                <>
+                  {props.output !== "" && <br></br>}
+                  <span className={styles.errorOutput}>
+                    {props.errorOutput}
+                  </span>
+                </>
+              )}
+              {props.infoOutput && (
+                <>
+                  {props.output + (props.errorOutput ?? "") !== "" && <br></br>}
+                  <span className={styles.infoOutput}>{props.infoOutput}</span>
+                </>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>

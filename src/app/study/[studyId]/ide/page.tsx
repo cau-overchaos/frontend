@@ -16,7 +16,17 @@ export default function PeoplePage() {
     "#include <stdio.h>\n\nint main() {\n\n}"
   );
   const [programInput, setProgramInput] = useState<string>("3 1 2 3");
-  const [programOutput, setProgramOutput] = useState<string>("6");
+  const [programOutputs, setProgramOutputs] = useState<{
+    output: string;
+    loading: boolean;
+    info: string;
+    error: string;
+  }>({
+    output: "6",
+    loading: false,
+    info: "",
+    error: ""
+  });
   const [title, setTitle] = useState<string>("");
   const [selectedPid, setSelectedPid] = useState<number>(1001);
   const langMap = (i: ProgammingLanguage): Language => ({
@@ -46,7 +56,54 @@ export default function PeoplePage() {
 
   return (
     <Ide
-      onCompile={() => {}}
+      onCompile={() => {
+        if (selectedLanguage === null)
+          return alert("프로그래밍 언어를 선택해주세요!");
+
+        setProgramOutputs({
+          ...programOutputs,
+          loading: true
+        });
+        studyroomClient
+          .compile(sourceCode, selectedLanguage.id, programInput)
+          .then((result) => {
+            console.log(result);
+            switch (result.type) {
+              case "success":
+                setProgramOutputs({
+                  error: "",
+                  info: `종료코드: ${result.data.exitCode} / 실행시간: ${result.data.userTime}`,
+                  loading: false,
+                  output: result.data.output
+                });
+                break;
+              case "compile_failure":
+                setProgramOutputs({
+                  error: result.data.errorDescription,
+                  info: "",
+                  loading: false,
+                  output: ""
+                });
+                break;
+              case "execution_failure":
+                setProgramOutputs({
+                  error: `종료코드: ${result.data.exitCode} / 실행시간: ${result.data.userTime}\n${result.data.errorDescription}`,
+                  info: "",
+                  loading: false,
+                  output: ""
+                });
+                break;
+            }
+          })
+          .catch((err) => {
+            setProgramOutputs({
+              error: "예기치 못한 오류가 발생했습니다!\n" + err.message,
+              info: "",
+              loading: false,
+              output: ""
+            });
+          });
+      }}
       onLanguageSelect={(lang) => {
         setSelectedLanguages(
           availableLanguages.find((i) => i.id.toString() == lang?.value)!
@@ -63,7 +120,10 @@ export default function PeoplePage() {
       codeTitle={title}
       code={sourceCode}
       input={programInput}
-      output={programOutput}
+      output={programOutputs.output}
+      errorOutput={programOutputs.error}
+      infoOutput={programOutputs.info}
+      loadingOutput={programOutputs.loading}
       onSave={() => {
         if (title.trim() === "") return alert("제목을 입력해주세요!");
 
@@ -93,9 +153,6 @@ export default function PeoplePage() {
             break;
           case IdeChangeEventType.Input:
             setProgramInput(val);
-            break;
-          case IdeChangeEventType.Output:
-            setProgramOutput(val);
             break;
         }
       }}
