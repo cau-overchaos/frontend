@@ -24,6 +24,7 @@ export type FeedbackClient = {
   getFeedbacksByLineNumber: (
     lineNumber: number
   ) => Promise<LineFeedbackWithChildren[]>;
+  countFeedbacks: () => Promise<{ [lineNumber: number]: number }>;
   postFeedback: (form: LineFeedbackCreationForm) => Promise<LineFeedback>;
   updateFeedback: (
     feedbackId: number,
@@ -106,6 +107,18 @@ export default function createFeedbackClient(
         {
           method: "DELETE"
         }
+      );
+    },
+    async countFeedbacks() {
+      const response = await fetchApi(
+        `/studyrooms/${roomId}/shared-sourcecodes/${sharedSourceCodeId}/feedbacks/count`
+      );
+
+      return Object.fromEntries(
+        response.data.countFeedbackByLineResponseDtoList.map((i: any) => [
+          i.lineNumber,
+          i.feedbackCount
+        ]) as [number, number][]
       );
     }
   };

@@ -16,6 +16,7 @@
     }
     .comments {
       display: none;
+      z-index: 2;
     }
     &:hover,
     &.commentActive {
@@ -24,7 +25,20 @@
         position: relative;
       }
     }
+    &.hasComments {
+      .commentIcon {
+        display: initial;
+        position: relative;
+        color: orange;
+        .count {
+          font-size: 0.8em;
+        }
+      }
+    }
     &.commentActive {
+      .count {
+        display: none;
+      }
       .comments {
         display: initial;
         position: absolute;

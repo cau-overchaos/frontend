@@ -26,6 +26,7 @@ export type Props = {
   className?: string;
   diffs?: DiffType[];
   linePadding?: string;
+  commentCount: { [lineNumber: number]: number };
   onCommentClick: (line: number) => ReactNode;
 };
 
@@ -101,6 +102,7 @@ export default function CommentableCodeViewer(props: Props) {
         className={classNames(
           styles.line,
           commentToggledLine === idx ? styles.commentActive : null,
+          (props.commentCount[idx + 1] ?? 0) > 0 ? styles.hasComments : null,
           (props.diffs ?? [])[idx] === DiffType.Add
             ? styles.add
             : (props.diffs ?? [])[idx] === DiffType.Delete
@@ -119,6 +121,13 @@ export default function CommentableCodeViewer(props: Props) {
           &nbsp;
           <a href="#" onClick={activateComment(idx)}>
             <FontAwesomeIcon icon={faComment}></FontAwesomeIcon>
+            {(props.commentCount[idx + 1] ?? 0) > 0 ? (
+              <span className={styles.count}>
+                {props.commentCount[idx + 1]}
+              </span>
+            ) : (
+              ""
+            )}
           </a>
           <div className={styles.comments}>{props.onCommentClick(idx + 1)}</div>
         </span>
