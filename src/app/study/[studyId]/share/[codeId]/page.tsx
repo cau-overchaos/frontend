@@ -20,6 +20,7 @@ function ApiLineComment(props: {
   sharedSrcCodeId: number;
   lineNumber: number;
   me: UserProfile | null;
+  onNewComment: () => void;
 }) {
   const [loading, setLoading] = useState<"firstLoading" | "loading" | "loaded">(
     "firstLoading"
@@ -71,7 +72,8 @@ function ApiLineComment(props: {
               lineNumber: props.lineNumber
             })
           )
-          .then(() => setLoading("firstLoading"));
+          .then(() => setLoading("firstLoading"))
+          .then(props.onNewComment);
       }}
       onNewSubcommentRequest={(message, replyTo) => {
         apiClient
@@ -84,7 +86,8 @@ function ApiLineComment(props: {
               replyToId: parseInt(replyTo)
             })
           )
-          .then(() => setLoading("firstLoading"));
+          .then(() => setLoading("firstLoading"))
+          .then(props.onNewComment);
       }}
     ></LineComments>
   );
@@ -94,6 +97,9 @@ export default function ViewCode() {
   const params = useParams();
   const [sharedSourceCode, setSharedSourceCode] =
     useState<SharedSourceCode | null>(null);
+  const [commentCount, setCommentCount] = useState<{
+    [lineNumber: number]: number;
+  } | null>(null);
   const [sourceCode, setSourceCode] = useState<string | null>(null);
   const [me, setMe] = useState<UserProfile | null>(null);
 
@@ -105,13 +111,19 @@ export default function ViewCode() {
     parseInt(params.studyId as string)
   );
 
+  useEffect(() => {}, [commentCount]);
+
   useEffect(() => {
-    if (sharedSourceCode === null) {
+    if (sharedSourceCode === null || commentCount === null) {
       studyroomClient
         .getSharedSourceCodeById(parseInt(params.codeId as string))
-        .then(setSharedSourceCode);
+        .then((i) => {
+          setSharedSourceCode(i);
+          return i.getFeedback().countFeedbacks();
+        })
+        .then(setCommentCount);
     }
-  }, [sharedSourceCode]);
+  }, [sharedSourceCode, commentCount]);
 
   useEffect(() => {
     if (sharedSourceCode !== null && sourceCode === null)
@@ -142,12 +154,14 @@ export default function ViewCode() {
           code={sourceCode ?? ""}
           highlight={highligherType}
           className={styles.code}
+          commentCount={commentCount ?? {}}
           onCommentClick={(line) => (
             <ApiLineComment
               me={me}
               roomId={parseInt(params.studyId as string)}
               lineNumber={line}
               sharedSrcCodeId={parseInt(params.codeId as string)}
+              onNewComment={() => setCommentCount(null)}
             ></ApiLineComment>
           )}
         ></SharedCodeViewer>
