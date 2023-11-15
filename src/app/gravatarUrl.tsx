@@ -2,8 +2,8 @@ import md5 from "md5";
 
 export default function gravatarUrl(
   profileImgUrl: string | null,
-  name: string | null,
-  id: string | null
+  id: string | null,
+  name: string | null
 ) {
   if (profileImgUrl !== null && typeof profileImgUrl !== "undefined")
     return profileImgUrl;

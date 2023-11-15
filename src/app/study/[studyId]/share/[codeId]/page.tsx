@@ -45,19 +45,19 @@ function ApiLineComment(props: {
       myProfileImgUrl={
         props.me === null
           ? DefaultProfileImageUrl()
-          : gravatarUrl(null, props.me.name, props.me.userId)
+          : gravatarUrl(null, props.me.userId, props.me.name)
       }
       comments={
         comments?.map((i) => ({
           authorId: i.writer.nickname,
           content: i.comment,
           id: i.id.toString(),
-          profileImgUrl: gravatarUrl(null, i.writer.nickname, i.writer.id),
+          profileImgUrl: gravatarUrl(null, i.writer.id, i.writer.nickname),
           subcomments: i.children.map((j) => ({
             authorId: j.writer.nickname,
             content: j.comment,
             id: j.id.toString(),
-            profileImgUrl: gravatarUrl(null, j.writer.nickname, j.writer.id)
+            profileImgUrl: gravatarUrl(null, j.writer.id, j.writer.nickname)
           }))
         })) ?? []
       }
