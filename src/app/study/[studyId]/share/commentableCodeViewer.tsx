@@ -98,7 +98,7 @@ export default function CommentableCodeViewer(props: Props) {
 
     return html.split("\n").map((line, idx) => (
       <div
-        key={idx}
+        key={idx + "_" + Date.now()} // trick: forced refresh on re-opening comment
         className={classNames(
           styles.line,
           commentToggledLine === idx ? styles.commentActive : null,

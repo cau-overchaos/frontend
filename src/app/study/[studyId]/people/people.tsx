@@ -8,9 +8,11 @@ import DefaultProfileImageUrl from "@/app/default_profile_image_url";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import { ReactNode } from "react";
+import gravatarUrl from "@/app/gravatarUrl";
 
 type PersonProps = {
   nickname: string;
+  userId: string;
   profileImgUrl?: string;
   admin: boolean;
   bojId: string;
@@ -32,7 +34,10 @@ export function Person(props: PersonProps) {
       <div className={classNames(styles.line, styles.user)}>
         <img
           className={styles.profileImg}
-          src={props.profileImgUrl ?? DefaultProfileImageUrl()}
+          src={
+            props.profileImgUrl ??
+            gravatarUrl(null, props.userId, props.nickname)
+          }
         ></img>
         <div className={styles.nickname}>{props.nickname}</div>
       </div>
