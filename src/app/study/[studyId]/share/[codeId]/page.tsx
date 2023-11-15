@@ -100,6 +100,7 @@ export default function ViewCode() {
   const [commentCount, setCommentCount] = useState<{
     [lineNumber: number]: number;
   } | null>(null);
+  const [commentCountLoading, setCommentCountLoading] = useState<boolean>(true);
   const [sourceCode, setSourceCode] = useState<string | null>(null);
   const [me, setMe] = useState<UserProfile | null>(null);
 
@@ -114,16 +115,21 @@ export default function ViewCode() {
   useEffect(() => {}, [commentCount]);
 
   useEffect(() => {
-    if (sharedSourceCode === null || commentCount === null) {
+    if (
+      sharedSourceCode === null ||
+      commentCount === null ||
+      commentCountLoading
+    ) {
       studyroomClient
         .getSharedSourceCodeById(parseInt(params.codeId as string))
         .then((i) => {
           setSharedSourceCode(i);
           return i.getFeedback().countFeedbacks();
         })
-        .then(setCommentCount);
+        .then(setCommentCount)
+        .then(() => setCommentCountLoading(false));
     }
-  }, [sharedSourceCode, commentCount]);
+  }, [sharedSourceCode, commentCount, commentCountLoading]);
 
   useEffect(() => {
     if (sharedSourceCode !== null && sourceCode === null)
@@ -161,7 +167,7 @@ export default function ViewCode() {
               roomId={parseInt(params.studyId as string)}
               lineNumber={line}
               sharedSrcCodeId={parseInt(params.codeId as string)}
-              onNewComment={() => setCommentCount(null)}
+              onNewComment={() => setCommentCountLoading(true)}
             ></ApiLineComment>
           )}
         ></SharedCodeViewer>
