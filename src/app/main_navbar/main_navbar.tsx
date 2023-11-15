@@ -9,7 +9,8 @@ import {
   faBars,
   faBell,
   faSearch,
-  faUserCircle
+  faUserCircle,
+  faUserSecret
 } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import UserPopup from "./user_popup";
@@ -108,7 +109,9 @@ export default function MainNavbar(props: PropsType) {
                 setUserPopupActive(!userPopupActive);
               }}
             >
-              <FontAwesomeIcon icon={faUserCircle}></FontAwesomeIcon>
+              <FontAwesomeIcon
+                icon={user === null ? faUserSecret : faUserCircle}
+              ></FontAwesomeIcon>
             </Link>
             {userPopupActive && (
               <UserPopup
