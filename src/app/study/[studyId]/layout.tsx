@@ -43,12 +43,12 @@ export default function StudyLayout({
             href={prefix + "/ide"}
             active={pathNow === "ide"}
           ></LeftMenuItem>
-          <LeftMenuItem
+          {/* <LeftMenuItem
             icon={faComments}
             text="채팅"
             href={prefix + "/chat"}
             active={pathNow === "chat"}
-          ></LeftMenuItem>
+  ></LeftMenuItem> */}
           <LeftMenuItem
             icon={faShare}
             text="풀이 공유"
