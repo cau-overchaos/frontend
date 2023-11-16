@@ -134,6 +134,10 @@ export default function Ide(props: Props) {
                 provider: "BAEKJOON"
               });
             }}
+            size={Math.max(
+              6,
+              (props.selectedProblem?.pid.toString().length ?? 0) + 2
+            )}
           ></ProblemInput>
           <Input
             placeholder="코드 이름"
@@ -142,6 +146,7 @@ export default function Ide(props: Props) {
             onChange={(evt) =>
               props.onChange(IdeChangeEventType.CodeTitle, evt.target.value)
             }
+            size={Math.max(4, props.codeTitle.length + 2)}
           ></Input>
           <Button onClick={props.onSave}>저장</Button>
           <Button onClick={props.onLoad}>불러오기</Button>
