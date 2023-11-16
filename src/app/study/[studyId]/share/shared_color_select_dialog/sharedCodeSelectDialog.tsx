@@ -22,7 +22,7 @@ export default function SharedCodeSelectPopup(props: Props) {
   const [selectedSharedCode, setSelectedSharedCode] =
     useState<SharedSourceCode | null>(null);
   const mapSharedCode = (i: SharedSourceCode) => ({
-    label: `${i.title} (${i.problem.title} by ${i.writer.nickname})`,
+    label: `${i.title} (${i.problem.title} by ${i.writer.nickname}, ${i.language.name})`,
     value: i.id,
     data: i
   });
