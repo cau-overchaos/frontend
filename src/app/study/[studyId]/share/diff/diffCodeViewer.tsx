@@ -23,7 +23,7 @@ export default function DiffCodeViewer(props: Props) {
         code={props.left.code}
         className={styles.left}
         diffs={props.left.diffs}
-        onCommentClick={() => <div></div>}
+        commentCreator={() => <div></div>}
         commentCount={{}}
       ></CommentableCodeViewer>
       <CommentableCodeViewer
@@ -32,7 +32,7 @@ export default function DiffCodeViewer(props: Props) {
         code={props.right.code}
         className={styles.right}
         diffs={props.right.diffs}
-        onCommentClick={() => <div></div>}
+        commentCreator={() => <div></div>}
         commentCount={{}}
       ></CommentableCodeViewer>
     </div>
