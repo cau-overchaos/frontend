@@ -43,11 +43,11 @@ export default function MainNavbar(props: PropsType) {
     {
       name: "스터디원 모집",
       href: "/study/wanted"
-    }
-    /* {
+    },
+    {
       name: "코딩 테스트 대회",
       href: "/competitions"
-    } */
+    }
   ];
 
   useEffect(() => {

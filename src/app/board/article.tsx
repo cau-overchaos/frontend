@@ -14,6 +14,7 @@ import {
 import Link from "next/link";
 import { ReactNode } from "react";
 import SolvedAcTier from "../study/[studyId]/assignments/solved_ac_tier";
+import classNames from "classnames";
 
 type Props = {
   title: string;
@@ -33,6 +34,7 @@ type Props = {
   date: Date;
   listHref: string;
   children: ReactNode;
+  contentClassName?: string;
 };
 
 export default function Article(props: Props) {
@@ -93,7 +95,9 @@ export default function Article(props: Props) {
           </li>
         )}
       </ul>
-      <div className={styles.content}>{props.children}</div>
+      <div className={classNames(styles.content, props.contentClassName)}>
+        {props.children}
+      </div>
     </div>
   );
 }
