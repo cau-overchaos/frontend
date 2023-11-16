@@ -150,7 +150,7 @@ export default function Ide(props: Props) {
           <ReactSelect<Language>
             placeholder="언어 선택"
             options={props.supportedLanuages}
-            defaultValue={props.selectedLanguage}
+            value={props.selectedLanguage}
             onChange={(newValue) => props.onLanguageSelect(newValue)}
           ></ReactSelect>
           <Button onClick={props.onCompile}>컴파일</Button>
