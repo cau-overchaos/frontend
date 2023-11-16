@@ -28,6 +28,7 @@ function ApiLineComment(props: {
   const [comments, setComments] = useState<LineFeedbackWithChildren[] | null>(
     null
   );
+  const [intervalId, setIntervalId] = useState<any | null>(null);
 
   useEffect(() => {
     if (loading === "firstLoading") {
@@ -40,6 +41,23 @@ function ApiLineComment(props: {
         .then((i) => setLoading("loaded"));
     }
   }, [loading]);
+
+  useEffect(() => {
+    if (intervalId === null) {
+      const interval = setInterval(() => {
+        setLoading("firstLoading");
+      }, 1000);
+
+      setIntervalId(interval);
+    }
+
+    return () => {
+      if (intervalId !== null) {
+        clearInterval(intervalId);
+        setIntervalId(null);
+      }
+    };
+  }, [intervalId]);
 
   return (
     <LineComments
@@ -103,6 +121,7 @@ export default function ViewCode() {
   const [commentCountLoading, setCommentCountLoading] = useState<boolean>(true);
   const [sourceCode, setSourceCode] = useState<string | null>(null);
   const [me, setMe] = useState<UserProfile | null>(null);
+  const [intervalId, setIntervalId] = useState<any>(null);
 
   useEffect(() => {
     if (me === null) apiClient.me().then(setMe);
@@ -112,7 +131,22 @@ export default function ViewCode() {
     parseInt(params.studyId as string)
   );
 
-  useEffect(() => {}, [commentCount]);
+  useEffect(() => {
+    if (intervalId === null) {
+      const interval = setInterval(() => {
+        setCommentCountLoading(true);
+      }, 1000);
+
+      setIntervalId(interval);
+    }
+
+    return () => {
+      if (intervalId !== null) {
+        clearInterval(intervalId);
+        setIntervalId(null);
+      }
+    };
+  }, [intervalId]);
 
   useEffect(() => {
     if (
