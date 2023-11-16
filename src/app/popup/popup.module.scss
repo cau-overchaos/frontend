@@ -1,0 +1,20 @@
+.container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #00000080;
+  .popup {
+    background-color: white;
+    padding: 1em 2em 2em 2em;
+    border-radius: 10px;
+    box-shadow: 2px 2px 8px #00000080;
+    max-width: 100%;
+    min-width: 300px;
+    overflow-x: scroll;
+  }
+}

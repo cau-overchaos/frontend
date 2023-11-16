@@ -18,7 +18,7 @@ export type SharedSourceCode = {
     nickname: string;
   };
   language: {
-    id: string;
+    id: number;
     name: string;
   };
   createdAt: Date;

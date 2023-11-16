@@ -12,6 +12,7 @@ import apiClient, {
   problemProviderKeyToValue
 } from "@/app/api_client/api_client";
 import { useParams } from "next/navigation";
+import Popup from "@/app/popup/popup";
 
 type Props = {
   onCloseClick: () => void;
@@ -64,24 +65,6 @@ export default function NewAssignmentPopup(props: Props) {
     undefined
   );
 
-  const closeWindowOnOutsideClick: MouseEventHandler<HTMLDivElement> = (
-    evt
-  ) => {
-    let now: HTMLElement | null = evt.target as HTMLElement;
-    let clickedPopup = false;
-    while (now !== null) {
-      if (now.classList.contains(styles.popup)) {
-        clickedPopup = true;
-        break;
-      }
-      now = now.parentElement;
-    }
-
-    if (!clickedPopup) {
-      props.onCloseClick();
-    }
-  };
-
   const addProblem = async (id: number) => {
     const problem = await apiClient.getProblem(id, "BAEKJOON");
     if (!problems.some((i) => i.pid === id))
@@ -103,97 +86,93 @@ export default function NewAssignmentPopup(props: Props) {
   };
 
   return (
-    <div className={styles.container} onClick={closeWindowOnOutsideClick}>
-      <div className={styles.popup}>
-        <h2>과제 생성</h2>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>플랫폼</th>
-              <th>번호</th>
-              <th>제목</th>
-              <th>삭제</th>
-            </tr>
-          </thead>
-          <tbody>
-            {problems.map((i, idx) => (
-              <AssingmentRow
-                key={i.pid}
-                {...i}
-                onDeleteBtnClick={(_assignment) => {
-                  setProblems([
-                    ...problems.slice(0, idx),
-                    ...problems.slice(idx + 1)
-                  ]);
+    <Popup onCloseClick={props.onCloseClick} className={styles.popup}>
+      <h2>과제 생성</h2>
+      <table className={styles.table}>
+        <thead>
+          <tr>
+            <th>플랫폼</th>
+            <th>번호</th>
+            <th>제목</th>
+            <th>삭제</th>
+          </tr>
+        </thead>
+        <tbody>
+          {problems.map((i, idx) => (
+            <AssingmentRow
+              key={i.pid}
+              {...i}
+              onDeleteBtnClick={(_assignment) => {
+                setProblems([
+                  ...problems.slice(0, idx),
+                  ...problems.slice(idx + 1)
+                ]);
+              }}
+            ></AssingmentRow>
+          ))}
+          <tr>
+            <td>
+              <Select small name="" id="">
+                <option value="" selected>
+                  백준
+                </option>
+              </Select>
+            </td>
+            <td colSpan={2}>
+              <Input
+                small
+                number
+                value={problemIdInput}
+                onChange={(evt) => setProblemIdInput(evt.target.valueAsNumber)}
+                onEnter={() => {
+                  if (typeof problemIdInput !== "undefined")
+                    addProblem(problemIdInput);
+                  else alert("문제 번호를 입력해주세요!");
                 }}
-              ></AssingmentRow>
-            ))}
-            <tr>
-              <td>
-                <Select small name="" id="">
-                  <option value="" selected>
-                    백준
-                  </option>
-                </Select>
-              </td>
-              <td colSpan={2}>
-                <Input
-                  small
-                  number
-                  value={problemIdInput}
-                  onChange={(evt) =>
-                    setProblemIdInput(evt.target.valueAsNumber)
-                  }
-                  onEnter={() => {
-                    if (typeof problemIdInput !== "undefined")
-                      addProblem(problemIdInput);
-                    else alert("문제 번호를 입력해주세요!");
-                  }}
-                />
-              </td>
-              <td>
-                <Button
-                  small
-                  onClick={() => {
-                    if (typeof problemIdInput !== "undefined")
-                      addProblem(problemIdInput);
-                    else alert("문제 번호를 입력해주세요!");
-                  }}
-                >
-                  추가
-                </Button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div className={styles.dateField}>
-          과제 시작일:&nbsp;
-          <DateTimePicker
-            value={startDate}
-            onChange={(v) => {
-              if (v !== null) setStartDate(v);
-            }}
-            disableClock
-            format="y-MM-dd H:mm"
-          ></DateTimePicker>
-        </div>
-        <div className={styles.dateField}>
-          과제 종료일:&nbsp;
-          <DateTimePicker
-            value={endDate}
-            onChange={(v) => {
-              if (v !== null) setEndDate(v);
-            }}
-            disableClock
-            format="y-MM-dd H:mm"
-          ></DateTimePicker>
-        </div>
-        <div>
-          <Button small onClick={createAssignment}>
-            과제 생성
-          </Button>
-        </div>
+              />
+            </td>
+            <td>
+              <Button
+                small
+                onClick={() => {
+                  if (typeof problemIdInput !== "undefined")
+                    addProblem(problemIdInput);
+                  else alert("문제 번호를 입력해주세요!");
+                }}
+              >
+                추가
+              </Button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div className={styles.dateField}>
+        과제 시작일:&nbsp;
+        <DateTimePicker
+          value={startDate}
+          onChange={(v) => {
+            if (v !== null) setStartDate(v);
+          }}
+          disableClock
+          format="y-MM-dd H:mm"
+        ></DateTimePicker>
       </div>
-    </div>
+      <div className={styles.dateField}>
+        과제 종료일:&nbsp;
+        <DateTimePicker
+          value={endDate}
+          onChange={(v) => {
+            if (v !== null) setEndDate(v);
+          }}
+          disableClock
+          format="y-MM-dd H:mm"
+        ></DateTimePicker>
+      </div>
+      <div>
+        <Button small onClick={createAssignment}>
+          과제 생성
+        </Button>
+      </div>
+    </Popup>
   );
 }

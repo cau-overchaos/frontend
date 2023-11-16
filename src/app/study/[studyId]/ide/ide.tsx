@@ -58,6 +58,7 @@ type Props = {
   loadingOutput?: boolean;
 
   onSave: () => void;
+  onLoad: () => void;
   onCompile: () => void;
   onChange: (type: IdeChangeEventType, newValue: string) => void;
   onLanguageSelect: (newLanguage: Language | null) => void;
@@ -143,6 +144,7 @@ export default function Ide(props: Props) {
             }
           ></Input>
           <Button onClick={props.onSave}>저장</Button>
+          <Button onClick={props.onLoad}>불러오기</Button>
           <ReactSelect<Language>
             placeholder="언어 선택"
             options={props.supportedLanuages}
