@@ -143,7 +143,7 @@ export default function Ide(props: Props) {
             onChange={(evt) =>
               props.onChange(IdeChangeEventType.CodeTitle, evt.target.value)
             }
-            size={15}
+            size={10}
           ></Input>
           <Button onClick={props.onSave}>저장</Button>
           <Button onClick={props.onLoad}>불러오기</Button>
