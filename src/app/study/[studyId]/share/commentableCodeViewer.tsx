@@ -27,7 +27,7 @@ export type Props = {
   diffs?: DiffType[];
   linePadding?: string;
   commentCount: { [lineNumber: number]: number };
-  onCommentClick: (line: number) => ReactNode;
+  commentCreator: (line: number) => ReactNode;
 };
 
 export default function CommentableCodeViewer(props: Props) {
@@ -98,7 +98,7 @@ export default function CommentableCodeViewer(props: Props) {
 
     return html.split("\n").map((line, idx) => (
       <div
-        key={idx + "_" + Date.now()} // trick: forced refresh on re-opening comment
+        key={idx}
         className={classNames(
           styles.line,
           commentToggledLine === idx ? styles.commentActive : null,
@@ -129,7 +129,11 @@ export default function CommentableCodeViewer(props: Props) {
               ""
             )}
           </a>
-          <div className={styles.comments}>{props.onCommentClick(idx + 1)}</div>
+          {commentToggledLine === idx && (
+            <div className={styles.comments}>
+              {props.commentCreator(idx + 1)}
+            </div>
+          )}
         </span>
       </div>
     ));

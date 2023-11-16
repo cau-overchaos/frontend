@@ -161,7 +161,7 @@ export default function ViewCode() {
           highlight={highligherType}
           className={styles.code}
           commentCount={commentCount ?? {}}
-          onCommentClick={(line) => (
+          commentCreator={(line) => (
             <ApiLineComment
               me={me}
               roomId={parseInt(params.studyId as string)}
