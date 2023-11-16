@@ -24,6 +24,7 @@ type InputCommonProps<T> = {
   name?: string;
   required?: boolean;
   small?: boolean;
+  size?: number;
   onChange?: ChangeEventHandler<T>;
 };
 
@@ -76,6 +77,7 @@ export function ProblemInput(props: ProblemInputProps) {
         value={props.value}
         onChange={props.onChange}
         placeholder={props.placeholder}
+        size={props.size}
       ></input>
       <div className={styles.problemTitle}>{props.problemTitle}</div>
     </div>
@@ -99,6 +101,7 @@ export function Input(props: InputProps) {
         props.invalid && "invalid",
         props.small && styles.small
       )}
+      size={props.size}
       value={props.value}
       onChange={props.onChange}
       onKeyUp={
