@@ -1,4 +1,4 @@
-import { MouseEventHandler, ReactNode } from "react";
+import { CSSProperties, MouseEventHandler, ReactNode } from "react";
 import styles from "./popup.module.scss";
 import classNames from "classnames";
 
@@ -6,9 +6,17 @@ type Props = {
   children: ReactNode;
   className?: string;
   onCloseClick: () => void;
+  containerStyles?: CSSProperties;
+  popupStyles?: CSSProperties;
 };
 
-export default function Popup({ children, className, onCloseClick }: Props) {
+export default function Popup({
+  children,
+  className,
+  onCloseClick,
+  containerStyles,
+  popupStyles
+}: Props) {
   const closeWindowOnOutsideClick: MouseEventHandler<HTMLDivElement> = (
     evt
   ) => {
@@ -28,8 +36,14 @@ export default function Popup({ children, className, onCloseClick }: Props) {
   };
 
   return (
-    <div className={styles.container} onClick={closeWindowOnOutsideClick}>
-      <div className={classNames(styles.popup, className)}>{children}</div>
+    <div
+      className={classNames(styles.container)}
+      style={containerStyles}
+      onClick={closeWindowOnOutsideClick}
+    >
+      <div className={classNames(styles.popup, className)} style={popupStyles}>
+        {children}
+      </div>
     </div>
   );
 }

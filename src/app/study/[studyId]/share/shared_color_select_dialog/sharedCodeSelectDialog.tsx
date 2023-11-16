@@ -36,7 +36,10 @@ export default function SharedCodeSelectPopup(props: Props) {
   }, [sharedCodes]);
 
   return (
-    <Popup onCloseClick={props.onCloseClick}>
+    <Popup
+      onCloseClick={props.onCloseClick}
+      popupStyles={{ height: "500px", width: "500px" }}
+    >
       {sharedCodes === null ? (
         "로딩중입니다...."
       ) : (
@@ -45,6 +48,12 @@ export default function SharedCodeSelectPopup(props: Props) {
           <ReactSelect
             options={sharedCodes.map(mapSharedCode)}
             value={selectedSharedCode && mapSharedCode(selectedSharedCode)}
+            styles={{
+              menu: (baseStyles, _state) => ({
+                ...baseStyles,
+                zIndex: 100
+              })
+            }}
             onChange={(value) => {
               if (value === null) setSelectedSharedCode(null);
               else
