@@ -28,7 +28,7 @@ export default function CanvasController(props: CanvasControllerProp) {
       className={classNames(styles.container, props.className)}
     >
       <div className={styles.tools}>
-        {["black", "red", "darkred", "blue"].map((i) => (
+        {["#000000", "#FF0000", "#8B0000", "#0000FF"].map((i) => (
           <a
             href="#"
             className={
@@ -84,7 +84,7 @@ export default function CanvasController(props: CanvasControllerProp) {
         onDraw={(_, __, img) => setImageData(img)}
         onErase={(_, __, img) => setImageData(img)}
         erasing={erasing}
-        color={color}
+        color={color + "80"}
       ></Canvas>
     </div>
   );
