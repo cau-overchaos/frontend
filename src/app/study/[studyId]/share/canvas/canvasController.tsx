@@ -2,10 +2,18 @@ import { useState } from "react";
 import Canvas, { CanvasProps } from "./canvas";
 import styles from "./canvasController.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEraser, faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCode,
+  faEraser,
+  faPencil,
+  faTrash
+} from "@fortawesome/free-solid-svg-icons";
 import classNames from "classnames";
 
-type CanvasControllerProp = Omit<CanvasProps, "onDraw" | "onErase">;
+type CanvasControllerProp = Omit<CanvasProps, "onDraw" | "onErase"> & {
+  active: boolean;
+  onActiveToggle: (newActiveVal: boolean) => void;
+};
 
 export default function CanvasController(props: CanvasControllerProp) {
   const [imageData, setImageData] = useState<ImageData | null>(null);
@@ -13,17 +21,23 @@ export default function CanvasController(props: CanvasControllerProp) {
   const [color, setColor] = useState<string>("black");
   return (
     <div
-      style={{ width: props.width, height: props.height }}
+      style={{
+        width: props.width,
+        height: props.height
+      }}
       className={classNames(styles.container, props.className)}
     >
       <div className={styles.tools}>
         {["black", "red", "darkred", "blue"].map((i) => (
           <a
             href="#"
-            className={!erasing && color === i ? styles.active : ""}
+            className={
+              !erasing && props.active && color === i ? styles.active : ""
+            }
             style={{ color: i }}
             onClick={(evt) => {
               evt.preventDefault();
+              props.onActiveToggle(true);
               setErasing(false);
               setColor(i);
             }}
@@ -33,9 +47,10 @@ export default function CanvasController(props: CanvasControllerProp) {
         ))}
         <a
           href="#"
-          className={erasing ? styles.active : ""}
+          className={erasing && props.active ? styles.active : ""}
           onClick={(evt) => {
             evt.preventDefault();
+            props.onActiveToggle(true);
             setErasing(true);
           }}
         >
@@ -45,10 +60,21 @@ export default function CanvasController(props: CanvasControllerProp) {
           href="#"
           onClick={(evt) => {
             evt.preventDefault();
+            props.onActiveToggle(true);
             setImageData(null);
           }}
         >
           <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon>
+        </a>
+        <a
+          href="#"
+          className={!props.active ? styles.active : ""}
+          onClick={(evt) => {
+            evt.preventDefault();
+            props.onActiveToggle(false);
+          }}
+        >
+          <FontAwesomeIcon icon={faCode}></FontAwesomeIcon>
         </a>
       </div>
       <Canvas

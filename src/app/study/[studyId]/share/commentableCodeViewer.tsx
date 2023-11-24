@@ -49,6 +49,7 @@ export default function CommentableCodeViewer(props: Props) {
     width: 1,
     height: 1
   });
+  const [canvasActive, setCanvasActive] = useState<boolean>(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const changeCanvasSizeOnResize = () => {
     if (containerRef !== null)
@@ -175,11 +176,18 @@ export default function CommentableCodeViewer(props: Props) {
       className={classNames(styles.code, props.className)}
       ref={containerRef}
     >
-      <div className={styles.canvasContainer}>
+      <div
+        className={classNames(
+          styles.canvasContainer,
+          !canvasActive && styles.inactive
+        )}
+      >
         <CanvasController
           className={styles.canvas}
           width={canvasSize.width}
           height={canvasSize.height}
+          active={canvasActive}
+          onActiveToggle={setCanvasActive}
         ></CanvasController>
       </div>
       {lines(highlightCode(props.code))}

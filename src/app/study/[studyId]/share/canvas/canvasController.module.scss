@@ -1,6 +1,7 @@
 .container {
   position: relative;
   .tools {
+    pointer-events: all;
     position: absolute;
     right: 15px;
     top: 10px;

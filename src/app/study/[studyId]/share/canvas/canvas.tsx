@@ -1,4 +1,11 @@
-import { MouseEventHandler, useEffect, useMemo, useRef, useState } from "react";
+import {
+  CSSProperties,
+  MouseEventHandler,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from "react";
 type Point = {
   x: number;
   y: number;
@@ -15,6 +22,7 @@ export type CanvasProps = {
   onErase: (start: Point, end: Point, newImageData: ImageData) => void;
   width?: number;
   height?: number;
+  style?: CSSProperties;
 };
 
 export default function Canvas(props: CanvasProps) {
@@ -86,6 +94,7 @@ export default function Canvas(props: CanvasProps) {
       ref={canvasRef}
       width={props.width}
       height={props.height}
+      style={props.style}
       onMouseDown={(evt) => {
         setDrawing(true);
         draw(evt);
