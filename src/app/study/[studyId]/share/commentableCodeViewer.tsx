@@ -10,9 +10,17 @@ import styles from "./commentableCodeViewer.module.scss";
 import { IdeHighlighterType } from "../ide/ide";
 import { encode } from "html-entities";
 import classNames from "classnames";
-import { MouseEventHandler, ReactNode, useEffect, useState } from "react";
+import {
+  MouseEventHandler,
+  ReactNode,
+  useEffect,
+  useRef,
+  useState
+} from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment } from "@fortawesome/free-solid-svg-icons";
+import Canvas from "./canvas/canvas";
+import CanvasController from "./canvas/canvasController";
 
 export enum DiffType {
   Add,
@@ -34,6 +42,29 @@ export default function CommentableCodeViewer(props: Props) {
   const [commentToggledLine, toggleCommenctLine] = useState<number | null>(
     null
   );
+  const [canvasSize, setCanvasSize] = useState<{
+    width: number;
+    height: number;
+  }>({
+    width: 1,
+    height: 1
+  });
+  const containerRef = useRef<HTMLDivElement>(null);
+  const changeCanvasSizeOnResize = () => {
+    if (containerRef !== null)
+      setCanvasSize({
+        width: (containerRef.current?.getBoundingClientRect().width ?? 17) - 16,
+        height:
+          (containerRef.current?.getBoundingClientRect().height ?? 17) - 16
+      });
+  };
+
+  useEffect(() => {
+    changeCanvasSizeOnResize();
+    window.addEventListener("resize", changeCanvasSizeOnResize);
+
+    return () => window.removeEventListener("resize", changeCanvasSizeOnResize);
+  }, [containerRef, props.code]);
 
   useEffect(() => {
     const closeCommenctLineOnOutsideClick: (
@@ -140,7 +171,17 @@ export default function CommentableCodeViewer(props: Props) {
   };
 
   return (
-    <div className={classNames(styles.code, props.className)}>
+    <div
+      className={classNames(styles.code, props.className)}
+      ref={containerRef}
+    >
+      <div className={styles.canvasContainer}>
+        <CanvasController
+          className={styles.canvas}
+          width={canvasSize.width}
+          height={canvasSize.height}
+        ></CanvasController>
+      </div>
       {lines(highlightCode(props.code))}
     </div>
   );
