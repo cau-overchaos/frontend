@@ -30,11 +30,15 @@ export default function Canvas(props: CanvasProps) {
     [props.width, props.height, props.image]
   );
   const offscreenCanvas = new OffscreenCanvas(canvasWidth, canvasHeight);
+  let notFire = false;
+
   if (props.image)
     offscreenCanvas.getContext("2d")?.putImageData(props.image, 0, 0);
 
   const draw: MouseEventHandler<HTMLCanvasElement> = (evt) => {
     if (canvasRef.current === null || !drawing) return;
+    if (notFire) return;
+    else notFire = true;
 
     const context = offscreenCanvas.getContext("2d");
     if (context === null) return;
