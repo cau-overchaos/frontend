@@ -6,7 +6,7 @@ import {
   useRef,
   useState
 } from "react";
-type Point = {
+export type Point = {
   x: number;
   y: number;
 };
@@ -23,6 +23,40 @@ export type CanvasProps = {
   width?: number;
   height?: number;
   style?: CSSProperties;
+};
+
+type CanvasMethod = {
+  erasePoints: (start: Point, end: Point) => void;
+  drawPoints: (start: Point, end: Point, color: string) => void;
+};
+
+export const draw = (
+  canvas: {
+    context: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D;
+    width: number;
+    height: number;
+  },
+  startPos: Point,
+  endPos: Point,
+  erase?: boolean,
+  color: string | CanvasGradient | CanvasPattern = "black",
+  lineWidth?: number
+): ImageData | null => {
+  if (erase ?? true) {
+    canvas.context.globalCompositeOperation = "destination-out";
+  } else {
+    canvas.context.globalCompositeOperation = "source-over";
+  }
+
+  canvas.context.strokeStyle = color;
+  canvas.context.lineWidth = lineWidth ?? (erase ? 5 : 3);
+  canvas.context.beginPath();
+  canvas.context.moveTo(startPos.x, startPos.y);
+  canvas.context.lineTo(endPos.x, endPos.y);
+  canvas.context.stroke();
+  canvas.context.closePath();
+
+  return canvas.context.getImageData(0, 0, canvas.width, canvas.height);
 };
 
 export default function Canvas(props: CanvasProps) {
@@ -43,7 +77,7 @@ export default function Canvas(props: CanvasProps) {
   if (props.image)
     offscreenCanvas.getContext("2d")?.putImageData(props.image, 0, 0);
 
-  const draw: MouseEventHandler<HTMLCanvasElement> = (evt) => {
+  const drawOnClick: MouseEventHandler<HTMLCanvasElement> = (evt) => {
     if (canvasRef.current === null || !drawing) return;
     if (notFire) return;
     else notFire = true;
@@ -55,26 +89,23 @@ export default function Canvas(props: CanvasProps) {
       x: evt.clientX - canvasRef.current.getBoundingClientRect().x,
       y: evt.clientY - canvasRef.current.getBoundingClientRect().y
     };
-    let lineWidth;
-    if (props.erasing) {
-      context.globalCompositeOperation = "destination-out";
-      lineWidth = props.eraseStrokeWidth ?? 5;
-    } else {
-      context.globalCompositeOperation = "source-over";
-      lineWidth = props.drawStrokeWidth ?? 3;
-    }
     const startPos = previousPos ?? endPos;
     setPreviousPos(endPos);
-    context.strokeStyle = props.color ?? "black";
-    context.lineWidth = lineWidth;
-    context.beginPath();
-    context.moveTo(startPos.x, startPos.y);
-    context.lineTo(endPos.x, endPos.y);
-    context.stroke();
-    context.closePath();
+    const newImageData = draw(
+      {
+        context,
+        width: canvasWidth,
+        height: canvasHeight
+      },
+      startPos,
+      endPos,
+      props.erasing,
+      props.color ?? "black"
+    );
 
-    const newImageData = context.getImageData(0, 0, canvasWidth, canvasHeight);
-    if (props.erasing) {
+    if (newImageData === null) {
+      return;
+    } else if (props.erasing) {
       props.onErase(startPos, endPos, newImageData);
     } else {
       props.onDraw(startPos, endPos, newImageData);
@@ -97,14 +128,14 @@ export default function Canvas(props: CanvasProps) {
       style={props.style}
       onMouseDown={(evt) => {
         setDrawing(true);
-        draw(evt);
+        drawOnClick(evt);
       }}
       onMouseLeave={(evt) => {
         setDrawing(false);
         setPreviousPos(null);
       }}
       onMouseMove={(evt) => {
-        draw(evt);
+        drawOnClick(evt);
       }}
       onMouseUp={(evt) => {
         setDrawing(false);

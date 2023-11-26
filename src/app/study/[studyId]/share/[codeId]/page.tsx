@@ -122,6 +122,7 @@ export default function ViewCode() {
   const [sourceCode, setSourceCode] = useState<string | null>(null);
   const [me, setMe] = useState<UserProfile | null>(null);
   const [intervalId, setIntervalId] = useState<any>(null);
+  const codeId = parseInt(params.codeId as string);
 
   useEffect(() => {
     if (me === null) apiClient.me().then(setMe);
@@ -155,7 +156,7 @@ export default function ViewCode() {
       commentCountLoading
     ) {
       studyroomClient
-        .getSharedSourceCodeById(parseInt(params.codeId as string))
+        .getSharedSourceCodeById(codeId)
         .then((i) => {
           setSharedSourceCode(i);
           return i.getFeedback().countFeedbacks();
@@ -191,6 +192,7 @@ export default function ViewCode() {
         listHref="../share"
       >
         <SharedCodeViewer
+          sharedSourceCodeId={codeId}
           code={sourceCode ?? ""}
           highlight={highligherType}
           className={styles.code}
@@ -200,7 +202,7 @@ export default function ViewCode() {
               me={me}
               roomId={parseInt(params.studyId as string)}
               lineNumber={line}
-              sharedSrcCodeId={parseInt(params.codeId as string)}
+              sharedSrcCodeId={codeId}
               onNewComment={() => setCommentCountLoading(true)}
             ></ApiLineComment>
           )}
@@ -230,7 +232,7 @@ export default function ViewCode() {
           <ApiLineComment
             roomId={parseInt(params.studyId as string)}
             lineNumber={line}
-            sharedSrcCodeId={parseInt(params.codeId as string)}
+            sharedSrcCodeId={parseInt(codeId)}
           ></ApiLineComment>
         )}
       ></SharedCodeViewer>

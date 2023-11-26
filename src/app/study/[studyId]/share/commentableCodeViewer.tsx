@@ -21,6 +21,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment } from "@fortawesome/free-solid-svg-icons";
 import Canvas from "./canvas/canvas";
 import CanvasController from "./canvas/canvasController";
+import SocketCanvas from "./canvas/socketCanvas";
 
 export enum DiffType {
   Add,
@@ -36,6 +37,7 @@ export type Props = {
   linePadding?: string;
   commentCount: { [lineNumber: number]: number };
   commentCreator: (line: number) => ReactNode;
+  sharedSourceCodeId: number;
 };
 
 export default function CommentableCodeViewer(props: Props) {
@@ -182,13 +184,14 @@ export default function CommentableCodeViewer(props: Props) {
           !canvasActive && styles.inactive
         )}
       >
-        <CanvasController
+        <SocketCanvas
           className={styles.canvas}
           width={canvasSize.width}
           height={canvasSize.height}
           active={canvasActive}
           onActiveToggle={setCanvasActive}
-        ></CanvasController>
+          sharedSourceCodeId={props.sharedSourceCodeId}
+        ></SocketCanvas>
       </div>
       {lines(highlightCode(props.code))}
     </div>

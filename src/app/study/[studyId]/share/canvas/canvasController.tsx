@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Canvas, { CanvasProps } from "./canvas";
+import Canvas, { CanvasProps, Point } from "./canvas";
 import styles from "./canvasController.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -10,13 +10,15 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import classNames from "classnames";
 
-type CanvasControllerProp = Omit<CanvasProps, "onDraw" | "onErase"> & {
+export type CanvasControllerProp = Omit<CanvasProps, "onDraw"> & {
   active: boolean;
   onActiveToggle: (newActiveVal: boolean) => void;
+  imageData: ImageData | null;
+  onNewImageData: (newVal: ImageData | null) => void;
+  onDraw: (a: Point, b: Point, color: string, newImage: ImageData) => void;
 };
 
 export default function CanvasController(props: CanvasControllerProp) {
-  const [imageData, setImageData] = useState<ImageData | null>(null);
   const [erasing, setErasing] = useState<boolean>(false);
   const [color, setColor] = useState<string>("black");
   return (
@@ -61,7 +63,7 @@ export default function CanvasController(props: CanvasControllerProp) {
           onClick={(evt) => {
             evt.preventDefault();
             props.onActiveToggle(true);
-            setImageData(null);
+            props.onNewImageData(null);
           }}
         >
           <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon>
@@ -80,9 +82,15 @@ export default function CanvasController(props: CanvasControllerProp) {
       <Canvas
         {...props}
         className=""
-        image={imageData ?? undefined}
-        onDraw={(_, __, img) => setImageData(img)}
-        onErase={(_, __, img) => setImageData(img)}
+        image={props.imageData ?? undefined}
+        onDraw={(a, b, img) => {
+          props.onNewImageData(img);
+          props.onDraw(a, b, color + "80", img);
+        }}
+        onErase={(a, b, img) => {
+          props.onNewImageData(img);
+          props.onErase(a, b, img);
+        }}
         erasing={erasing}
         color={color + "80"}
       ></Canvas>
