@@ -94,7 +94,7 @@ export default function SocketCanvas(
     let idx = setInterval(() => {
       if (
         (Date.now() - lastSentMessageTime > 300 && messages.length > 0) ||
-        messages.length > 100
+        messages.length > 30
       )
         while (true) {
           const msg = messages.pop();
