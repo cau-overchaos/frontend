@@ -8,7 +8,7 @@ import {
   faCog,
   faEllipsis,
   faSignOut,
-  faTrash,
+  faTrash
 } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 
@@ -16,8 +16,9 @@ type propsType = {
   notifications?: {
     text: string;
     href: string;
-    id: string;
+    id: number;
   }[];
+  onMarkReadAllCLick: () => void;
 };
 
 export default function NotificationPopup(props: propsType) {
@@ -55,16 +56,22 @@ export default function NotificationPopup(props: propsType) {
         <hr className={popupStyles.divider}></hr>
         <div className={popupStyles.bottom}>
           <ul className={styles.actions}>
-            <li>
+            {/* <li>
               <a href="#">
                 <FontAwesomeIcon
                   className={styles.icon}
                   icon={faEllipsis}
                 ></FontAwesomeIcon>
               </a>
-            </li>
+            </li> */}
             <li>
-              <a href="#">
+              <a
+                href="#"
+                onClick={(evt) => {
+                  evt.preventDefault();
+                  props.onMarkReadAllCLick();
+                }}
+              >
                 <FontAwesomeIcon
                   className={styles.icon}
                   icon={faTrash}

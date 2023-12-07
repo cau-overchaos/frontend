@@ -19,6 +19,7 @@ import md5 from "md5";
 import SearchPopup from "./search_popup";
 import DefaultProfileImageUrl from "../default_profile_image_url";
 import gravatarUrl from "../gravatarUrl";
+import ApiNotificationsPopup from "./api_notifications_popup";
 
 type MenuItem = {
   name: string;
@@ -35,6 +36,8 @@ export default function MainNavbar(props: PropsType) {
   const [notificationsActive, setNotificationsActive] = useState(false);
   const [user, setUser] = useState<UserProfile | null>(null);
   const [searchActive, setSearchActive] = useState(false);
+  const [hasNewNotifications, setHasNewNotifications] =
+    useState<boolean>(false);
   const menus: MenuItem[] = [
     {
       name: "내 스터디",
@@ -61,6 +64,17 @@ export default function MainNavbar(props: PropsType) {
       apiClient.off("loggedInOrloggedOut", onAuthStateChanged);
     };
   });
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      apiClient
+        .notifications()
+        .hasNewNotifciation()
+        .then(setHasNewNotifications);
+    }, 500);
+
+    return () => clearInterval(intervalId);
+  }, [hasNewNotifications]);
 
   const containerClass =
     props.narrowContainer === true
@@ -97,10 +111,13 @@ export default function MainNavbar(props: PropsType) {
                 setUserPopupActive(false);
                 setNotificationsActive(!notificationsActive);
               }}
+              className={hasNewNotifications ? styles.hasNewNotification : ""}
             >
               <FontAwesomeIcon icon={faBell}></FontAwesomeIcon>
             </Link>
-            {notificationsActive && <NotificationPopup></NotificationPopup>}
+            {notificationsActive && (
+              <ApiNotificationsPopup></ApiNotificationsPopup>
+            )}
           </div>
           <div className={styles.item}>
             <Link
