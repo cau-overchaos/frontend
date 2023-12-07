@@ -104,18 +104,14 @@ export default function MainNavbar(props: PropsType) {
             </Link>
           </div>
             */}
-          <div
-            className={classNames(
-              styles.item,
-              hasNewNotifications && styles.hasNewNotification
-            )}
-          >
+          <div className={styles.item}>
             <Link
               href="#"
               onClick={() => {
                 setUserPopupActive(false);
                 setNotificationsActive(!notificationsActive);
               }}
+              className={hasNewNotifications ? styles.hasNewNotification : ""}
             >
               <FontAwesomeIcon icon={faBell}></FontAwesomeIcon>
             </Link>
