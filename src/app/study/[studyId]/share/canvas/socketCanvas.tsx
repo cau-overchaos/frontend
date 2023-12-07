@@ -158,7 +158,8 @@ export default function SocketCanvas(
         while (true) {
           const msg = receivedMessages.pop();
           if (typeof msg === "undefined") break;
-          newImageData = applyMessageToData(newImageData, msg);
+          if (msg.pointRequestDto?.deleteAll) newImageData = null;
+          else newImageData = applyMessageToData(newImageData, msg);
         }
         setImageData(newImageData);
       }
