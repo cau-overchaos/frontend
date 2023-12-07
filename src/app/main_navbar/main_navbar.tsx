@@ -80,6 +80,7 @@ export default function MainNavbar(props: PropsType) {
           ))}
         </div>
         <div className={styles.icons}>
+          {/*
           <div className={styles.item}>
             <Link href="#">
               <FontAwesomeIcon
@@ -88,6 +89,7 @@ export default function MainNavbar(props: PropsType) {
               ></FontAwesomeIcon>
             </Link>
           </div>
+            */}
           <div className={styles.item}>
             <Link
               href="#"
