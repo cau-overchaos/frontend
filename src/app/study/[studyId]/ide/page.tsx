@@ -167,11 +167,13 @@ export default function PeoplePage() {
           onCloseClick={() => setLoadDialogActive(false)}
           studyRoomId={studyId}
           onSelect={(code) => {
-            setTitle(code.title);
-            setSelectedLanguages(code.language);
-            code.getSourceCode().then(setSourceCode);
-            setLoadDialogActive(false);
-            setSelectedPid(code.problem.id);
+            studyroomClient.getSharedSourceCodeById(code.id).then((code) => {
+              setTitle(code.title);
+              setSelectedLanguages(code.language);
+              code.getSourceCode().then(setSourceCode);
+              setLoadDialogActive(false);
+              setSelectedPid(code.problem.id);
+            });
           }}
         ></SharedCodeSelectPopup>
       )}
