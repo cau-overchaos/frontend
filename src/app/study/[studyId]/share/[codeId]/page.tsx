@@ -107,6 +107,16 @@ function ApiLineComment(props: {
           .then(() => setLoading("firstLoading"))
           .then(props.onNewComment);
       }}
+      onDeleteRequest={(messageId) => {
+        apiClient
+          .studyroom(props.roomId)
+          .getSharedSourceCodeById(props.sharedSrcCodeId)
+          .then((i) => {
+            i.getFeedback().deleteFeedback(messageId);
+          })
+          .then(() => setLoading("firstLoading"))
+          .then(props.onNewComment);
+      }}
     ></LineComments>
   );
 }
