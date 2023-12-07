@@ -30,7 +30,7 @@ export type FeedbackClient = {
     feedbackId: number,
     comment: string
   ) => Promise<LineFeedback>;
-  deleteFeedback: (feedbackId: number) => Promise<void>;
+  deleteFeedback: (feedbackId: number | string) => Promise<void>;
 };
 
 export default function createFeedbackClient(
@@ -101,7 +101,7 @@ export default function createFeedbackClient(
 
       return transformResponseObj(response.data);
     },
-    async deleteFeedback(feedbackId: number): Promise<void> {
+    async deleteFeedback(feedbackId: number | string): Promise<void> {
       await fetchApi(
         `/studyrooms/${roomId}/shared-sourcecodes/${sharedSourceCodeId}/feedbacks/${feedbackId}`,
         {

@@ -18,12 +18,14 @@ type Props = {
   comments: Comment[];
   onNewCommentRequest: (message: string) => void;
   onNewSubcommentRequest: (message: string, replyTo: string) => void;
+  onDeleteRequest: (id: string) => void;
 };
 
 type CommentProps = {
   profileImageUrl?: string | null;
   writerName: string;
   comment: SubComment;
+  onDeleteClick: () => void;
   onReplyClick: () => void;
   subcomment?: boolean;
 };
@@ -41,7 +43,20 @@ function LineComment(props: CommentProps) {
       ></div>
       <div className={styles.content}>
         {props.comment.content}&nbsp;
-        <span className={styles.writer}>-- {props.writerName}</span>
+        <span className={styles.writer}>
+          -- {props.writerName}
+          &nbsp;
+          <a
+            href="#"
+            className={styles.delete}
+            onClick={(evt) => {
+              evt.preventDefault();
+              props.onDeleteClick();
+            }}
+          >
+            삭제
+          </a>
+        </span>
       </div>
       <div className={styles.replyTo}>
         <a
@@ -146,6 +161,7 @@ export default function LineComments(props: Props) {
               profileImageUrl={i.profileImgUrl}
               onReplyClick={() => setReplyingTo(i.id)}
               writerName={i.authorId}
+              onDeleteClick={() => props.onDeleteRequest(i.id)}
             ></LineComment>,
             i.subcomments.length !== 0 || replyingTo === i.id ? (
               <div className={classNames(styles.comments, styles.subcomments)}>
@@ -157,6 +173,7 @@ export default function LineComments(props: Props) {
                       comment={j}
                       profileImageUrl={j.profileImgUrl}
                       onReplyClick={() => setReplyingTo(i.id)}
+                      onDeleteClick={() => props.onDeleteRequest(j.id)}
                       writerName={j.authorId}
                     ></LineComment>
                   ))
