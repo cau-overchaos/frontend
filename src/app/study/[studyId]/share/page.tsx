@@ -30,6 +30,7 @@ export default function SharePage() {
       <Board
         title="코드 공유"
         withProblem
+        noWriteButton
         loading={sharedCodes === null}
         error={error}
       >
