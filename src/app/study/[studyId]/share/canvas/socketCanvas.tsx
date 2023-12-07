@@ -9,6 +9,7 @@ type WSMessage = {
   messageText: string | null;
   pointRequestDto: null | {
     delete: boolean;
+    deleteAll?: boolean;
     startX: number;
     startY: number;
     endX: number;
@@ -209,6 +210,21 @@ export default function SocketCanvas(
             endX: b.x,
             endY: b.y,
             delete: true
+          }
+        });
+      }}
+      onClear={() => {
+        sendWs({
+          messageType: "DRAW",
+          messageText: "",
+          pointRequestDto: {
+            color: "",
+            startX: 0,
+            startY: 0,
+            endX: 0,
+            endY: 0,
+            delete: true,
+            deleteAll: true
           }
         });
       }}

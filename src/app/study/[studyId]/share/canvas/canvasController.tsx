@@ -16,6 +16,7 @@ export type CanvasControllerProp = Omit<CanvasProps, "onDraw"> & {
   imageData: ImageData | null;
   onNewImageData: (newVal: ImageData | null) => void;
   onDraw: (a: Point, b: Point, color: string, newImage: ImageData) => void;
+  onClear?: () => void;
 };
 
 export default function CanvasController(props: CanvasControllerProp) {
@@ -64,6 +65,7 @@ export default function CanvasController(props: CanvasControllerProp) {
             evt.preventDefault();
             props.onActiveToggle(true);
             props.onNewImageData(null);
+            (props.onClear ?? function () {})();
           }}
         >
           <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon>
