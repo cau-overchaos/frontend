@@ -21,6 +21,7 @@ type Prop = {
   title?: string;
   noAuthor?: boolean;
   noDate?: boolean;
+  noWriteButton?: boolean;
   withProblem?: boolean;
   loading?: boolean;
   error?: string;
@@ -193,20 +194,22 @@ export default function Board(props: Prop) {
 
       <div className={styles.navAndWrite}>
         {props.pagination && <Navigation {...props.pagination}></Navigation>}
-        <Button
-          className={styles.write}
-          onClick={(evt) => {
-            evt.preventDefault();
+        {!(props.noWriteButton ?? false) && (
+          <Button
+            className={styles.write}
+            onClick={(evt) => {
+              evt.preventDefault();
 
-            if (props.writeButtonHref) {
-              router.push(props.writeButtonHref);
-            } else if (props.onWriteButtonClick) {
-              props.onWriteButtonClick();
-            }
-          }}
-        >
-          {props.writeButtonText || "작성"}
-        </Button>
+              if (props.writeButtonHref) {
+                router.push(props.writeButtonHref);
+              } else if (props.onWriteButtonClick) {
+                props.onWriteButtonClick();
+              }
+            }}
+          >
+            {props.writeButtonText || "작성"}
+          </Button>
+        )}
       </div>
     </div>
   );

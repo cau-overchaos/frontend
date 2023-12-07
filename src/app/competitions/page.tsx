@@ -4,7 +4,7 @@ import MainLayout from "../main_layout";
 export default function CompeititonArticleListPage() {
   return (
     <MainLayout>
-      <Board noAuthor title="코딩 테스트/대회 공고">
+      <Board noAuthor noWriteButton title="코딩 테스트/대회 공고">
         <Article
           title="2024 카카오 채융 연계형 겨울 인턴십 코딩테스트"
           href="/competitions/1"
