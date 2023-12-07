@@ -171,6 +171,7 @@ export default function PeoplePage() {
             setSelectedLanguages(code.language);
             code.getSourceCode().then(setSourceCode);
             setLoadDialogActive(false);
+            setSelectedPid(code.problem.id);
           }}
         ></SharedCodeSelectPopup>
       )}

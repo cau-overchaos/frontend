@@ -12,6 +12,7 @@ export type SharedSourceCode = {
   problem: {
     title: string;
     difficultyLevel: number;
+    id: number;
   };
   writer: {
     id: string;
@@ -119,7 +120,8 @@ export default function createStudyroomClient(
       title: i.sharedSourceCodeTitle,
       problem: {
         difficultyLevel: i.problemDifficultyLevel,
-        title: i.problemTitle
+        title: i.problemTitle,
+        id: i.pid
       },
       writer: {
         id: i.writerUserId,
