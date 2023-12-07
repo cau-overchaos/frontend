@@ -138,7 +138,7 @@ export default function Canvas(props: CanvasProps) {
       ref={canvasRef}
       width={props.width}
       height={props.height}
-      style={props.style}
+      style={{ touchAction: "none", ...props.style }}
       onMouseDown={(evt) => {
         setDrawing(true);
         drawOnClick(evt);
