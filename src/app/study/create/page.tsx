@@ -70,7 +70,7 @@ export default function CreationForm() {
               onChange={(evt) => setTitle(evt.target.value)}
             ></Input>
           </div>
-          <div className={styles.field}>
+          {/* <div className={styles.field}>
             <label className={styles.label}>유형</label>
             <label className={styles.radio}>
               <input
@@ -92,7 +92,7 @@ export default function CreationForm() {
               ></input>{" "}
               비공개
             </label>
-          </div>
+            </div> */}
           <div className={styles.field}>
             <label className={styles.label}>최대인원</label>
             <Input
