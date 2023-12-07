@@ -2,6 +2,7 @@ import { transform } from "typescript";
 import Assignment from "../study/[studyId]/assignments/assignment/assignment";
 import createStudyroomClient from "./studyroom";
 import createRecruitClient from "./recruits";
+import createNotificationClient from "./notifications";
 
 type SignUpForm = {
   userId: string;
@@ -345,6 +346,10 @@ class ApiClient {
 
   recruitPosts() {
     return createRecruitClient(this.fetchApi);
+  }
+
+  notifications() {
+    return createNotificationClient(this.fetchApi);
   }
 }
 
