@@ -1,0 +1,15 @@
+.container {
+  position: relative;
+  .tools {
+    pointer-events: all;
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    a {
+      opacity: 0.3;
+      &.active {
+        opacity: 1;
+      }
+    }
+  }
+}

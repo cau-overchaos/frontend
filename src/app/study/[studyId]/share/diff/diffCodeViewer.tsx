@@ -18,6 +18,7 @@ export default function DiffCodeViewer(props: Props) {
   return (
     <div className={styles.codes}>
       <CommentableCodeViewer
+        sharedSourceCodeId={1}
         linePadding="0px 25px"
         highlight={props.highlight}
         code={props.left.code}
@@ -27,6 +28,7 @@ export default function DiffCodeViewer(props: Props) {
         commentCount={{}}
       ></CommentableCodeViewer>
       <CommentableCodeViewer
+        sharedSourceCodeId={1}
         linePadding="0px 25px"
         highlight={props.highlight}
         code={props.right.code}

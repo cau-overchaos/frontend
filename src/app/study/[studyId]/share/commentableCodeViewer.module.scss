@@ -1,4 +1,15 @@
 .code {
+  .canvasContainer {
+    position: absolute;
+    &.inactive {
+      pointer-events: none;
+    }
+    .canvas {
+      position: relative;
+      top: -20px;
+      z-index: 1;
+    }
+  }
   .line {
     min-height: 1.6em;
     white-space: pre;
