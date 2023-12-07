@@ -38,7 +38,7 @@ export default function SharePage() {
             key={i.id}
             title={i.title}
             author={i.writer.nickname}
-            date={new Date()}
+            date={i.createdAt}
             href={`share/${i.id}`}
             problem={{
               tier: (
