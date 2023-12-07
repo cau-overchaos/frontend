@@ -1,6 +1,9 @@
 import {
   CSSProperties,
+  MouseEvent,
   MouseEventHandler,
+  TouchEvent,
+  TouchEventHandler,
   useEffect,
   useMemo,
   useRef,
@@ -77,7 +80,17 @@ export default function Canvas(props: CanvasProps) {
   if (props.image)
     offscreenCanvas.getContext("2d")?.putImageData(props.image, 0, 0);
 
-  const drawOnClick: MouseEventHandler<HTMLCanvasElement> = (evt) => {
+  const drawOnTouch: TouchEventHandler<HTMLCanvasElement> = (evt) => {
+    drawOnClientPos(evt.touches[0].clientX, evt.touches[0].clientY);
+  };
+
+  const drawOnClick: MouseEventHandler<HTMLCanvasElement> = (
+    evt: MouseEvent<HTMLCanvasElement, globalThis.MouseEvent>
+  ) => {
+    drawOnClientPos(evt.clientX, evt.clientY);
+  };
+
+  const drawOnClientPos = (x: number, y: number) => {
     if (canvasRef.current === null || !drawing) return;
     if (notFire) return;
     else notFire = true;
@@ -86,8 +99,8 @@ export default function Canvas(props: CanvasProps) {
     if (context === null) return;
 
     const endPos = {
-      x: evt.clientX - canvasRef.current.getBoundingClientRect().x,
-      y: evt.clientY - canvasRef.current.getBoundingClientRect().y
+      x: x - canvasRef.current.getBoundingClientRect().x,
+      y: y - canvasRef.current.getBoundingClientRect().y
     };
     const startPos = previousPos ?? endPos;
     setPreviousPos(endPos);
@@ -138,6 +151,17 @@ export default function Canvas(props: CanvasProps) {
         drawOnClick(evt);
       }}
       onMouseUp={(evt) => {
+        setDrawing(false);
+        setPreviousPos(null);
+      }}
+      onTouchStart={(evt) => {
+        setDrawing(true);
+        drawOnTouch(evt);
+      }}
+      onTouchMove={(evt) => {
+        drawOnTouch(evt);
+      }}
+      onTouchEnd={(evt) => {
         setDrawing(false);
         setPreviousPos(null);
       }}
