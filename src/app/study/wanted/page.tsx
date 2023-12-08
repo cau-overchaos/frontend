@@ -16,7 +16,7 @@ export default function WantedListPage() {
   return (
     <MainLayout>
       <Board
-        title="스터디원 구인"
+        title="스터디원 모집"
         noDate
         writeButtonHref="/study/wanted/create"
       >
